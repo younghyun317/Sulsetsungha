@@ -7,11 +7,9 @@
     android:gravity="center"
     tools:context=".DonationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listView_donation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Donation and Shopping"
-        android:textSize="60dp"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

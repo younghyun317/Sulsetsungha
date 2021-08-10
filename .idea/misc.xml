@@ -5,9 +5,10 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_donation.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_donation.xml" value="0.125" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_donation.xml" value="0.165" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/menu/menu_bottom.xml" value="0.14166666666666666" />
       </map>
