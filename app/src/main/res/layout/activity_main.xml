@@ -19,9 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:menu="@menu/menu_bottom"
-        app:itemBackground="@android:color/white">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-
+        app:itemBackground="@android:color/white"/>
 
 </LinearLayout>
