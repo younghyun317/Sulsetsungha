@@ -64,13 +64,6 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnDonation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="후원 하기" />
-
             <ProgressBar
                 android:id="@+id/prgbarDonation"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -80,6 +73,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:max="100" />
+
+            <Button
+                android:id="@+id/btnDonation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="후원 하기" />
+
         </LinearLayout>
 
     </LinearLayout>

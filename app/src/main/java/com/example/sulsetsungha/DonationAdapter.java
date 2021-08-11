@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,47 +15,68 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import com.bumptech.glide.Glide;
 
-class DonationAdapter extends ArrayAdapter {
+class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
 
     private Context context;
+    private List list;
     private LayoutInflater layoutInflater;
     private ProgressBar prgbarDonation;
     private int value;
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+    }
+
     class ViewHolder {
-        public TextView tv_name;
-        public TextView tv_summary;
-        public TextView tv_dday;
-        public TextView tv_donation;
-        public Button btn_donatuon;
+        public TextView txt_name;
+        public TextView txt_summary;
+        public ProgressBar prg_donation;
+        public TextView txt_dday;
+        public TextView txt_donation;
     }
 
     public DonationAdapter(Context context, ArrayList list){
         super(context, 0, list);
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
+        this.list = list;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = layoutInflater.inflate(R.layout.item_donation, null);
+        //View v = layoutInflater.inflate(R.layout.item_donation, null);
+        final ViewHolder viewHolder;
 
-        final EditText edtPoint = new EditText(getContext());
+        EditText edtPoint = new EditText(getContext());
 
-//        if (convertView == null) {
-//            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-//            convertView = layoutInflater.inflate(R.layout.item_donation, parent, false);
-//        }
+        if (convertView == null){
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            convertView = layoutInflater.inflate(R.layout.item_donation, parent, false);
+        }
+
+        viewHolder = new ViewHolder();
+        viewHolder.txt_name = (TextView)convertView.findViewById(R.id.txtName);
+        viewHolder.txt_summary = (TextView)convertView.findViewById(R.id.txtSummary);
+        //viewHolder.prg_donation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
+        viewHolder.txt_dday = (TextView)convertView.findViewById(R.id.txtDday);
+        viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.txtDonation);
+
+        final DonationFragment.Sponsor sponsor = (DonationFragment.Sponsor)list.get(position);
+        viewHolder.txt_name.setText(sponsor.getName());
+        viewHolder.txt_summary.setText(sponsor.getSummary());
+        viewHolder.txt_dday.setText(sponsor.getDday().toString());
+        viewHolder.txt_donation.setText(sponsor.getDonation().toString());
 
 //        TextView textView = v.findViewById(R.id.txtName);
 //        textView.setText(data.get(position));
 
-        View bodyView = v.findViewById(R.id.body);
-        Button buttonView = v.findViewById(R.id.btnDonation);
-        prgbarDonation = (ProgressBar)v.findViewById(R.id.prgbarDonation);
-
+        View bodyView = (View)convertView.findViewById(R.id.body);
+        Button buttonView = (Button)convertView.findViewById(R.id.btnDonation);
+        prgbarDonation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
 
         bodyView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,14 +102,17 @@ class DonationAdapter extends ArrayAdapter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         value = Integer.parseInt(edtPoint.getText().toString()); //문자형 -> 정수형 변환
-                        prgbarDonation.setProgress(value);
+                        prgbarDonation.incrementProgressBy(value);
+                        //prgbarDonation.setProgress(Integer.parseInt(edtPoint.getText().toString()));
                     }
-                });
 
+                });
                 dlg.show();
             }
         });
-        prgbarDonation.setProgress(value);
-        return v;
+
+        return convertView;
     }
+
+
 }

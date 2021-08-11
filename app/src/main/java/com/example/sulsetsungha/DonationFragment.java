@@ -10,12 +10,15 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class DonationFragment extends Fragment {
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    String today = dateFormat.format(Calendar.getInstance().getTime());
     ArrayList<Sponsor> sponsors;
     ListView donationListView;
     private static DonationAdapter donationAdapter;
@@ -28,9 +31,9 @@ public class DonationFragment extends Fragment {
 
         //후원 리스트
         sponsors = new ArrayList<>();
-        sponsors.add(new Sponsor("후원", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", Calendar.getInstance().getTime(), 1000000));
-        sponsors.add(new Sponsor("후원", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", Calendar.getInstance().getTime(), 1000000));
-        sponsors.add(new Sponsor("후원", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", Calendar.getInstance().getTime(), 1000000));
+        sponsors.add(new Sponsor("후원1", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "10"));
+        sponsors.add(new Sponsor("후원2", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "20"));
+        sponsors.add(new Sponsor("후원3", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "30"));
 
         donationListView = (ListView)view.findViewById(R.id.listView_donation);
         donationAdapter = new DonationAdapter(getContext(), sponsors);
@@ -76,14 +79,16 @@ public class DonationFragment extends Fragment {
     class Sponsor {
         private String name;
         private String summary;
-        private Date dday;
-        private Integer donation;
+        private String dday;
+        private String donation;
+        //private ProgressBar progressbar;
 
-        public Sponsor(String name, String summary, Date dday, Integer donation) {
+        public Sponsor(String name, String summary, String dday, String donation) {
             this.name = name;
             this.summary = summary;
             this.dday = dday;
             this.donation = donation;
+            //this.progressbar = progressbar;
         }
 
         public String getName() {
@@ -94,13 +99,17 @@ public class DonationFragment extends Fragment {
             return summary;
         }
 
-        public Date getDday() {
+        public String getDday() {
             return dday;
         }
 
-        public Integer getDonation() {
+        public String getDonation() {
             return donation;
         }
+
+//        public ProgressBar getProgressbar() {
+//            return progressbar;
+//        }
     } //Sponsor
 
 }
