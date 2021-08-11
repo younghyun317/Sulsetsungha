@@ -99,7 +99,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
     ImageButton btn_search;
     Button btn_request;
 
-    Toast toast;
     int cnt = 0;
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
@@ -373,7 +372,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
             public void onMapClick(LatLng latLng) {
                 //TODO: 지도 클릭 시, 위치 리스트 보여주기
                 getChildFragmentManager().beginTransaction()
-                        .replace(R.id.layout_home, new DonationFragment())
+                        .replace(R.id.layout_home, new LocationFragment())
                         .commit();
 
                 Log.d( TAG, "onMapClick : "+"클릭 이벤트 잘 작동중~!~!");
