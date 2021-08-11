@@ -23,9 +23,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +69,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
     private GoogleMap mMap;
     private Marker currentMarker = null;
+    private Marker currentMarker2 = null;
 
     private static final String TAG = "[위치 확인]";
     private static final int GPS_ENABLE_REQUEST_CODE=2001;
@@ -85,6 +89,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
     Circle circle;
     CircleOptions circle500M;
+    final int earth = 6371000; //지구 반지름(M)
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
@@ -93,6 +98,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
     EditText txt_address;
     ImageButton btn_search;
     Button btn_request;
+
+    Toast toast;
+    int cnt = 0;
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
     // (참고로 Toast에서는 Context가 필요했습니다.)
@@ -138,8 +146,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fr_map);
 //        mapFragment.getMapAsync(this);
+
         mapView = (MapView)layout.findViewById(R.id.fr_map);
-        mapView.getMapAsync(this);
+        mapView.getMapAsync((OnMapReadyCallback)this);
 
         btn_request.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,39 +177,63 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
 
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //본인 현재 위치
                 currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
+                double diffLatitude = latitudeInDifference(500);
+                double diffLongitude = longitudeInDifference(location.getLatitude(), 500);
+
+                double minLat=location.getLatitude()-diffLatitude;
+                Log.d(TAG, "minLatitude ===> "+ minLat);
+                double maxLat = location.getLatitude()+diffLatitude;
+                double minLon = location.getLongitude()-diffLongitude;
+                double maxLon = location.getLongitude()+diffLongitude;
+
+                double user2_lat = location.getLatitude()+0.0018;
+                double user2_lon = location.getLongitude()+0.0009;
+                double user3_lat = location.getLatitude()-0.0053;
+                double user3_lon = location.getLongitude()-0.0042;
+
                 HashMap<LatLng, String> locationMap = new HashMap<>(); //key: 좌표, value: 좌표 해당 주소
-                //본인 외 사용자 현재 위치 정보
-                currentPosition2 = new LatLng(location.getLatitude()+0.0018, location.getLongitude()+0.0009);
-                locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
-                currentPosition2 = new LatLng(location.getLatitude()-0.0011, location.getLongitude()-0.0020);
-                locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
 
+                //본인 외 사용자 현재 위치 정보: 500M 내 위도&경도 범위에 있는 위치만 마커 생성
+                //user2
+                if(user2_lat >= minLat && user2_lat <= maxLat){ //500M 내 위도
+                    if(user2_lon >= minLon && user2_lon <= maxLon){ //500M 내 경도
+                        currentPosition2 = new LatLng(user2_lat, user2_lon);
+                        locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
+                    }
+                }
+                //user3
+                if(user3_lat >= minLat && user3_lat <= maxLat){ //500M 내 위도
+                    if(user3_lon >= minLon && user3_lon <= maxLon){ //500M 내 경도
+                        currentPosition2 = new LatLng(user3_lat, user3_lon);
+                        locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
+                    }
+                }
 
+                /**
+                 * 마지막에 꼭 삭제해야할 코드!! Log 확인 위한 코드임!!!
+                 */
                 //본인 위치
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude()) + " 경도:" + String.valueOf(location.getLongitude());
-
                 //사용자2 위치
-                String markerSnippet2="위도:" + String.valueOf(location.getLatitude()+0.0018) + " 경도:" + String.valueOf(location.getLongitude()+0.0009);
+                String markerSnippet2="위도:" + String.valueOf(user2_lat) + " 경도:" + String.valueOf(user2_lon);
                 //사용자3 위치
-                String markerSnippet3="위도:" + String.valueOf(location.getLatitude()-0.0011) + " 경도:" + String.valueOf(location.getLongitude()-0.0020);
+                String markerSnippet3="위도:" + String.valueOf(user3_lat) + " 경도:" + String.valueOf(user3_lon);
 
                 Log.d(TAG, "onLocationResult1 ==> " + markerSnippet);
                 Log.d(TAG, "onLocationResult2 ==> " + markerSnippet2);
                 Log.d(TAG, "onLocationResult3 ==> " + markerSnippet3);
 
 
+
                 //본인 현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location, getCurrentAddress(currentPosition));
                 //본인 외 위치 마커 생성하고 이동
                 setLocation(locationMap);
-//                setLocation(currentPosition, markerTitle);
-//                setLocation(currentPosition2, markerTitle2);
-
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                Log.d("locationMap:", "본인 위치 외의 위치들 ==> "+locationMap);
+                locationMap.clear();
 
                 mCurrentLocation = location;
             }
@@ -252,19 +285,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
         super.onResume();
         mapView.onResume();
     }
-
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
     }
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -332,8 +362,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
         }
 
-
-
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         // 지도 확대 정도(15: 화면 왼쪽~오른쪽 거리 1500M)
@@ -343,8 +371,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
             @Override
             public void onMapClick(LatLng latLng) {
+                //TODO: 지도 클릭 시, 위치 리스트 보여주기
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.layout_home, new DonationFragment())
+                        .commit();
 
-                Log.d( TAG, "onMapClick :");
+                Log.d( TAG, "onMapClick : "+"클릭 이벤트 잘 작동중~!~!");
             }
         });
     }
@@ -387,8 +419,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    public double latitudeInDifference(int diff){
+
+        return (diff*360.0) / (2*Math.PI*earth);
+    }
+    public double longitudeInDifference(double latitude, int diff){
+
+        double ddf = Math.cos(Math.toRadians(latitude));
+
+        return (diff*360.0) / (2*Math.PI*earth*ddf);
+    }
+
+
     //주변 사용자 위치 마커 설정
     public void setLocation(HashMap<LatLng, String> locationMap){
+
+        if(currentMarker2 != null) currentMarker2.remove();
+
         MarkerOptions markerOptions = new MarkerOptions();
 
         for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
@@ -396,9 +443,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
             markerOptions.position(entry.getKey());
             markerOptions.title(entry.getValue());
             markerOptions.draggable(true);
-            currentMarker = mMap.addMarker(markerOptions);
+            currentMarker2 = mMap.addMarker(markerOptions);
         }
     }
+
     //본인 위치 마커 설정
     public void setCurrentLocation(Location location, String markerTitle) {
 
@@ -411,7 +459,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng);
         markerOptions.title(markerTitle);
-        markerOptions.draggable(true);
+        markerOptions.draggable(false);
         currentMarker = mMap.addMarker(markerOptions);
         
         //본인 현재 위치 주소 보여주기
@@ -431,8 +479,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
             circle = mMap.addCircle(circle500M);
         }
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        mMap.moveCamera(cameraUpdate);
+        if(cnt<1){
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
+            mMap.moveCamera(cameraUpdate);
+            cnt+=1;
+        }
 
     }
 
