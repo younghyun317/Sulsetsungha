@@ -26,20 +26,11 @@
         android:layout_weight="3"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnFind"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="아이디/패스워드 찾기" />
-
-        <EditText
-            android:id="@+id/edtPw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:text="로그인" />
 
         <EditText
             android:id="@+id/edtId"
@@ -50,11 +41,21 @@
             android:inputType="textPersonName"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <TextView
-            android:id="@+id/textView"
+        <EditText
+            android:id="@+id/edtPw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="로그인" />
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/btnFind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="아이디/패스워드 찾기" />
+
     </LinearLayout>
 
     <LinearLayout

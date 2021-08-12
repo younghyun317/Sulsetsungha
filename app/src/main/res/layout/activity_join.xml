@@ -28,7 +28,7 @@
         android:text="패스워드" />
 
     <EditText
-        android:id="@+id/edtJoinPw1"
+        android:id="@+id/edtJoinPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -42,7 +42,7 @@
         android:text="패스워드 확인" />
 
     <EditText
-        android:id="@+id/edtJoinPw2"
+        android:id="@+id/edtJoinPwChk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -50,7 +50,7 @@
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/btnJoinFinish"
+        android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="가입하기" />
