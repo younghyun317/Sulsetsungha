@@ -3,62 +3,75 @@ package com.example.sulsetsungha;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+
 public class LocationFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static LocationAdapter locationAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<Data> itemLocation;
+
+    Button btn_go2Map;
+
 
     public LocationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LocationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LocationFragment newInstance(String param1, String param2) {
-        LocationFragment fragment = new LocationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_location, container, false);
+
+        btn_go2Map = v.findViewById(R.id.btn_go2Map);
+        btn_go2Map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 버튼 클릭 시, 지도로 돌아가기
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.layout_location, new HomeFragment())
+                        .commit();
+                btn_go2Map.setVisibility(View.GONE);
+
+                Log.d( "[지도로 돌아가기 버튼 동작]", "gotoMap : "+"버튼 동작 아주 잘됨~!~!");
+            }
+        });
+
+        itemLocation = new ArrayList<>();
+        int distance=50;
+
+        for(int i=0;i<10;i++){
+            distance++;
+            itemLocation.add(new Data(i, "빌려줄 수 있어요", distance));
+        }
+
+        RecyclerView locationList = v.findViewById(R.id.locationList);
+
+        locationAdapter = new LocationAdapter();
+        locationList.setAdapter(locationAdapter);
+        locationList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locationAdapter.setLocationList(itemLocation);
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location, container, false);
+        return v;
     }
 }
