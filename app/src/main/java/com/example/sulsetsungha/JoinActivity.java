@@ -64,7 +64,8 @@ public class JoinActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Boolean result = response.optBoolean("message");
+                                Boolean result = response.optBoolean("username");
+                                Log.d("check", "result"+ result);
 
                                 if (result) {
                                     if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
@@ -75,6 +76,9 @@ public class JoinActivity extends AppCompatActivity {
                                         Intent i = new Intent(JoinActivity.this, LoginActivity.class);
                                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(i);
+
+                                        Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId + "님!", Toast.LENGTH_LONG);
+                                        toast.show();
                                     } else {
                                         Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
                                         toast.show();
@@ -85,8 +89,7 @@ public class JoinActivity extends AppCompatActivity {
                                     toast.show();
                                 }
 
-                                Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId + "님!", Toast.LENGTH_LONG);
-                                toast.show();
+
                             }
                         },
                         new Response.ErrorListener() {
