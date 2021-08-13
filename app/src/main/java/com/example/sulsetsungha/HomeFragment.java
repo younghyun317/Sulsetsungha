@@ -16,8 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +47,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -54,16 +57,21 @@ import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback , ActivityCompat.OnRequestPermissionsResultCallback {
+import org.w3c.dom.Text;
 
-    private GoogleMap mMap;
-    private Marker currentMarker = null;
-    private Marker currentMarker2 = null;
+public class HomeFragment extends Fragment implements OnMapReadyCallback , ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "[위치 확인]";
     private static final int GPS_ENABLE_REQUEST_CODE=2001;
     private static final int UPDATE_INTERVAL_MS=1000;
     private static final int FASTEST_UPDATE_INTERVAL_MS=500;
+
+//    final static int earth = 6371000; //지구 반지름(M)
+    final static float dis = 500;
+
+    private GoogleMap mMap;
+    private Marker currentMarker = null;
+    List<Marker> cMarker = new ArrayList<>();
 
     //onRequestPermissionResult에서 수신된 결과 중 ActivityCompat.requestPermissions 사용한 퍼미션 요청 구별
     private static final int PERMISSIONS_REQUEST_CODE=100;
@@ -77,36 +85,38 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
     LatLng currentPosition2;
 
     Circle circle;
-    CircleOptions circle500M;
-    final int earth = 6371000; //지구 반지름(M)
+    CircleOptions circle500M;    
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private Location location;
 
-    EditText txt_address;
+
+    TextView txt_address;
     ImageButton btn_search;
     Button btn_request;
 
-    int cnt = 0;
+    HashMap<LatLng, String> locationMap;
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
-    // (참고로 Toast에서는 Context가 필요했습니다.)
 
 
     private MapView mapView = null;
+    //LocationFragment에 데이터 전달
+    Bundle bundle = new Bundle();
+    Fragment fr = new LocationFragment();
 
 //    public HomeFragment()
 //    {
 //        // required
 //    }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,7 +145,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fr_map);
 //        mapFragment.getMapAsync(this);
 
-        mapView = (MapView)layout.findViewById(R.id.fr_map);
+        mapView = layout.findViewById(R.id.fr_parent);
         mapView.getMapAsync((OnMapReadyCallback)this);
 
         btn_request.setOnClickListener(new View.OnClickListener() {
@@ -168,60 +178,60 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
                 //본인 현재 위치
                 currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
-                double diffLatitude = latitudeInDifference(500);
-                double diffLongitude = longitudeInDifference(location.getLatitude(), 500);
 
-                double minLat=location.getLatitude()-diffLatitude;
-                Log.d(TAG, "minLatitude ===> "+ minLat);
-                double maxLat = location.getLatitude()+diffLatitude;
-                double minLon = location.getLongitude()-diffLongitude;
-                double maxLon = location.getLongitude()+diffLongitude;
+                List<Float> distances = new ArrayList<>();
+                List<LatLng> users = new ArrayList<>();
 
-                double user2_lat = location.getLatitude()+0.0018;
-                double user2_lon = location.getLongitude()+0.0009;
-                double user3_lat = location.getLatitude()-0.0053;
-                double user3_lon = location.getLongitude()-0.0042;
+                //주변 사용자 위치
+                double user_lat2 = location.getLatitude()+0.0018;
+                double user_lon2 = location.getLongitude()+0.0009;
+                distances.add(getDistance(location, user_lat2, user_lon2));
+                users.add(new LatLng(user_lat2, user_lon2));
 
-                HashMap<LatLng, String> locationMap = new HashMap<>(); //key: 좌표, value: 좌표 해당 주소
+                double user_lat3 = location.getLatitude()-0.0020;
+                double user_lon3 = location.getLongitude()-0.0007;
+                distances.add(getDistance(location, user_lat3, user_lon3));
+                users.add(new LatLng(user_lat3, user_lon3));
+
+                double user_lat4 = location.getLatitude()+0.0004;
+                double user_lon4 = location.getLongitude()-0.0015;
+                distances.add(getDistance(location, user_lat4, user_lon4));
+                users.add(new LatLng(user_lat4, user_lon4));
+
+                locationMap = new HashMap<>(); //key: 좌표, value: 좌표 해당 주소
+                ArrayList<Integer> possible = new ArrayList<>();
+
 
                 //본인 외 사용자 현재 위치 정보: 500M 내 위도&경도 범위에 있는 위치만 마커 생성
-                //user2
-                if(user2_lat >= minLat && user2_lat <= maxLat){ //500M 내 위도
-                    if(user2_lon >= minLon && user2_lon <= maxLon){ //500M 내 경도
-                        currentPosition2 = new LatLng(user2_lat, user2_lon);
-                        locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
+                for(int i = 0;i<distances.size();i++){
+
+                    if(distances.get(i) <= dis){
+                        currentPosition2 = users.get(i);
+                        locationMap.put(currentPosition2, "빌려줄 수 있어요");
+                        int dt = Math.round(distances.get(i));
+                        possible.add(dt);
                     }
                 }
-                //user3
-                if(user3_lat >= minLat && user3_lat <= maxLat){ //500M 내 위도
-                    if(user3_lon >= minLon && user3_lon <= maxLon){ //500M 내 경도
-                        currentPosition2 = new LatLng(user3_lat, user3_lon);
-                        locationMap.put(currentPosition2, getCurrentAddress(currentPosition2));
-                    }
-                }
+                Collections.sort(possible, toAsc);
+
+                //LocationFragment에 데이터 전달하기
+                bundle.putIntegerArrayList("possible_distances", possible);
+                fr.setArguments(bundle);
 
                 /**
                  * 마지막에 꼭 삭제해야할 코드!! Log 확인 위한 코드임!!!
                  */
                 //본인 위치
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude()) + " 경도:" + String.valueOf(location.getLongitude());
-                //사용자2 위치
-                String markerSnippet2="위도:" + String.valueOf(user2_lat) + " 경도:" + String.valueOf(user2_lon);
-                //사용자3 위치
-                String markerSnippet3="위도:" + String.valueOf(user3_lat) + " 경도:" + String.valueOf(user3_lon);
-
                 Log.d(TAG, "onLocationResult1 ==> " + markerSnippet);
-                Log.d(TAG, "onLocationResult2 ==> " + markerSnippet2);
-                Log.d(TAG, "onLocationResult3 ==> " + markerSnippet3);
-
-
-
+                
                 //본인 현재 위치에 마커 생성하고 이동
-                setCurrentLocation(location, getCurrentAddress(currentPosition));
+                setCurrentLocation(location, "현재 나의 위치");
+
                 //본인 외 위치 마커 생성하고 이동
                 setLocation(locationMap);
                 Log.d("locationMap:", "본인 위치 외의 위치들 ==> "+locationMap);
-                locationMap.clear();
+//                locationMap.clear();
 
                 mCurrentLocation = location;
             }
@@ -245,10 +255,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
                 mMap.setMyLocationEnabled(true);
 
         }
-
-
     }
-
 
     @Override
     public void onStop() {
@@ -352,8 +359,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
+
         // 지도 확대 정도(15: 화면 왼쪽~오른쪽 거리 1500M)
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -361,7 +371,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
             public void onMapClick(LatLng latLng) {
                 //TODO: 지도 클릭 시, 위치 리스트 보여주기
                 getChildFragmentManager().beginTransaction()
-                        .replace(R.id.layout_home, new LocationFragment())
+                        .replace(R.id.layout_home, fr)
                         .commit();
 
                 Log.d( TAG, "onMapClick : "+"클릭 이벤트 잘 작동중~!~!");
@@ -394,8 +404,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 
-            if (checkPermission())
+            if (checkPermission()) {
                 mMap.setMyLocationEnabled(true);
+            }
 
         }
 
@@ -407,31 +418,47 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    public double latitudeInDifference(int diff){
+    //거리 구하기
+    public float getDistance(Location location , double lat , double lng){
+        float distance;
 
-        return (diff*360.0) / (2*Math.PI*earth);
+        Location locationB = new Location("point B");
+        locationB.setLatitude(lat);
+        locationB.setLongitude(lng);
+
+        distance = location.distanceTo(locationB);
+
+        return distance;
     }
-    public double longitudeInDifference(double latitude, int diff){
 
-        double ddf = Math.cos(Math.toRadians(latitude));
+    Comparator<Integer> toAsc = new Comparator<Integer>() {
 
-        return (diff*360.0) / (2*Math.PI*earth*ddf);
-    }
+        @Override
+        public int compare(Integer a, Integer b) {
+            return a.compareTo(b) ;
+        }
+    } ;
 
 
     //주변 사용자 위치 마커 설정
     public void setLocation(HashMap<LatLng, String> locationMap){
 
-        if(currentMarker2 != null) currentMarker2.remove();
-
-        MarkerOptions markerOptions = new MarkerOptions();
+        if(cMarker.size()!=0){
+            for (int u=0;u<cMarker.size();u++){
+                cMarker.get(u).remove();
+            }
+        }
 
         for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
-            
-            markerOptions.position(entry.getKey());
-            markerOptions.title(entry.getValue());
-            markerOptions.draggable(true);
-            currentMarker2 = mMap.addMarker(markerOptions);
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(entry.getKey())
+                    .title(entry.getValue())
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+
+            Marker m = mMap.addMarker(markerOptions);
+            cMarker.add(m);
         }
     }
 
@@ -441,13 +468,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
 
         if (currentMarker != null) currentMarker.remove();
 
-
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLatLng);
-        markerOptions.title(markerTitle);
-        markerOptions.draggable(false);
+        markerOptions.position(currentLatLng)
+                .title(markerTitle)
+                .draggable(false);
+
         currentMarker = mMap.addMarker(markerOptions);
         
         //본인 현재 위치 주소 보여주기
@@ -466,12 +493,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
             circle500M.center(currentLatLng);
             circle = mMap.addCircle(circle500M);
         }
-
-        if(cnt<1){
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-            mMap.moveCamera(cameraUpdate);
-            cnt+=1;
-        }
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
+        mMap.moveCamera(cameraUpdate);
 
     }
 
@@ -487,10 +510,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
         if (currentMarker != null) currentMarker.remove();
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
-        markerOptions.title(markerTitle);
-        markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        markerOptions.position(DEFAULT_LOCATION)
+                .title(markerTitle)
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         currentMarker = mMap.addMarker(markerOptions);
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
@@ -507,7 +530,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
         List<Address> addresses;
 
         try {
-
             addresses = geocoder.getFromLocation(
                     latlng.latitude,
                     latlng.longitude,
@@ -549,9 +571,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , Activ
         return false;
 
     }
-
-
-
     /*
      * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드
      */

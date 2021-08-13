@@ -19,13 +19,19 @@ public class LocationFragment extends Fragment {
 
     private static LocationAdapter locationAdapter;
 
-    ArrayList<Data> itemLocation;
+    ArrayList<LocationItem> itemLocation;
 
     Button btn_go2Map;
+
+    Bundle bundle;
 
 
     public LocationFragment() {
         // Required empty public constructor
+    }
+
+    public static LocationFragment newInstance() {
+        return new LocationFragment();
     }
 
 
@@ -39,7 +45,9 @@ public class LocationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
+
         btn_go2Map = v.findViewById(R.id.btn_go2Map);
+        btn_go2Map.setText("지도 보기");
         btn_go2Map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,18 +56,29 @@ public class LocationFragment extends Fragment {
                         .replace(R.id.layout_location, new HomeFragment())
                         .commit();
                 btn_go2Map.setVisibility(View.GONE);
-
                 Log.d( "[지도로 돌아가기 버튼 동작]", "gotoMap : "+"버튼 동작 아주 잘됨~!~!");
             }
         });
 
         itemLocation = new ArrayList<>();
-        int distance=50;
 
-        for(int i=0;i<10;i++){
-            distance++;
-            itemLocation.add(new Data(i, "빌려줄 수 있어요", distance));
+        //HomeFragment에서 전달된 데이터 받기
+        bundle = getArguments();
+
+        if(bundle!=null) {
+            ArrayList<Integer> possible = new ArrayList<>();
+            possible = bundle.getIntegerArrayList("possible_distances");
+            for(int i=0;i<possible.size();i++){
+                itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", possible.get(i)));
+            }
         }
+
+//        int distance=50;
+
+//        for(int i=0;i<10;i++){
+//            distance++;
+//            itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", distance));
+//        }
 
         RecyclerView locationList = v.findViewById(R.id.locationList);
 

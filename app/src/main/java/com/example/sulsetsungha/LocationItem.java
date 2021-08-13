@@ -1,11 +1,11 @@
 package com.example.sulsetsungha;
 
-public class Data {
+public class LocationItem {
     int resourceId;
     String state;
     int distance;
 
-    public Data(int resourceId, String state, int distance) {
+    public LocationItem(int resourceId, String state, int distance) {
         this.resourceId = resourceId;
         this.state = state;
         this.distance = distance;
