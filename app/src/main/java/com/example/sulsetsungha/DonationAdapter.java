@@ -3,6 +3,7 @@ package com.example.sulsetsungha;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import java.util.List;
 //import com.bumptech.glide.Glide;
 
 class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
+
+    String TAG = DonationFragment.class.getSimpleName();
 
     private Context context;
     private List list;
@@ -78,6 +81,8 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
         Button buttonView = (Button)convertView.findViewById(R.id.btnDonation);
         prgbarDonation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
 
+        viewHolder.prg_donation = prgbarDonation;
+
         bodyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +93,8 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
         buttonView.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "prgbarDonation : " + viewHolder.prg_donation.getTag(position));
+
                 AlertDialog.Builder dlg = new AlertDialog.Builder(context);
                 dlg.setTitle("후원을 진행하시겠습니까?");
                 dlg.setView(edtPoint);
@@ -102,7 +109,8 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         value = Integer.parseInt(edtPoint.getText().toString()); //문자형 -> 정수형 변환
-                        prgbarDonation.incrementProgressBy(value);
+                        viewHolder.prg_donation.incrementProgressBy(value);
+
                         //prgbarDonation.setProgress(Integer.parseInt(edtPoint.getText().toString()));
                     }
 

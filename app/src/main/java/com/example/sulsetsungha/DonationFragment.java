@@ -102,11 +102,11 @@ public class DonationFragment extends Fragment {
     }
 
     class Sponsor {
-        //private JSONArray request;
         private String company;
         private String title;
         private String dday;
         private String donation;
+        private int progressbar;
         //private ProgressBar progressbar;
 
         public Sponsor(String company, String title, String dday, String donation) {
@@ -117,11 +117,6 @@ public class DonationFragment extends Fragment {
             this.donation = donation;
             //this.progressbar = progressbar;
         }
-
-//        public JSONArray getRequest() {
-//            return request;
-//        }
-
 
         public String getCompany() {
             return company;
@@ -138,10 +133,10 @@ public class DonationFragment extends Fragment {
         public String getDonation() {
             return donation;
         }
-//
-//        public ProgressBar getProgressbar() {
-//            return progressbar;
-//        }
+
+        public int getProgressbar() {
+            return progressbar;
+        }
     } //class Sponsor
 
 }
