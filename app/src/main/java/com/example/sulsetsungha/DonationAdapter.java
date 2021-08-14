@@ -20,7 +20,7 @@ import java.util.List;
 
 //import com.bumptech.glide.Glide;
 
-class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
+public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
 
     String TAG = DonationFragment.class.getSimpleName();
 

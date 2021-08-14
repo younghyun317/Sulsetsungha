@@ -1,4 +1,4 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.Fragment;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -27,6 +27,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.sulsetsungha.LocationFragment;
+import com.example.sulsetsungha.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -56,8 +58,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
-
-import org.w3c.dom.Text;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback , ActivityCompat.OnRequestPermissionsResultCallback {
 
