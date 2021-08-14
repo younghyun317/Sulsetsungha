@@ -16,7 +16,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
   //지도를 리스트로 표현
 
     //adater에 들어갈 list
-    private ArrayList<Data> itemLocation = new ArrayList<>();
+    private ArrayList<LocationItem> itemLocation = new ArrayList<>();
 
     @NonNull
     @Override
@@ -31,7 +31,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         holder.onBind(itemLocation.get(position));
     }
 
-    public void setLocationList(ArrayList<Data> list){
+    public void setLocationList(ArrayList<LocationItem> list){
 
         this.itemLocation = list;
         notifyDataSetChanged();
@@ -48,7 +48,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
         ImageView img_marker;
         TextView txt_state;
-//        TextView txtview;
         TextView txt_distance;
         ImageButton btn_chat;
 
@@ -59,16 +58,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
             img_marker = itemView.findViewById(R.id.img_marker);
             txt_state = itemView.findViewById(R.id.txt_state);
-//            txtview = itemView.findViewById(R.id.txtview);
             txt_distance = itemView.findViewById(R.id.txt_distance);
             btn_chat = itemView.findViewById(R.id.btn_chat);
 
         }
 
-        void onBind(Data item){
+        void onBind(LocationItem item){
             txt_state.setText(item.getState());
             txt_distance.setText(item.getDistance()+text);
-//            txtview.setText("이내");
 
 
 

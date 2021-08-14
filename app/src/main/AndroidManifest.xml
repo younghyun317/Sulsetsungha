@@ -20,9 +20,7 @@
         -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".JoinActivity"
             android:exported="true" />

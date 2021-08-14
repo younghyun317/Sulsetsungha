@@ -21,11 +21,11 @@
         android:id="@+id/btn_go2Map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="지도 보기"
         app:layout_constraintBottom_toBottomOf="@+id/locationList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintVertical_bias="0.953"
+        tools:ignore="SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
