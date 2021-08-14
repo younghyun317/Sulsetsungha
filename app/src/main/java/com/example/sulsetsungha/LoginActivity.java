@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -67,56 +69,55 @@ public class LoginActivity extends AppCompatActivity {
 
                 JSONObject parameter = new JSONObject(login_json);
 
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String token = sharedPreferences.getString("access", "null");
+
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                         url,
                         parameter,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                try {
-                                    String userid = response.getString("id");
-                                    JSONObject result = response.getJSONObject(userid);
-                                    String userPw = result.getString("password");
+                                Log.d(TAG, "response : " + response);
+                                Log.d(TAG, "token : " + token);
 
-                                    if (edtPw.getText().toString().equals(userPw)) {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "환영합니다 " + edtId.getText().toString() + "님!", Toast.LENGTH_LONG);
-                                        toast.show();
+                                Toast toast = Toast.makeText(getApplicationContext(), "환영합니다 " + edtId.getText().toString() + "님!", Toast.LENGTH_LONG);
+                                toast.show();
 
-                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("user_id", edtId.getText().toString());
-                                        editor.apply();
-
-                                        Intent i= new Intent(LoginActivity.this, MainActivity.class);
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(i);
-                                    }
-                                    else {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "비밀번호를 다시 확인해주세요.", Toast.LENGTH_LONG);
-                                        toast.show();
-
-                                        edtPw.setText("");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                Intent i= new Intent(LoginActivity.this, MainActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "아이디를 다시 확인해주세요.", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 다시 확인해주세요.", Toast.LENGTH_LONG);
                                 toast.show();
 
-                                edtId.setText("");
+                                //edtId.setText("");
 
                                 error.printStackTrace();
                                 Log.d(TAG, "Login Error");
                             }
-                        });
+                        })
+                        {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                            return give_token(token);
+                        }
+                        };
 
                 queue.add(jsonObjectRequest);
             }
+
+            Map<String, String> give_token(String token) {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer" + token);
+
+                return headers;
+            }
+
         });
     }
 }

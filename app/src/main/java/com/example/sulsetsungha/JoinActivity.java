@@ -64,31 +64,43 @@ public class JoinActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Boolean result = response.optBoolean("username");
-                                Log.d("check", "result"+ result);
+                                //Boolean result = response.optBoolean("username");
+                                //Log.d("check", "result"+ result);
 
-                                if (result) {
-                                    if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
-//                                        editor.putString("join_id", edtJoinId.getText().toString());
-//                                        editor.putString("join_pw", edtJoinPw.getText().toString());
-//                                        editor.apply();
+//                                if (result) {
+//                                    if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
+////                                        editor.putString("join_id", edtJoinId.getText().toString());
+////                                        editor.putString("join_pw", edtJoinPw.getText().toString());
+////                                        editor.apply();
+//
+//                                        Intent i = new Intent(JoinActivity.this, LoginActivity.class);
+//                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                        startActivity(i);
+//
+//                                        Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId + "님!", Toast.LENGTH_LONG);
+//                                        toast.show();
+//                                    } else {
+//                                        Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
+//                                        toast.show();
+//                                        edtJoinPwChk.setText("");
+//                                    }
+//                                } else {
+//                                    Toast toast = Toast.makeText(getApplicationContext(), "ID가 중복입니다. 다른 ID를 입력하세요.", Toast.LENGTH_LONG);
+//                                    toast.show();
+//                                }
+                                if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
 
-                                        Intent i = new Intent(JoinActivity.this, LoginActivity.class);
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(i);
+                                    Intent i = new Intent(JoinActivity.this, LoginActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
 
-                                        Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId + "님!", Toast.LENGTH_LONG);
-                                        toast.show();
-                                    } else {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
-                                        toast.show();
-                                        edtJoinPwChk.setText("");
-                                    }
-                                } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "ID가 중복입니다. 다른 ID를 입력하세요.", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId.getText().toString() + "님!", Toast.LENGTH_LONG);
                                     toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
+                                    toast.show();
+                                    edtJoinPwChk.setText("");
                                 }
-
 
                             }
                         },
