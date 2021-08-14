@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject parameter = new JSONObject(login_json);
 
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String token = sharedPreferences.getString("access", "null");
+                SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                         url,
@@ -79,7 +79,13 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, "response : " + response);
-                                Log.d(TAG, "token : " + token);
+                                try {
+                                    String token = response.getString("access");
+                                    editor.putString("access_token", token).apply();
+                                    Log.d(TAG, token);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
                                 Toast toast = Toast.makeText(getApplicationContext(), "환영합니다 " + edtId.getText().toString() + "님!", Toast.LENGTH_LONG);
                                 toast.show();
@@ -100,13 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                 error.printStackTrace();
                                 Log.d(TAG, "Login Error");
                             }
-                        })
-                        {
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                            return give_token(token);
-                        }
-                        };
+                        });
 
                 queue.add(jsonObjectRequest);
             }
