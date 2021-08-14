@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 JSONObject parameter = new JSONObject(login_json);
 
+                // 앞으로 header에 실어 보내줄 user의 token을 저장하기 위한 sharedpreference
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -80,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, "response : " + response);
                                 try {
+                                    // response에서 access toekn을 받아와 sharedpreference에 access_token이란 key로 저장
                                     String token = response.getString("access");
                                     editor.putString("access_token", token).apply();
                                     Log.d(TAG, token);
@@ -111,13 +113,14 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(jsonObjectRequest);
             }
 
-            Map<String, String> give_token(String token) {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer" + token);
-
-                return headers;
-            }
-
         });
+    }
+
+    // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨
+    Map<String, String> give_token(String token) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer" + token);
+
+        return headers;
     }
 }
