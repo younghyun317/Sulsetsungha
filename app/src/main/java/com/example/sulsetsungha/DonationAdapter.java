@@ -33,8 +33,8 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
     }
 
     class ViewHolder {
-        public TextView txt_name;
-        public TextView txt_summary;
+        public TextView txt_company;
+        public TextView txt_title;
         public ProgressBar prg_donation;
         public TextView txt_dday;
         public TextView txt_donation;
@@ -59,15 +59,15 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
         }
 
         viewHolder = new ViewHolder();
-        viewHolder.txt_name = (TextView)convertView.findViewById(R.id.txtName);
-        viewHolder.txt_summary = (TextView)convertView.findViewById(R.id.txtSummary);
+        viewHolder.txt_company = (TextView)convertView.findViewById(R.id.txtName);
+        viewHolder.txt_title = (TextView)convertView.findViewById(R.id.txtSummary);
         //viewHolder.prg_donation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
         viewHolder.txt_dday = (TextView)convertView.findViewById(R.id.txtDday);
         viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.txtDonation);
 
         final DonationFragment.Sponsor sponsor = (DonationFragment.Sponsor)list.get(position);
-        viewHolder.txt_name.setText(sponsor.getName());
-        viewHolder.txt_summary.setText(sponsor.getSummary());
+        viewHolder.txt_company.setText(sponsor.getCompany().toString());
+        viewHolder.txt_title.setText(sponsor.getTitle().toString());
         viewHolder.txt_dday.setText(sponsor.getDday().toString());
         viewHolder.txt_donation.setText(sponsor.getDonation().toString());
 
@@ -95,7 +95,7 @@ class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickLis
                 dlg.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        //buttonView.removeView
                     }
                 });
                 dlg.setPositiveButton("후원", new DialogInterface.OnClickListener() {
