@@ -64,8 +64,10 @@ public class MypageFragment extends Fragment{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = sharedPreferences.getString("access_token", null);
 
-        final RequestQueue queue = Volley.newRequestQueue(getActivity());
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
         final String url = "http://3.38.51.117:8000/users/";
+
+        Log.d(TAG, "token " + token);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -73,21 +75,16 @@ public class MypageFragment extends Fragment{
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d(TAG, "token : " + token.toString());
+                        Log.d(TAG, "token : " + token);
                         Log.d(TAG, "response : " + response.toString());
-//                        Log.d(TAG, "sharedPreferences : " + sharedPreferences.getString("access_token", null));
-//                        txtMyId.setText(sharedPreferences.getString("access_token", null));
-//                        txtMyPoint.setText(sharedPreferences.getString("refresh", null));
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        error.printStackTrace();
                     }
-                }
-        )
+                })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -102,7 +99,8 @@ public class MypageFragment extends Fragment{
 
     Map<String, String> give_token(String token) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer" + token);
+        // Bearer + token 해야됨! 안그럼 인식 못함
+        headers.put("Authorization", "Bearer " + token);
 
         return headers;
     }
