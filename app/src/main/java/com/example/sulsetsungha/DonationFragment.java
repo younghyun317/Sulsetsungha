@@ -99,7 +99,6 @@ public class DonationFragment extends Fragment {
 //                                Log.d(TAG, "percent : " + percent);
 
                                 sponsors.add(new Sponsor(company, title, Long.toString(dday), Long.toString(percent) + "  %"));
-                                //Log.d("sponsor", "sponsor: " + sponsors);
                             }
 //                            sponsors.add(new Sponsor(response.getJSONArray(0).getJSONObject(0).toString(), response.getJSONArray(0).getJSONObject(1).toString(), today, "10"));
 //                            sponsors.add(new Sponsor("후원2", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "20"));
