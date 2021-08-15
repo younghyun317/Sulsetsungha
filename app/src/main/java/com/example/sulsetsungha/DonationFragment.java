@@ -26,13 +26,20 @@ import com.example.sulsetsungha.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 public class DonationFragment extends Fragment {
+
+    String TAG = DonationFragment.class.getSimpleName();
+
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     String today = dateFormat.format(Calendar.getInstance().getTime());
@@ -49,6 +56,8 @@ public class DonationFragment extends Fragment {
         final RequestQueue queue = Volley.newRequestQueue(getActivity());
         final String url = "http://3.38.51.117:8000/donation/";
 
+
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url,
                 null,
@@ -61,11 +70,35 @@ public class DonationFragment extends Fragment {
                             //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
                             //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
+                            String company, title, deadline;
+                            long dday, target_amount, current_amount, percent;
+                            //int percent;
+                            Date currentCal, targetCal; //현재 날짜, 비교 날짜
+
                             for (int i=0; i < response.length(); i++) {
-                                sponsors.add(new Sponsor(response.getJSONObject(i).getString("company").toString(),
-                                                         response.getJSONObject(i).getString("title").toString(),
-                                                         response.getJSONObject(i).getString("deadline").toString(),
-                                                         response.getJSONObject(i).getString("target_amount").toString()));
+                                company = response.getJSONObject(i).getString("company").toString();
+                                title = response.getJSONObject(i).getString("title").toString();
+                                deadline = response.getJSONObject(i).getString("deadline").toString();
+                                target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
+                                current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
+
+                                percent = Math.round((current_amount/target_amount)*100);
+                                currentCal = dateFormat.parse(today);
+                                targetCal = dateFormat.parse(deadline);
+
+                                // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
+                                // 연산결과 -950400000. long type 으로 return 된다.
+                                long calDate = targetCal.getTime() - currentCal.getTime();
+                                // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
+                                // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
+                                long calDateDays = calDate / ( 24*60*60*1000);
+
+                                dday = Math.abs(calDateDays);
+
+//                                Log.d(TAG, "calDateDays : " + calDateDays);
+//                                Log.d(TAG, "percent : " + percent);
+
+                                sponsors.add(new Sponsor(company, title, Long.toString(dday), Long.toString(percent) + "  %"));
                                 //Log.d("sponsor", "sponsor: " + sponsors);
                             }
 //                            sponsors.add(new Sponsor(response.getJSONArray(0).getJSONObject(0).toString(), response.getJSONArray(0).getJSONObject(1).toString(), today, "10"));
@@ -83,7 +116,7 @@ public class DonationFragment extends Fragment {
                                     Toast.makeText(getContext(), "Clicked: " + position +" " + selectedItem, Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        } catch (JSONException e) {
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
 

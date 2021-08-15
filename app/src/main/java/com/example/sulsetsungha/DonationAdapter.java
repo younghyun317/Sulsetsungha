@@ -22,7 +22,7 @@ import java.util.List;
 
 public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
 
-    String TAG = DonationFragment.class.getSimpleName();
+    String TAG = DonationAdapter.class.getSimpleName();
 
     private Context context;
     private List list;
