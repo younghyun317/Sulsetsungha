@@ -75,8 +75,14 @@ public class MypageFragment extends Fragment{
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d(TAG, "token : " + token);
-                        Log.d(TAG, "response : " + response.toString());
+                        try {
+                            Log.d(TAG, "response : " + response.getJSONObject(0).getString("point").toString());
+                            txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+                            txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -93,7 +99,7 @@ public class MypageFragment extends Fragment{
         };
 
         queue.add(jsonArrayRequest);
-        Log.d(TAG, "jsonArrayRequest : " + jsonArrayRequest.toString());
+
         return view;
     }
 
