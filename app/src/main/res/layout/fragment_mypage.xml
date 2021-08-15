@@ -110,14 +110,14 @@
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/txtLendCnt"
+                android:id="@+id/txtMyLendCnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/txtBorrowCnt"
+                android:id="@+id/txtMyBorrowCnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -138,14 +138,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btnDonationList"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="기부내역" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnPointSave"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -159,14 +159,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnShop"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="쇼핑/장바구니" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btnCmnMng"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

@@ -79,12 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Log.d(TAG, "response : " + response);
+                                //Log.d(TAG, "response : " + response);
                                 try {
                                     // response에서 access toekn을 받아와 sharedpreference에 access_token이란 key로 저장
                                     String token = response.getString("access");
                                     editor.putString("access_token", token).apply();
-                                    Log.d(TAG, token);
+                                    Log.d(TAG, "editor : " + editor.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
