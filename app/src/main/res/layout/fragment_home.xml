@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".Fragment.HomeFragment">
 
     <LinearLayout
@@ -36,28 +37,11 @@
     </LinearLayout>
 
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/fr_parent"
+    <FrameLayout
         android:layout_width="match_parent"
+        android:id="@+id/layout_fr"
         android:layout_height="0dp"
-        android:layout_weight="8"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btn_request"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="대여 요청" />
-
-    </LinearLayout>
+        android:layout_weight="9" />
 
 </LinearLayout>
 
