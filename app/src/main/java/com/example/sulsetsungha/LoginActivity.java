@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     String TAG = LoginActivity.class.getSimpleName();
 
     EditText edtId, edtPw;
-    Button btnJoin, btnLogin, btnFind;
+    ImageButton btnFind;
+    Button btnJoin, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
