@@ -1,8 +1,11 @@
 package com.example.sulsetsungha;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -11,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +31,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -57,6 +69,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback , ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -92,40 +108,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private Location location;
     HashMap<LatLng, String> locationMap;
 
+
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
-
-
-//    private MapView mapView = null;
 
     //LocationFragment에 데이터 전달
     Bundle bundle_location;
-    Bundle bundle_address;
 
     boolean check_result = true;
     boolean mMoveMapByUser = true;
     boolean mMoveMapByAPI = true;
 
-    String txt_address;
+    String address;
 
     Button btn_go2List;
     Button btn_request;
     ImageButton btn_gps;
 
+    private OnTimePickerSetListener onTimePickerSetListener;
 
 //    public HomeFragment()
 //    {
 //        // required
-//    }
-
-//    public static MapFragment newInstance(String address)
-//    {
-//
-//        MapFragment fragment = new MapFragment ();
-//        Bundle cBundle = new Bundle();
-//
-//        cBundle.putString( "address", address);
-//
-//        fragment.setArguments(cBundle);
 //    }
 
 
@@ -138,6 +141,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
+
 
         mLayout = v.findViewById(R.id.layout_map);
 
@@ -156,6 +160,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             @Override
             public void onClick(View v) {
                 //TODO: 요청하기 버튼 클릭 이벤트
+                Intent intent = new Intent(getActivity(),PushActivity.class);
+                intent.putExtra("내용", "생리대 대여 알림");
+                startActivity(intent);
+//                onTimePickerSetListener.onTimePickerSet("생리대 대여 요청이 도착했어요!");
             }
         });
 
@@ -186,14 +194,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         //실시간 위치 받아오기
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fr_map);
-//        mapFragment.getMapAsync(this);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fr_map);
         mapFragment.getMapAsync(this);
-
-//        mapView = layout.findViewById(R.id.fr_map);
-//        mapView.getMapAsync((OnMapReadyCallback)this);
 
         return v;
     }
@@ -204,59 +206,99 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
 
-            //본인 현재 위치에 대한 정보
+            //TODO: 본인 현재 위치에 대한 정보
             List<Location> locationList = locationResult.getLocations();
 
             if (locationList.size() > 0) {
 
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
+//                List<Float> distances = new ArrayList<>();
+//                List<LatLng> users = new ArrayList<>();
 
-                //본인 현재 위치
-                currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String token = sharedPreferences.getString("access_token", null);
 
-
-                List<Float> distances = new ArrayList<>();
-                List<LatLng> users = new ArrayList<>();
-
-                //주변 사용자 위치
-                double user_lat2 = location.getLatitude()+0.0018;
-                double user_lon2 = location.getLongitude()+0.0009;
-                distances.add(getDistance(location, user_lat2, user_lon2));
-                users.add(new LatLng(user_lat2, user_lon2));
-
-                double user_lat3 = location.getLatitude()-0.0020;
-                double user_lon3 = location.getLongitude()-0.0007;
-                distances.add(getDistance(location, user_lat3, user_lon3));
-                users.add(new LatLng(user_lat3, user_lon3));
-
-                double user_lat4 = location.getLatitude()+0.0004;
-                double user_lon4 = location.getLongitude()-0.0015;
-                distances.add(getDistance(location, user_lat4, user_lon4));
-                users.add(new LatLng(user_lat4, user_lon4));
-
-                locationMap = new HashMap<>(); //key: 좌표, value: 좌표 해당 주소
-                ArrayList<Integer> possible = new ArrayList<>();
+                //서버에서 500m내 사용자 가져오기
+                final RequestQueue queue = Volley.newRequestQueue(getContext());
+                HashMap<String, String> location_json2 = new HashMap<>();
+                final String url = "http://3.38.51.117:8000/location/user";
 
 
-                //본인 외 사용자 현재 위치 정보: 500M 내 위도&경도 범위에 있는 위치만 마커 생성
-                for(int i = 0;i<distances.size();i++){
 
-                    if(distances.get(i) <= dis){
-                        currentPosition2 = users.get(i);
-                        locationMap.put(currentPosition2, "빌려줄 수 있어요");
-                        int dt = Math.round(distances.get(i));
-                        possible.add(dt);
+                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                        url,
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                //TODO: 서버에서 받아온 데이터로 할 동작들
+                                try {
+                                    Log.d("뭘 가져오나", "response : " + response.getJSONObject(0).getString("location").toString());
+                                     String loc = response.getJSONObject(0).getString("location").toString();
+                                     String loc_1[] = loc.split(",");
+//                                     Log.d(TAG, "가져온 목록: "+loc_1);
+
+
+//                                    txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+//                                    txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+                                toast.show();
+
+                                error.printStackTrace();
+                                Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return give_token(token);
                     }
-                }
-                Collections.sort(possible, toAsc);
+                };
+
+//                //주변 사용자 위치
+//                double user_lat2 = location.getLatitude()+0.0018;
+//                double user_lon2 = location.getLongitude()+0.0009;
+//                distances.add(getDistance(location, user_lat2, user_lon2));
+//                users.add(new LatLng(user_lat2, user_lon2));
+//
+//                double user_lat3 = location.getLatitude()-0.0020;
+//                double user_lon3 = location.getLongitude()-0.0007;
+//                distances.add(getDistance(location, user_lat3, user_lon3));
+//                users.add(new LatLng(user_lat3, user_lon3));
+//
+//                double user_lat4 = location.getLatitude()+0.0004;
+//                double user_lon4 = location.getLongitude()-0.0015;
+//                distances.add(getDistance(location, user_lat4, user_lon4));
+//                users.add(new LatLng(user_lat4, user_lon4));
+//
+//                locationMap = new HashMap<>(); //key: 좌표, value: 좌표 해당 주소
+//                ArrayList<Integer> possible = new ArrayList<>();
+//
+//
+//                //본인 외 사용자 현재 위치 정보: 500M 내 위도&경도 범위에 있는 위치만 마커 생성
+//                for(int i = 0;i<distances.size();i++){
+//                    if(distances.get(i) <= dis){
+//                        currentPosition2 = users.get(i);
+//                        locationMap.put(currentPosition2, "빌려줄 수 있어요");
+//                        int dt = Math.round(distances.get(i));
+//                        possible.add(dt);
+//                    }
+//                }
+//                Collections.sort(possible, toAsc);
 
 
-                //LocationFragment2에 데이터 전달하기
-                bundle_location = new Bundle();
-                bundle_location.putIntegerArrayList("possible_distances", possible);
-
-
+//                //LocationFragment2에 데이터 전달하기
+//                bundle_location = new Bundle();
+//                bundle_location.putIntegerArrayList("possible_distances", possible);
                 /**
                  * 마지막에 꼭 삭제해야할 코드!! Log 확인 위한 코드임!!!
                  */
@@ -264,13 +306,56 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude()) + " 경도:" + String.valueOf(location.getLongitude());
                 Log.d(TAG, "onLocationResult1 ==> " + markerSnippet);
 
+                //본인 현재 위치
+                String currentLat = String.valueOf(location.getLatitude());
+                String currentLng = String.valueOf(location.getLongitude());
+                String user_location = currentLat + ","+currentLng;
+
+                currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+
+                //TODO: 현재 위치 서버에 올리기
+                final RequestQueue queue2 = Volley.newRequestQueue(getContext());
+                HashMap<String, String> location_json= new HashMap<>();
+                final String url2 = "http://3.38.51.117:8000/update/location/user";
+
+                JSONObject parameter = new JSONObject(location_json);
+
+                location_json.put("location", user_location);
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH,
+                        url2,
+                        parameter,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+                                toast.show();
+
+                                error.printStackTrace();
+                                Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return give_token(token);
+                    }
+                };
+                queue2.add(request);
+
                 //본인 현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location);
 
                 //본인 외 위치 마커 생성하고 이동
-                setLocation(locationMap);
+//                setLocation(locationMap);
                 Log.d("locationMap:", "본인 위치 외의 위치들 ==> "+locationMap);
-                locationMap.clear();
+//                locationMap.clear();
 
                 mCurrentLocation = location;
             }
@@ -278,6 +363,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         }
 
     };
+
 
     @Override
     public void onStart() {
@@ -306,8 +392,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             Log.d(TAG, "onStop : call stopLocationUpdates");
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
-
-
     }
 
     @Override
@@ -341,6 +425,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //        {
 //            mapView.onCreate(savedInstanceState);
 //        }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof OnTimePickerSetListener) {
+            onTimePickerSetListener = (OnTimePickerSetListener) context;
+        }
+        else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnTimePickerSetListener");
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onTimePickerSetListener = null;
+    }
+
+    public interface OnTimePickerSetListener {
+        void onTimePickerSet(String contents);
     }
 
     @Override
@@ -499,32 +606,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     }
 
     Comparator<Integer> toAsc = new Comparator<Integer>() {
-
         @Override
         public int compare(Integer a, Integer b) {
             return a.compareTo(b) ;
         }
-    } ;
-
+    };
 
     //주변 사용자 위치 마커 설정
     public void setLocation(HashMap<LatLng, String> locationMap){
 
         if(cMarker.size()!=0){
+            for(int m=0;m<cMarker.size();m++){
+                cMarker.get(m).remove();
+            }
             cMarker.clear();
         }
 
-        for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
-
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(entry.getKey())
-                    .title(entry.getValue())
-                    .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(27f));
-
-            Marker m = mMap.addMarker(markerOptions);
-            cMarker.add(m);
-        }
+//        for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
+//
+//            MarkerOptions markerOptions = new MarkerOptions();
+//            markerOptions.position(entry.getKey())
+//                    .title(entry.getValue())
+//                    .draggable(true)
+//                    .icon(BitmapDescriptorFactory.defaultMarker(27.5f));
+//
+//            Marker m = mMap.addMarker(markerOptions);
+//            cMarker.add(m);
+//        }
     }
 
     //본인 위치 마커 설정
@@ -545,21 +653,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //        currentMarker = mMap.addMarker(markerOptions);
 
         //본인 현재 위치 주소 보여주기
-        txt_address = getCurrentAddress(currentLatLng);
+        address = getCurrentAddress(currentLatLng);
 
-        //HomeFragment2에 데이터 전달하기
-        bundle_address = new Bundle();
-        bundle_address.putString("address", txt_address);
-        HomeFragment frm = new HomeFragment();
-        frm.setArguments(bundle_address);
+        onTimePickerSetListener.onTimePickerSet(address);
 
-//        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();//getChildFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.fr_map, frm);
 
         // 반경추가
         if (circle500M == null) {
             circle500M = new CircleOptions().center(currentLatLng) // 원점
                     .radius(500)       // 반지름 단위 : M
+                    .strokeWidth(0f)    // 선너비 0f : 선없음
                     .strokeWidth(0f)    // 선너비 0f : 선없음
                     .fillColor(Color.parseColor("#88A9A9A9")); // 배경색
             circle = mMap.addCircle(circle500M);
@@ -768,5 +871,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
                 break;
         }
+    }
+
+    // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨
+    Map<String, String> give_token(String token) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+
+        return headers;
     }
 }

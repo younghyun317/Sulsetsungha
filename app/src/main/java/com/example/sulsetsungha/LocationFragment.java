@@ -1,5 +1,6 @@
 package com.example.sulsetsungha;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -52,6 +53,15 @@ public class LocationFragment extends Fragment {
 //        txt_address = v.findViewById(R.id.txt_address);
 //        btn_search = v.findViewById(R.id.btn_search);
         btn_request = v.findViewById(R.id.btn_request);
+        btn_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 요청하기 버튼 클릭 이벤트
+                Intent intent = new Intent(getActivity(),PushActivity.class);
+                intent.putExtra("내용", "생리대 대여 알림");
+                startActivity(intent);
+            }
+        });
 
         btn_go2map = v.findViewById(R.id.btn_go2map);
         btn_go2map.setOnClickListener(new View.OnClickListener() {

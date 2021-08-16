@@ -5,43 +5,59 @@
     android:id="@+id/layout_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".Fragment.HomeFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <Switch
+        android:id="@+id/swc_borrow"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
+        tools:ignore="UseSwitchCompatOrMaterialXml"
+        android:switchMinWidth="0dp"
+        android:textSize="14sp"
+        android:textOff="불가능"
+        android:textOn="가능"
+        android:thumbTextPadding="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/rectangle_4"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="10">
 
         <TextView
             android:id="@+id/txt_address"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="56dp"
             android:layout_weight="8"
+            android:textColor="#000000"
             android:gravity="center"
-            android:hint="현재 주소"
             android:textSize="13sp" />
-
-        <ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:src="@android:drawable/ic_menu_search"
-            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
-
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:id="@+id/layout_fr"
+        android:background="@drawable/rectangle_1"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9" />
+        android:layout_weight="8">
+
+    </FrameLayout>
 
 </LinearLayout>
 

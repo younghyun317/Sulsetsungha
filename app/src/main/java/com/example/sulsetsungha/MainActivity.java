@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.example.sulsetsungha.Fragment.MypageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MapFragment.OnTimePickerSetListener {
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
@@ -73,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }//TabSelectedListener
 
+    @Override
+    public void onTimePickerSet(String contents){
+//        Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_LONG).show();
+        HomeFragment fragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("address", contents);
+
+        fragment.setArguments(bundle);
+    }
+
 //    public void refesh() {
 //        donationAdapter.notifyDataSetChanged();
 //    }
@@ -83,5 +94,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //        donationAdapter.notifyDataSetChanged();;
 //    }
+
+
+
 
 }
