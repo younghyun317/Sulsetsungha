@@ -1,23 +1,20 @@
 package com.example.sulsetsungha;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,8 +23,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sulsetsungha.DonationAdapter;
-import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,38 +35,38 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+public class DonationLikeActivity extends AppCompatActivity {
 
-public class DonationFragment extends Fragment {
-
-    String TAG = DonationFragment.class.getSimpleName();
+    String TAG = DonationLikeActivity.class.getSimpleName();
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     String today = dateFormat.format(Calendar.getInstance().getTime());
-    ArrayList<Sponsor> sponsors;
+    ArrayList<DonationLikeActivity.Sponsor> sponsors;
     ListView donationListView;
-    private static DonationAdapter donationAdapter;
-    ImageButton btnDonationLikeList;
+    private static DonationLikeAdapter donationLikeAdapter;
+    ImageButton btnBack;
+
+    DonationFragment donationFragment;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = (View)inflater.inflate(R.layout.fragment_donation, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_donation_like);
 
-        btnDonationLikeList = (ImageButton) view.findViewById(R.id.btnDonationLikeList);
-        btnDonationLikeList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i= new Intent(DonationFragment.donationAdapter.getContext(), DonationLikeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-            }
-        });
+//        btnBack = findViewById(R.id.btnBack);
+//        btnBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                replaceFragment(donationFragment);
+//            }
+//        });
 
-        final RequestQueue queue = Volley.newRequestQueue(getActivity());
-        final String url = "http://3.38.51.117:8000/donation/";
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        final String url = "http://3.38.51.117:8000/get/like/donation/";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = sharedPreferences.getString("access_token", null);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -80,6 +75,8 @@ public class DonationFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+                            Log.d(TAG, "like_list_response : " + response.toString());
+
                             //후원 리스트
                             sponsors = new ArrayList<>();
                             //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
@@ -119,16 +116,16 @@ public class DonationFragment extends Fragment {
 //                                Log.d(TAG, "calDateDays : " + calDateDays);
 //                                Log.d(TAG, "percent : " + percent);
 
-                                sponsors.add(new Sponsor(company, title, Long.toString(dday), Double.toString(percent)));
+                                sponsors.add(new DonationLikeActivity.Sponsor(company, title, Long.toString(dday), Double.toString(percent)));
                             }
 //                            sponsors.add(new Sponsor(response.getJSONArray(0).getJSONObject(0).toString(), response.getJSONArray(0).getJSONObject(1).toString(), today, "10"));
 //                            sponsors.add(new Sponsor("후원2", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "20"));
 //                            sponsors.add(new Sponsor("후원3", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "30"));
-                            donationListView = (ListView)view.findViewById(R.id.listView_donation);
-                            donationAdapter = new DonationAdapter(getContext(), sponsors);
+                            donationListView = (ListView) findViewById(R.id.listView_donation_like);
+                            donationLikeAdapter = new DonationLikeAdapter(getApplicationContext(), sponsors);
                             //((BaseAdapter) donationListView.getAdapter()).notifyDataSetChanged();
 
-                            donationListView.setAdapter(donationAdapter);
+                            donationListView.setAdapter(donationLikeAdapter);
                             //((MainActivity) getActivity()).refesh();
 
 //                            FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -140,13 +137,12 @@ public class DonationFragment extends Fragment {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     //각 아이템을 분간 할 수 있는 position과 뷰
                                     String selectedItem = (String) view.findViewById(R.id.txtName).getTag().toString();
-                                    Toast.makeText(getContext(), "Clicked: " + position +" " + selectedItem, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Clicked: " + position +" " + selectedItem, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
-
 
                     }
                 },
@@ -155,11 +151,23 @@ public class DonationFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                }
-        );
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return  give_token(token);
+            }
+        };
 
         queue.add(jsonArrayRequest);
-        return view;
+
+    }
+
+    Map<String, String> give_token(String token) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+
+        return headers;
     }
 
     class Sponsor {
@@ -200,4 +208,11 @@ public class DonationFragment extends Fragment {
         }
     } //class Sponsor
 
+    // 프레그 먼트로 이동
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.tab_donation, fragment);
+        fragmentTransaction.commit();
+    }
 }
