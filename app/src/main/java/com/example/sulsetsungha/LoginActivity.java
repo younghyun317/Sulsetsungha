@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
     // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨
     Map<String, String> give_token(String token) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer" + token);
+        headers.put("Authorization", "Bearer " + token);
 
         return headers;
     }

@@ -3,6 +3,7 @@ package com.example.sulsetsungha;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
+    DonationFragment donationFragment;
+    DonationAdapter donationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,5 +75,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }//TabSelectedListener
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        donationAdapter.notifyDataSetChanged();;
+//    }
 
 }

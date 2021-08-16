@@ -71,7 +71,9 @@ public class DonationFragment extends Fragment {
                             //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
                             String company, title, deadline;
-                            long dday, target_amount, current_amount, percent;
+                            long dday, target_amount, current_amount;
+                            double percent;
+
                             //int percent;
                             Date currentCal, targetCal; //현재 날짜, 비교 날짜
 
@@ -82,7 +84,11 @@ public class DonationFragment extends Fragment {
                                 target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
                                 current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
 
-                                percent = Math.round((current_amount/target_amount)*100);
+                                //percent = Math.round((current_amount/target_amount)*100);
+                                percent = ((current_amount * 1.0)/target_amount)*100;
+                                Log.d(TAG, "current_amount : " + String.valueOf(current_amount).toString());
+                                Log.d(TAG, "target_amount : " + String.valueOf(target_amount).toString());
+                                Log.d(TAG, "percent : " + String.valueOf(percent).toString());
                                 currentCal = dateFormat.parse(today);
                                 targetCal = dateFormat.parse(deadline);
 
@@ -98,7 +104,7 @@ public class DonationFragment extends Fragment {
 //                                Log.d(TAG, "calDateDays : " + calDateDays);
 //                                Log.d(TAG, "percent : " + percent);
 
-                                sponsors.add(new Sponsor(company, title, Long.toString(dday), Long.toString(percent) + "  %"));
+                                sponsors.add(new Sponsor(company, title, Long.toString(dday), Double.toString(percent)));
                             }
 //                            sponsors.add(new Sponsor(response.getJSONArray(0).getJSONObject(0).toString(), response.getJSONArray(0).getJSONObject(1).toString(), today, "10"));
 //                            sponsors.add(new Sponsor("후원2", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "20"));
