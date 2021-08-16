@@ -8,10 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -111,7 +115,14 @@ public class DonationFragment extends Fragment {
 //                            sponsors.add(new Sponsor("후원3", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "30"));
                             donationListView = (ListView)view.findViewById(R.id.listView_donation);
                             donationAdapter = new DonationAdapter(getContext(), sponsors);
+                            //((BaseAdapter) donationListView.getAdapter()).notifyDataSetChanged();
+
                             donationListView.setAdapter(donationAdapter);
+                            //((MainActivity) getActivity()).refesh();
+
+//                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//
+//                            ft.detach().attach(getTargetFragment()).commit();
 
                             donationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -137,7 +148,6 @@ public class DonationFragment extends Fragment {
         );
 
         queue.add(jsonArrayRequest);
-
         return view;
     }
 
