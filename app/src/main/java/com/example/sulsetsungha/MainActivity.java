@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity implements MapFragment.OnTim
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
-    DonationFragment donationFragment;
-    DonationAdapter donationAdapter;
+    //DonationFragment donationFragment;
+    //DonationAdapter donationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

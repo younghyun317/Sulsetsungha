@@ -11,6 +11,15 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ChattingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CommunityWriteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MyDonationListActivity"
+            android:exported="true" />
+        <activity
             android:name=".DonationLikeActivity"
             android:exported="true" />
         <!--
@@ -23,18 +32,13 @@
         -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".JoinActivity"
             android:exported="true" />
         <activity
-            android:name=".PushActivity"
-            android:exported="true" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,18 +52,20 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyByM5X58E0EeRtTXDzbmcYr7M_OqCE6A74" />
-    </application> <!-- 필요한 권한 생성 -->
+    </application>
+
     <permission
         android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" /> <!-- 권한 부여 설정 -->
+        android:protectionLevel="signature" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

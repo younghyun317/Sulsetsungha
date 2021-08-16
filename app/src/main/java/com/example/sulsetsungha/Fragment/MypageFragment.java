@@ -58,16 +58,19 @@ public class MypageFragment extends Fragment{
         btnShop = (Button) view.findViewById(R.id.btnShop);
         btnCmnMng = (Button) view.findViewById(R.id.btnCmnMng);
 
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        txtMyId.setText(sharedPreferences.getString("username", null));
-//        txtMyPoint.setText(sharedPreferences.getString("point", null));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String token = sharedPreferences.getString("access_token", null);
+        getUserInfomation(); //사용자 정보 가져오기
+        getUserLend(); //사용자 빌려준 횟수 가져오기
+        getUserBorrow(); //사용자 빌린 횟수 가져오
 
+        return view;
+    }
+
+    private void getUserInfomation() {
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         final String url = "http://3.38.51.117:8000/users/";
 
-        Log.d(TAG, "token " + token);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sharedPreferences.getString("access_token", null);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url,
@@ -99,8 +102,80 @@ public class MypageFragment extends Fragment{
         };
 
         queue.add(jsonArrayRequest);
+    }
 
-        return view;
+    private void getUserBorrow() {
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final String url = "http://3.38.51.117:8000/get/borrow/";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sharedPreferences.getString("access_token", null);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "response : " + response.length());
+                        txtMyBorrowCnt.setText(String.valueOf(response.length()));
+//                        try {
+//                            Log.d(TAG, "response : " + response.length());
+//                            txtMyBorrowCnt.setText(response.length());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+    }
+
+    private void getUserLend() {
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final String url = "http://3.38.51.117:8000/get/lend/";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sharedPreferences.getString("access_token", null);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "response get lend : " + response.length());
+                        txtMyLendCnt.setText(String.valueOf(response.length()));
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+
     }
 
     Map<String, String> give_token(String token) {
