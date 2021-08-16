@@ -52,7 +52,7 @@
     <FrameLayout
         android:layout_marginTop="10dp"
         android:id="@+id/layout_fr"
-        android:background="@drawable/rectangle_1"
+        android:background="@drawable/rectangle_4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8">

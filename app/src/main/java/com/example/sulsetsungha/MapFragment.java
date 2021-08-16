@@ -216,53 +216,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //                List<Float> distances = new ArrayList<>();
 //                List<LatLng> users = new ArrayList<>();
 
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String token = sharedPreferences.getString("access_token", null);
-
                 //서버에서 500m내 사용자 가져오기
-                final RequestQueue queue = Volley.newRequestQueue(getContext());
-                HashMap<String, String> location_json2 = new HashMap<>();
-                final String url = "http://3.38.51.117:8000/location/user";
+                getNearUser();
 
-
-
-                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
-                        url,
-                        null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                //TODO: 서버에서 받아온 데이터로 할 동작들
-                                try {
-                                    Log.d("뭘 가져오나", "response : " + response.getJSONObject(0).getString("location").toString());
-                                     String loc = response.getJSONObject(0).getString("location").toString();
-                                     String loc_1[] = loc.split(",");
-//                                     Log.d(TAG, "가져온 목록: "+loc_1);
-
-
-//                                    txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
-//                                    txtMyPoint.setText(response.getJSONObject(0).getString("point"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
-                                toast.show();
-
-                                error.printStackTrace();
-                                Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
-                            }
-                        }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        return give_token(token);
-                    }
-                };
 
 //                //주변 사용자 위치
 //                double user_lat2 = location.getLatitude()+0.0018;
@@ -307,47 +263,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 Log.d(TAG, "onLocationResult1 ==> " + markerSnippet);
 
                 //본인 현재 위치
-                String currentLat = String.valueOf(location.getLatitude());
-                String currentLng = String.valueOf(location.getLongitude());
-                String user_location = currentLat + ","+currentLng;
+//                String currentLat = String.valueOf(location.getLatitude());
+//                String currentLng = String.valueOf(location.getLongitude());
+//                String user_location = currentLat + ","+currentLng;
 
                 currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
 
                 //TODO: 현재 위치 서버에 올리기
-                final RequestQueue queue2 = Volley.newRequestQueue(getContext());
-                HashMap<String, String> location_json= new HashMap<>();
-                final String url2 = "http://3.38.51.117:8000/update/location/user";
+                SetFirstCurrentLocation(); //최초 접속시
+                SetCurrentLocation(); //업데이트
 
-                JSONObject parameter = new JSONObject(location_json);
-
-                location_json.put("location", user_location);
-
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH,
-                        url2,
-                        parameter,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
-                                toast.show();
-
-                                error.printStackTrace();
-                                Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
-                            }
-                        }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        return give_token(token);
-                    }
-                };
-                queue2.add(request);
 
                 //본인 현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location);
@@ -363,6 +289,155 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         }
 
     };
+
+    //서버에서 500m내 사용자 가져오기
+    public void getNearUser() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sharedPreferences.getString("access_token", null);
+
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final String url = "http://3.38.51.117:8000/location/user";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //TODO: 서버에서 받아온 데이터로 할 동작들
+                        try {
+                            Log.d("뭘 가져오나", "response : " + response.toString());
+                            String loc = response.getJSONObject(0).getString("location").toString();
+                            String loc_1[] = loc.split(",");
+//                                     Log.d(TAG, "가져온 목록: "+loc_1);
+
+
+//                                    txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+//                                    txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+                        toast.show();
+
+                        error.printStackTrace();
+                        Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+    }
+
+    //최초 접속 시, 현재 위치 서버에 올리기
+    private void SetFirstCurrentLocation() {
+        //본인 현재 위치
+        String currentLat = String.valueOf(location.getLatitude());
+        String currentLng = String.valueOf(location.getLongitude());
+        String user_location = currentLat + ", " + currentLng;
+        Log.d(TAG, "user_location : " + user_location);
+
+        final RequestQueue queue = Volley.newRequestQueue(getActivity());
+        final String url = "http://3.38.51.117:8000/user/location/";
+
+        HashMap<String, String> location_json = new HashMap<>();
+        location_json.put("location", user_location.toString());
+        JSONObject parameter = new JSONObject(location_json);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String token = sharedPreferences.getString("access_token", null);
+        Log.d(TAG, "token : " + token);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url,
+                parameter,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "response : " + response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+//                        toast.show();
+//
+//                        error.printStackTrace();
+//                        Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonObjectRequest);
+
+    }
+
+    //현재 위치 서버에 업데이트
+    private void SetCurrentLocation() {
+        //본인 현재 위치
+        String currentLat = String.valueOf(location.getLatitude());
+        String currentLng = String.valueOf(location.getLongitude());
+        String user_location = currentLat + ", " + currentLng;
+        Log.d(TAG, "user_location : " + user_location);
+
+        final RequestQueue queue = Volley.newRequestQueue(getActivity());
+        final String url = "http://3.38.51.117:8000/update/location/user/";
+
+        HashMap<String, String> location_json = new HashMap<>();
+        location_json.put("location", user_location.toString());
+        JSONObject parameter = new JSONObject(location_json);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String token = sharedPreferences.getString("access_token", null);
+        Log.d(TAG, "token : " + token);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
+                url,
+                parameter,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "update response : " + response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+//                        toast.show();
+//
+//                        error.printStackTrace();
+//                        Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonObjectRequest);
+
+    }
 
 
     @Override
