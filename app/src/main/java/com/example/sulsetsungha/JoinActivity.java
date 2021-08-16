@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +31,7 @@ public class JoinActivity extends AppCompatActivity {
     String TAG = JoinActivity.class.getSimpleName();
 
     EditText edtJoinId, edtJoinPw, edtJoinPwChk;
-    Button btnSignUp;
+    ImageButton btnSignUp, btnLoginBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,19 @@ public class JoinActivity extends AppCompatActivity {
         edtJoinPw = findViewById(R.id.edtJoinPw);
         edtJoinPwChk = findViewById(R.id.edtJoinPwChk);
         btnSignUp = findViewById(R.id.btnSignUp);
+        btnLoginBack = findViewById(R.id.btnLoginBack);
 
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        btnLoginBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(JoinActivity.this, LoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
 
         final RequestQueue queue = Volley.newRequestQueue(this);
         final String url = "http://3.38.51.117:8000/users/";

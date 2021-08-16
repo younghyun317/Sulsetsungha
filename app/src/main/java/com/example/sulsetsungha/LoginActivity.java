@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     String TAG = LoginActivity.class.getSimpleName();
 
     EditText edtId, edtPw;
-    ImageButton btnFind;
-    Button btnJoin, btnLogin;
+    ImageButton btnFind, btnJoin, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
