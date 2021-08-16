@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.Fragment.HomeFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,20 +48,32 @@ public class DonationLikeActivity extends AppCompatActivity {
     private static DonationLikeAdapter donationLikeAdapter;
     ImageButton btnBack;
 
-    DonationFragment donationFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_like);
 
-//        btnBack = findViewById(R.id.btnBack);
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                replaceFragment(donationFragment);
-//            }
-//        });
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                DonationFragment donationFragment = new DonationFragment();
+//                getSupportFragmentManager().beginTransaction().add(R.id.help_her, donationFragment).commit();
+//
+//                Toast.makeText(getApplicationContext(), "Click btnBack ", Toast.LENGTH_SHORT).show();
+//
+//                getSupportFragmentManager().beginTransaction().replace(R.id.help_her, new MainActivity().donationFragment).commit();
+
+//                Intent i= new Intent(DonationLikeActivity.this, MainActivity.class);
+//                bottomNavigationView.setSelectedItemId(R.id.tab_home);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(i);
+
+                finish();
+            }
+        });
 
         final RequestQueue queue = Volley.newRequestQueue(this);
         final String url = "http://3.38.51.117:8000/get/like/donation/";

@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
-    DonationFragment donationFragment;
-    DonationAdapter donationAdapter;
+    //DonationFragment donationFragment;
+    //DonationAdapter donationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
