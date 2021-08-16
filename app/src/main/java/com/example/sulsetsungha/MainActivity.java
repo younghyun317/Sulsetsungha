@@ -3,12 +3,10 @@ package com.example.sulsetsungha;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import com.example.sulsetsungha.Fragment.CommunityFragment;
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.example.sulsetsungha.Fragment.MypageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
