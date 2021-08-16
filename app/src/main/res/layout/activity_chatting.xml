@@ -72,7 +72,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:paddingRight="10dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
             android:id="@+id/btnSendChat"
