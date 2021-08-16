@@ -59,18 +59,6 @@ public class DonationLikeActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                DonationFragment donationFragment = new DonationFragment();
-//                getSupportFragmentManager().beginTransaction().add(R.id.help_her, donationFragment).commit();
-//
-//                Toast.makeText(getApplicationContext(), "Click btnBack ", Toast.LENGTH_SHORT).show();
-//
-//                getSupportFragmentManager().beginTransaction().replace(R.id.help_her, new MainActivity().donationFragment).commit();
-
-//                Intent i= new Intent(DonationLikeActivity.this, MainActivity.class);
-//                bottomNavigationView.setSelectedItemId(R.id.tab_home);
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(i);
-
                 finish();
             }
         });
