@@ -1,5 +1,6 @@
 package com.example.sulsetsungha;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,13 +62,21 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             txt_distance = itemView.findViewById(R.id.txt_distance);
             btn_chat = itemView.findViewById(R.id.btn_chat);
 
+            btn_chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), ChattingActivity.class);
+                    intent.putExtra("username", txt_Uname.getText().toString());
+
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
         }
 
         void onBind(LocationItem item){
             txt_Uname.setText(item.getUname());
             txt_distance.setText(item.getDistance()+text);
-
-
 
         }
     }

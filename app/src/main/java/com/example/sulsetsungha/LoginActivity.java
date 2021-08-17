@@ -113,6 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
+                editor.putString("my_name", edtId.getText().toString()).apply();
+
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                         url,
                         parameter,

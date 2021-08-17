@@ -2,6 +2,7 @@ package com.example.sulsetsungha;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,8 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.Volley;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -54,10 +58,23 @@ public class ChattingActivity extends AppCompatActivity {
     }
 
     void connectWebSocket() {
+        Intent intent = getIntent();
         room_name = findViewById(R.id.room_name);
-        roomName = "room_name";
+        String user_name = intent.getStringExtra("username");
+
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String my_name = sharedPreferences.getString("my_name", null);
+
+        if (my_name.compareTo(user_name) >= 0) {
+            roomName = my_name + user_name;
+        }
+        else {
+            roomName = user_name + my_name;
+        }
+
+        room_name.setText(roomName);
+
         String token = sharedPreferences.getString("access_token", null);
 
         Log.d(TAG, "websocket token" + token);
@@ -87,8 +104,14 @@ public class ChattingActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        messages = findViewById(R.id.message_textView);
-                        messages.setText(messages.getText().toString() + "\n" + message);
+                        try {
+                            JSONObject jsonObject = new JSONObject(message);
+
+                            messages = findViewById(R.id.message_textView);
+                            messages.setText(messages.getText().toString() + "\n" + jsonObject.getString("username") + " : " + jsonObject.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
