@@ -22,7 +22,7 @@
             app:srcCompat="@drawable/button_back" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/room_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,7 +59,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextTextPersonName3"
+            android:id="@+id/chat_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -76,12 +76,13 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
-            android:id="@+id/btnSendChat"
-            android:layout_width="0dp"
+            android:id="@+id/send_chat"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
+            android:scaleType="fitXY"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/button_chat_send" />
     </LinearLayout>

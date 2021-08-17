@@ -4,25 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.17685185185185184" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/edge.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/rectangle_1.xml" value="0.4473958333333333" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/rectangle_4.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/rectangle_9.xml" value="0.33425925925925926" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_thumb.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_track_off.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_track_on.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_track_selector.xml" value="0.26979166666666665" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_join.xml" value="0.20199275362318841" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_login.xml" value="0.22509057971014493" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_push.xml" value="0.264" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_donation.xml" value="0.25364583333333335" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home.xml" value="0.264" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_location.xml" value="0.2" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_map.xml" value="0.17844202898550723" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home2.xml" value="0.23505434782608695" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home3.xml" value="0.23505434782608695" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_location.xml" value="0.15942028985507245" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_maps.xml" value="0.2" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.23333333333333334" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/item_location.xml" value="0.17119565217391305" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/item_location.xml" value="0.13677536231884058" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_chatting.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_join.xml" value="0.3104166666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_join.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
@@ -30,9 +23,8 @@
         <entry key="app/src/main/res/layout/fragment_donation.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/item_donation.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/item_location.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_donation.xml" value="0.165" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/menu/menu_bottom.xml" value="0.14166666666666666" />
       </map>
