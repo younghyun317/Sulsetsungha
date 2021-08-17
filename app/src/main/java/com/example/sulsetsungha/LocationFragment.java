@@ -57,9 +57,9 @@ public class LocationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: 요청하기 버튼 클릭 이벤트
-                Intent intent = new Intent(getActivity(),PushActivity.class);
-                intent.putExtra("내용", "생리대 대여 알림");
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(),PushActivity.class);
+//                intent.putExtra("내용", "생리대 대여 알림");
+//                startActivity(intent);
             }
         });
 
@@ -80,10 +80,14 @@ public class LocationFragment extends Fragment {
         bundle = getArguments();
 
         if(getArguments()!=null) {
-            ArrayList<String> nearU = new ArrayList<>();
-            nearU = getArguments().getStringArrayList("nearU");
-            for(int i=0;i<nearU.size();i++){
-                itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", nearU.get(i)));
+            ArrayList<String> nearU = getArguments().getStringArrayList("nearU");
+            for(int i=0;i<nearU.size()/2;i++){
+                if(i%2==1){
+                    continue;
+                }
+                else {
+                    itemLocation.add(new LocationItem(i, nearU.get(i), Integer.valueOf(nearU.get(i+1))));
+                }
             }
         }
 

@@ -66,6 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -80,8 +81,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private static final int UPDATE_INTERVAL_MS=1000;
     private static final int FASTEST_UPDATE_INTERVAL_MS=500;
 
-    //    final static int earth = 6371000; //지구 반지름(M)
-    final static float dis = 500;
 
     private GoogleMap mMap;
     private Marker currentMarker = null;
@@ -111,7 +110,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
 
     //LocationFragment에 데이터 전달
-    Bundle bundle_location;
+    Bundle bundle;
 
     boolean check_result = true;
     boolean mMoveMapByUser = true;
@@ -167,35 +166,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //                Intent intent = new Intent(getActivity(),PushActivity.class);
 //                intent.putExtra("내용", "생리대 대여 알림");
 //                startActivity(intent);
-                    getNearUser();
-                    // 반경추가
-                    if (circle500M == null) {
-                        circle500M = new CircleOptions().center(center) // 원점
-                                .radius(500)       // 반지름 단위 : M
-                                .strokeWidth(0f)    // 선너비 0f : 선없음
-                                .strokeWidth(0f)    // 선너비 0f : 선없음
-                                .fillColor(Color.parseColor("#88A9A9A9")); // 배경색
-                        circle = mMap.addCircle(circle500M);
 
-                    } else {
-                        circle.remove(); // 반경삭제
-                        circle500M.center(center);
-                        circle = mMap.addCircle(circle500M);
-                    }
+
                 }
                 else if(btn_request.getText().toString().equals("요청취소")) {
+                    btn_request.setText("요청하기");
 
-                    for(int i=0;i<cMarker.size();i++){
-                        if(cMarker != null) {
-                            cMarker.remove(i);
-                        }
-                    }
-
-                    if(circle500M != null) {
-                        circle.remove();
-//                        circle500M.center(center);
-//                        circle = mMap.addCircle(circle500M);
-                    }
+//                    mMap.clear();
+//                    bundle = null;
+//
+//                    if(circle500M != null) {
+//                        circle.remove();
+////                        circle500M.center(center);
+////                        circle = mMap.addCircle(circle500M);
+//                    }
 
                 }
 
@@ -210,11 +194,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             public void onClick(View v) {
 
                 LocationFragment fr = new LocationFragment();
-                fr.setArguments(bundle_location);
+                fr.setArguments(bundle);
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.layout_fr, fr)
                         .commit();
+
+//                bundle = null;
             }
         });
 
@@ -229,7 +215,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         builder.addLocationRequest(locationRequest);
 
         //실시간 위치 받아오기
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fr_map);
         mapFragment.getMapAsync(this);
@@ -253,6 +239,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
 
                 SetCurrentLocation(location); //업데이트
+                getNearUser();
 
                 //서버에서 500m내 사용자 가져오기
 //                getNearUser();
@@ -290,11 +277,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
     };
 
+    //거리 구하기
+    public float getDistance(Location location , double lat , double lng){
+        float distance;
+
+        Location locationB = new Location("point B");
+        locationB.setLatitude(lat);
+        locationB.setLongitude(lng);
+
+        distance = location.distanceTo(locationB);
+
+        return distance;
+    }
+
     //서버에서 500m내 사용자 가져오기
     public void getNearUser() {
 
         locationMap = new HashMap<>();
-        bundle_location = new Bundle();
+        bundle = new Bundle();
+
+        ArrayList<String> nearU = new ArrayList<>();
 
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         final String url = "http://3.38.51.117:8000/user/location/";
@@ -313,25 +315,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                         try {
                             locationMap = new HashMap<>();
                             String loc;
+                            String uname;
                             String uLatlng[];
                             double uLat = 0;
                             double uLng = 0;
 
                             if(response.length() != 0){
 
-                                ArrayList<String> nearU = new ArrayList<>();
-
                                 for(int d=0;d<response.length();d++){
                                     Log.d("뭘 가져오나>>>", "response : "+response.getJSONObject(d).getString("location"));
                                     loc = response.getJSONObject(d).getString("location");
+                                    uname = response.getJSONObject(d).getString("user");
+
                                     uLatlng = loc.split(",");
                                     uLat = Double.valueOf(uLatlng[0]);
                                     uLng = Double.valueOf(uLatlng[1]);
-                                    locationMap.put(new LatLng(uLat, uLng), "대여 가능");
-                                    nearU.add(String.valueOf(uLat));
+
+                                    locationMap.put(new LatLng(uLat, uLng), uname); //지도위에 마커 찍기 위함
+
+                                    nearU.add(uname);
+                                    nearU.add("150"); //리스트에 띄우기 위함
                                 }
                                 setLocation(locationMap);
-                                bundle_location.putStringArrayList("nearU", nearU);
 
                             }
                             else { //주변에 없음
@@ -363,6 +368,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         };
 
         queue.add(jsonArrayRequest);
+
+        bundle.putStringArrayList("nearU", nearU);
 //        locationMap.clear();
 
     }
@@ -649,12 +656,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     public void setLocation(HashMap<LatLng, String> locationMap){
 
         if(cMarker.size()!=0){
-//            for(int m=0;m<cMarker.size();m++){
-//                cMarker.get(m).remove();
-//            }
             cMarker.clear();
         }
-
         BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker);
         Bitmap bitmap = bitmapdraw.getBitmap();
 
@@ -668,6 +671,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             Marker m = mMap.addMarker(markerOptions);
             cMarker.add(m);
         }
+
+
     }
 
     //본인 위치 마커 설정
@@ -693,6 +698,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         //본인 현재 위치 주소 보여주기
         address = getCurrentAddress(currentLatLng);
+
+        // 반경추가
+        if (circle500M == null) {
+            circle500M = new CircleOptions().center(currentLatLng) // 원점
+                    .radius(500)       // 반지름 단위 : M
+                    .strokeWidth(0f)    // 선너비 0f : 선없음
+                    .strokeWidth(0f)    // 선너비 0f : 선없음
+                    .fillColor(Color.parseColor("#88A9A9A9")); // 배경색
+            circle = mMap.addCircle(circle500M);
+
+        } else {
+            circle.remove(); // 반경삭제
+            circle500M.center(currentLatLng);
+            circle = mMap.addCircle(circle500M);
+        }
 
 //        onTimePickerSetListener.onTimePickerSet(address);
 

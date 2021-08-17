@@ -55,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtId, edtPw;
     ImageButton btnFind, btnJoin, btnLogin;
 
+
+    double latitude=0;
+    double longitude=0;
+
     private GpsTracker gpsTracker;
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -127,10 +131,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                 Toast toast = Toast.makeText(getApplicationContext(), "환영합니다 " + edtId.getText().toString() + "님!", Toast.LENGTH_LONG);
                                 toast.show();
-
                                 gpsTracker = new GpsTracker(LoginActivity.this);
-                                double latitude = Double.valueOf("37.6248");//gpsTracker.getLatitude();
-                                double longitude = Double.valueOf("127.0892");//gpsTracker.getLongitude();
+                                latitude = Double.valueOf("37.56");//gpsTracker.getLatitude();//Double.valueOf("37.6248");
+                                longitude = Double.valueOf("126.97");//gpsTracker.getLongitude();//Double.valueOf("127.0892");
                                 SetFirstCurrentLocation(latitude, longitude);
 
                                 Intent i= new Intent(LoginActivity.this, MainActivity.class);

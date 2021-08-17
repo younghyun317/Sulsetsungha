@@ -2,12 +2,12 @@ package com.example.sulsetsungha;
 
 public class LocationItem {
     int resourceId;
-    String state;
-    String distance;
+    String username;
+    int distance;
 
-    public LocationItem(int resourceId, String state, String distance) {
+    public LocationItem(int resourceId, String username, int distance) {
         this.resourceId = resourceId;
-        this.state = state;
+        this.username = username;
         this.distance = distance;
 
     }
@@ -16,19 +16,19 @@ public class LocationItem {
         return resourceId;
     }
 
-    public String getState() {
-        return state;
+    public String getUname() {
+        return username;
     }
 
-    public String getDistance() {
-        return String.valueOf(distance);
+    public int getDistance() {
+        return distance;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(String username) {
+        this.username = username;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 

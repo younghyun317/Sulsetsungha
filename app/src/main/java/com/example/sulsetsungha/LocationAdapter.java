@@ -47,7 +47,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
 
         ImageView img_marker;
-        TextView txt_state;
+        TextView txt_Uname;
         TextView txt_distance;
         ImageButton btn_chat;
 
@@ -57,14 +57,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             super(itemView);
 
             img_marker = itemView.findViewById(R.id.img_marker);
-            txt_state = itemView.findViewById(R.id.txt_state);
+            txt_Uname = itemView.findViewById(R.id.txt_Uname);
             txt_distance = itemView.findViewById(R.id.txt_distance);
             btn_chat = itemView.findViewById(R.id.btn_chat);
 
         }
 
         void onBind(LocationItem item){
-            txt_state.setText(item.getState());
+            txt_Uname.setText(item.getUname());
             txt_distance.setText(item.getDistance()+text);
 
 
