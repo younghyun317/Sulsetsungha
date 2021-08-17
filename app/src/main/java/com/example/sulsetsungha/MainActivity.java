@@ -10,9 +10,10 @@ import android.widget.Toast;
 
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.example.sulsetsungha.Fragment.MypageFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements MapFragment.OnTimePickerSetListener {
+public class MainActivity extends AppCompatActivity /*implements MapFragment.OnTimePickerSetListener*/ {
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
@@ -74,14 +75,14 @@ public class MainActivity extends AppCompatActivity implements MapFragment.OnTim
         }
     }//TabSelectedListener
 
-    @Override
-    public void onTimePickerSet(String contents){
+//    @Override
+    public void onTimePickerSet(LatLng location){
 //        Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_LONG).show();
-        HomeFragment fragment = new HomeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("address", contents);
-
-        fragment.setArguments(bundle);
+//        HomeFragment fragment = new HomeFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("address", contents);
+//
+//        fragment.setArguments(bundle);
     }
 
 //    public void refesh() {

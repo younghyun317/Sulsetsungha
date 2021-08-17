@@ -1,11 +1,14 @@
 package com.example.sulsetsungha.Fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -17,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,6 +44,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 
     TextView txt_address;
     Switch swc_borrow;
+    ImageButton btn_Mgps;
 
     private MapFragment mapFr;
     private LocationFragment locationFr;
@@ -75,8 +80,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
         mapFr = new MapFragment();
         locationFr = new LocationFragment();
 
-        final RequestQueue queue = Volley.newRequestQueue(getContext());
-        borrow_json = new HashMap<>();
+
 
         txt_address = v.findViewById(R.id.txt_address);
         Bundle extra = this.getArguments();
@@ -92,63 +96,95 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
         swc_borrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final RequestQueue queue = Volley.newRequestQueue(getContext());
+                final String url = "http://3.38.51.117:8000/update/borrowState/user/";
+
+                borrow_json = new HashMap<>();
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String token = sharedPreferences.getString("access_token", null);
+                Log.d(HomeFragment.class.getSimpleName(), "token : " + token);
+
                 if(isChecked){
 
                     borrow_json.put("lend_state", String.valueOf(true));
-                    JSONObject parameter = new JSONObject(borrow_json);
 
-                    final String url = "http://3.38.51.117:8000/update/borrowState/user/";
+                    JSONObject parameter = new JSONObject(borrow_json);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
                             url,
                             parameter,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-
+                                    Log.d("[빌려줄수 있음/없음]", "Update SUCCESS");
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
-                                    toast.show();
 
                                     error.printStackTrace();
-                                    Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                                    Log.d("[빌려줄수 있음/없음]", "Update FAIL");
                                 }
-                            }
-                    );
+                            })
+                    {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            return give_token(token);
+                        }
+                };
                     queue.add(jsonObjectRequest);
                     Toast.makeText(getContext(), "스위치 ON", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     borrow_json.put("lend_state", String.valueOf(false));
-                    JSONObject parameter = new JSONObject(borrow_json);
 
-                    final String url = "http://3.38.51.117:8000/update/borrowState/user/";
+                    JSONObject parameter = new JSONObject(borrow_json);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
                             url,
                             parameter,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-
+                                    Log.d("[빌려줄수 있음/없음]", "Update SUCCESS");
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
-                                    toast.show();
+//                                    Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
+//                                    toast.show();
 
                                     error.printStackTrace();
-                                    Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                                    Log.d("[빌려줄수 있음/없음]", "Update FAIL");
                                 }
-                            }
-                    );
+                            })
+                    {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            return give_token(token);
+                        }
+                    };
                     queue.add(jsonObjectRequest);
                     Toast.makeText(getContext(), "스위치 OFF", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btn_Mgps = v.findViewById(R.id.btn_Mgps);
+        btn_Mgps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle = new Bundle();
+                bundle.putBoolean("gps", cnt);
+
+                MapFragment fr = new MapFragment();
+                fr.setArguments(bundle);
+
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.layout_fr, fr)
+//                        .commit();
+
             }
         });
 

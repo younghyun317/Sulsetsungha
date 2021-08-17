@@ -77,13 +77,13 @@ public class LocationFragment extends Fragment {
         itemLocation = new ArrayList<>();
 
         //MapFragment에서 전달된 데이터 받기
-//        bundle = getArguments();
+        bundle = getArguments();
 
         if(getArguments()!=null) {
-            ArrayList<Integer> possible = new ArrayList<>();
-            possible = getArguments().getIntegerArrayList("possible_distances");
-            for(int i=0;i<possible.size();i++){
-                itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", possible.get(i)));
+            ArrayList<String> nearU = new ArrayList<>();
+            nearU = getArguments().getStringArrayList("nearU");
+            for(int i=0;i<nearU.size();i++){
+                itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", nearU.get(i)));
             }
         }
 

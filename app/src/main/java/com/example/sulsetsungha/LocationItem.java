@@ -3,9 +3,9 @@ package com.example.sulsetsungha;
 public class LocationItem {
     int resourceId;
     String state;
-    int distance;
+    String distance;
 
-    public LocationItem(int resourceId, String state, int distance) {
+    public LocationItem(int resourceId, String state, String distance) {
         this.resourceId = resourceId;
         this.state = state;
         this.distance = distance;
@@ -28,7 +28,7 @@ public class LocationItem {
         this.state = state;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(String distance) {
         this.distance = distance;
     }
 
