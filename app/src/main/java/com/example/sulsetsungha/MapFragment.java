@@ -278,7 +278,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     };
 
     //거리 구하기
-    public float getDistance(Location location , double lat , double lng){
+    public int getDistance(Location location , double lat , double lng){
         float distance;
 
         Location locationB = new Location("point B");
@@ -287,7 +287,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         distance = location.distanceTo(locationB);
 
-        return distance;
+        return (int)distance;
     }
 
     //서버에서 500m내 사용자 가져오기
@@ -313,7 +313,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                     public void onResponse(JSONArray response) {
                         //TODO: 서버에서 받아온 데이터로 할 동작들
                         try {
-                            locationMap = new HashMap<>();
                             String loc;
                             String uname;
                             String uLatlng[];
@@ -333,8 +332,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
                                     locationMap.put(new LatLng(uLat, uLng), uname); //지도위에 마커 찍기 위함
 
+
                                     nearU.add(uname);
-                                    nearU.add("150"); //리스트에 띄우기 위함
+                                    nearU.add(String.valueOf(getDistance(mCurrentLocation,uLat,uLng))); //리스트에 띄우기 위함
                                 }
                                 setLocation(locationMap);
 

@@ -81,7 +81,7 @@ public class LocationFragment extends Fragment {
 
         if(getArguments()!=null) {
             ArrayList<String> nearU = getArguments().getStringArrayList("nearU");
-            for(int i=0;i<nearU.size()/2;i++){
+            for(int i=0;i<nearU.size();i++){
                 if(i%2==1){
                     continue;
                 }

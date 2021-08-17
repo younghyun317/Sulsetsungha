@@ -20,22 +20,21 @@
 
     <Button
         android:id="@+id/btn_go2list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="리스트"
-        android:textSize="16sp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.042" />
 
     <Button
         android:id="@+id/btn_request"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:text="요청하기"
+        android:layout_width="350dp"
+        android:layout_height="61dp"
+        android:background="@drawable/button_request"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/fr_map"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,18 +43,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_gps"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="#3F51B5"
-        android:src="@android:drawable/ic_menu_mylocation"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_gps"
+        android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/fr_map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.022" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
