@@ -45,12 +45,15 @@
             android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/button_exit" />
+
     </LinearLayout>
 
-    <ListView
+    <TextView
+        android:id="@+id/message_textView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7" />
+        android:layout_height="500dp"
+        android:layout_weight="1"
+        android:text="TextView" />
 
     <LinearLayout
         android:layout_width="match_parent"

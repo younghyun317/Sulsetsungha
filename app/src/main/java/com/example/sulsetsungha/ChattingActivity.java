@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class ChattingActivity extends AppCompatActivity {
     String TAG = ChattingActivity.class.getSimpleName();
 
-    TextView room_name;
+    TextView room_name, messages;
     String roomName;
     WebSocketClient webSocketClient;
     EditText chat;
@@ -55,15 +55,17 @@ public class ChattingActivity extends AppCompatActivity {
 
     void connectWebSocket() {
         room_name = findViewById(R.id.room_name);
-        roomName = room_name.getText().toString();
+        roomName = "room_name";
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String token = sharedPreferences.getString("access_token", null);
 
+        Log.d(TAG, "websocket token" + token);
+
         URI uri = null;
         try {
             uri =  new URI("ws://"
-                    + "10.0.2.2:8000"
+                    + "3.38.51.117:8000"
                     + "/ws/chat/"
                     + roomName
                     + "/?token="
@@ -85,6 +87,8 @@ public class ChattingActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        messages = findViewById(R.id.message_textView);
+                        messages.setText(messages.getText().toString() + "\n" + message);
                     }
                 });
             }

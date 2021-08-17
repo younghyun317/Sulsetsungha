@@ -1,6 +1,7 @@
 package com.example.sulsetsungha.Fragment;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.ChattingActivity;
 import com.example.sulsetsungha.LoginActivity;
 import com.example.sulsetsungha.R;
 
@@ -61,6 +63,15 @@ public class MypageFragment extends Fragment{
         getUserInfomation(); //사용자 정보 가져오기
         getUserLend(); //사용자 빌려준 횟수 가져오기
         getUserBorrow(); //사용자 빌린 횟수 가져오
+
+        btnShop = view.findViewById(R.id.btnShop);
+        btnShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChattingActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
