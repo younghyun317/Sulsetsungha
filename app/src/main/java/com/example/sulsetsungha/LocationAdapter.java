@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         ImageView img_marker;
         TextView txt_Uname;
         TextView txt_distance;
-        ImageButton btn_chat;
+        Button btn_chat;
 
         String text = "M 이내";
 

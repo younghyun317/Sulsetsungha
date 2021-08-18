@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.google.android.gms.common.FirstPartyScopes;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -137,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                 latitude = Double.valueOf("37.56");//gpsTracker.getLatitude();//Double.valueOf("37.6248");
                                 longitude = Double.valueOf("126.97");//gpsTracker.getLongitude();//Double.valueOf("127.0892");
                                 SetFirstCurrentLocation(latitude, longitude);
+//                                getLastLendState();
 
                                 Intent i= new Intent(LoginActivity.this, MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -311,6 +314,11 @@ public class LoginActivity extends AppCompatActivity {
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    //최초 접속 시, 마지막 위치 가져오기
+    public void GetLastCurrentLocation(){
+
+    }
+
     //최초 접속 시, 현재 위치 서버에 올리기
     public void SetFirstCurrentLocation(double lat, double lng) {
         //본인 현재 위치
@@ -336,7 +344,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "response : " + response.toString());
+                        Log.d(TAG, "first location response : " + response.toString());
 
                     }
                 },
@@ -347,7 +355,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        toast.show();
 //
                         error.printStackTrace();
-                        Log.d(MapFragment.class.getSimpleName(), "Location Update FAIL");
+                        Log.d("Update first location==>", "Location Update FAIL");
                     }
                 })
         {
@@ -359,6 +367,60 @@ public class LoginActivity extends AppCompatActivity {
 
         queue.add(jsonObjectRequest);
 
+    }
+    //마지막 대여가능 상태 가져오기
+    public void getLastLendState() {
+
+
+        final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        final String url = "http://3.38.51.117:8000/users/";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sharedPreferences.getString("access_token", null);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Log.d(TAG, "response : " + response.getJSONObject(0).getString("point").toString());
+//                            txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+//                            txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+//
+                            String lend_state;
+                            lend_state = response.getJSONObject(0).getString("lend_state");
+//                            HomeFragment homeFragment = new HomeFragment();
+//
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("lend_state",lend_state);
+//                            homeFragment.setArguments(bundle);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("lend_state", lend_state);
+
+                            Log.d("lend_state==>","lend state : "+lend_state);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonArrayRequest);
     }
 
     // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨

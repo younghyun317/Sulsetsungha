@@ -17,8 +17,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemBackground="@android:color/white"
-        app:menu="@menu/menu_bottom" />
+        android:layout_height="83dp"
+        android:background="@drawable/bottom_navi"
+        app:menu="@menu/menu_bottom"
+        />
 
 </LinearLayout>

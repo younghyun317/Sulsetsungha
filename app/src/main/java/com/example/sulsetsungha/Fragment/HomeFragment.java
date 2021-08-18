@@ -1,6 +1,7 @@
 package com.example.sulsetsungha.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,12 +26,17 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.LocationFragment;
+import com.example.sulsetsungha.LoginActivity;
+import com.example.sulsetsungha.MainActivity;
 import com.example.sulsetsungha.MapFragment;
 import com.example.sulsetsungha.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -44,7 +50,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 
     TextView txt_address;
     Switch swc_borrow;
-    ImageButton btn_Mgps;
+    Button btn_Mgps;
 
     private MapFragment mapFr;
     private LocationFragment locationFr;
@@ -81,15 +87,16 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
         locationFr = new LocationFragment();
 
 
-
         txt_address = v.findViewById(R.id.txt_address);
-        Bundle extra = this.getArguments();
-        if(extra != null) {
-            txt_address.setText(extra.getString("address"));
-        }
-        else {
-            txt_address.setText("no bundle");
-        }
+//        Bundle extra = this.getArguments();
+//        if(extra != null) {
+//            txt_address.setText(extra.getString("address"));
+//        }
+//        else {
+//            txt_address.setText("no bundle");
+//        }
+
+        getLastLendState();
 
         // 빌려줄 수 있음/없음 스위치 버튼
         swc_borrow = v.findViewById(R.id.swc_borrow);
@@ -107,7 +114,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 
                 if(isChecked){
 
-                    borrow_json.put("lend_state", String.valueOf(true));
+                    borrow_json.put("lend_state", "true");
 
                     JSONObject parameter = new JSONObject(borrow_json);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
@@ -137,7 +144,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
                     Toast.makeText(getContext(), "스위치 ON", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    borrow_json.put("lend_state", String.valueOf(false));
+                    borrow_json.put("lend_state", "false");
 
                     JSONObject parameter = new JSONObject(borrow_json);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
@@ -261,6 +268,63 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //        txt_address.setText(contents);
 //
 //    }
+
+    //마지막 대여가능 상태 가져오기
+    public void getLastLendState() {
+
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        final String url = "http://3.38.51.117:8000/users/";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sharedPreferences.getString("access_token", null);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Log.d("getLastLendState()==>", "response : " + response.getJSONObject(0).getString("lend_state").toString());
+//                            txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+//                            txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+//
+                            String lend_state;
+                            lend_state = response.getJSONObject(0).getString("lend_state");
+//                            HomeFragment homeFragment = new HomeFragment();
+//
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("lend_state",lend_state);
+//                            homeFragment.setArguments(bundle);
+
+                            Log.d("lend_state==>","lend state : "+lend_state);
+                            if(lend_state == "true") {
+                                swc_borrow.setChecked(true);
+                            }else {
+                                swc_borrow.setChecked(false);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+    }
 
 // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨
     Map<String, String> give_token(String token) {

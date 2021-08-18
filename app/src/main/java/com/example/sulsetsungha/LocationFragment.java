@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,11 +95,15 @@ public class LocationFragment extends Fragment {
 //        int distance=50;
 //
 //        for(int i=0;i<10;i++){
-//            distance++;
-//            itemLocation.add(new LocationItem(i, "빌려줄 수 있어요", distance));
+////            distance++;
+//            itemLocation.add(new LocationItem(i, "user"+String.valueOf(i), 500+i));
 //        }
 
         RecyclerView locationList = v.findViewById(R.id.locationList);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(getContext().getDrawable(R.drawable.list_line));
+        locationList.addItemDecoration(dividerItemDecoration);
 
         locationAdapter = new LocationAdapter();
         locationList.setAdapter(locationAdapter);

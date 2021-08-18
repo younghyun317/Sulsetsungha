@@ -5,25 +5,25 @@
     <item
         android:id="@+id/tab_home"
         android:enabled="true"
-        android:icon="@drawable/ic_android_black_24dp"
-        android:title="Home"/>
+        android:icon="@drawable/menu_home"
+        android:title=""/>
 
     <item
         android:id="@+id/tab_donation"
         android:enabled="true"
-        android:icon="@drawable/ic_android_black_24dp"
-        android:title="Donation"/>
+        android:icon="@drawable/menu_donation"
+        android:title=""/>
 
     <item
         android:id="@+id/tab_community"
         android:enabled="true"
-        android:icon="@drawable/ic_android_black_24dp"
-        android:title="Commu"/>
+        android:icon="@drawable/menu_community"
+        android:title=""/>
 
     <item
         android:id="@+id/tab_mypage"
         android:enabled="true"
-        android:icon="@drawable/ic_android_black_24dp"
-        android:title="MyPage"/>
+        android:icon="@drawable/menu_mypage"
+        android:title=""/>
 
 </menu>

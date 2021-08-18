@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,7 +60,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +83,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private GoogleMap mMap;
     private Marker currentMarker = null;
     List<Marker> cMarker = new ArrayList<>();
-    HashMap<LatLng, String> locationMap;
 
     //onRequestPermissionResult에서 수신된 결과 중 ActivityCompat.requestPermissions 사용한 퍼미션 요청 구별
     private static final int PERMISSIONS_REQUEST_CODE=100;
@@ -97,7 +94,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
     Location mCurrentLocation;
     LatLng currentPosition;
-    LatLng currentPosition2;
 
     Circle circle;
     CircleOptions circle500M;
@@ -120,9 +116,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
     Button btn_go2List;
     Button btn_request;
-    ImageButton btn_gps;
+    Button btn_gps;
 
-    private OnTimePickerSetListener onTimePickerSetListener;
+//    private OnTimePickerSetListener onTimePickerSetListener;
 
 //    public HomeFragment()
 //    {
@@ -200,7 +196,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 transaction.replace(R.id.layout_fr, fr)
                         .commit();
 
-//                bundle = null;
+                bundle = null;
             }
         });
 
@@ -220,6 +216,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fr_map);
         mapFragment.getMapAsync(this);
 
+//        getNearUser();
+
         return v;
     }
 
@@ -237,12 +235,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
 
-
-                SetCurrentLocation(location); //업데이트
+                updateCurrentLocation(location); //업데이트
                 getNearUser();
-
-                //서버에서 500m내 사용자 가져오기
-//                getNearUser();
                 /**
                  * 마지막에 꼭 삭제해야할 코드!! Log 확인 위한 코드임!!!
                  */
@@ -293,11 +287,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     //서버에서 500m내 사용자 가져오기
     public void getNearUser() {
 
-        locationMap = new HashMap<>();
-        bundle = new Bundle();
-
-        ArrayList<String> nearU = new ArrayList<>();
-
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         final String url = "http://3.38.51.117:8000/user/location/";
 
@@ -311,36 +300,55 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+//                        boolean isThere=true;
                         //TODO: 서버에서 받아온 데이터로 할 동작들
                         try {
-                            String loc;
-                            String uname;
-                            String uLatlng[];
-                            double uLat = 0;
-                            double uLng = 0;
-
                             if(response.length() != 0){
+                                String uLatlng[];
+                                double uLat;
+                                double uLng;
+
+                                ArrayList<LatLng> getUloc = new ArrayList<>();
+                                ArrayList<String> getUname = new ArrayList<>();
+                                ArrayList<String> nearU = new ArrayList<>();
+                                bundle = new Bundle();
+
+                                String uLoc = null;
+                                String uName = null;
 
                                 for(int d=0;d<response.length();d++){
                                     Log.d("뭘 가져오나>>>", "response : "+response.getJSONObject(d).getString("location"));
-                                    loc = response.getJSONObject(d).getString("location");
-                                    uname = response.getJSONObject(d).getString("user");
+//                                    getUloc.add(response.getJSONObject(d).getString("location"));
+//                                    getUname.add(response.getJSONObject(d).getString("user"));
+                                    uLoc = response.getJSONObject(d).getString("location");
+                                    uName = response.getJSONObject(d).getString("user");
 
-                                    uLatlng = loc.split(",");
+                                    Log.d("서버 가져오기 확인==>","location = " + uLoc);
+
+                                    uLatlng = uLoc.split(",");
                                     uLat = Double.valueOf(uLatlng[0]);
                                     uLng = Double.valueOf(uLatlng[1]);
 
-                                    locationMap.put(new LatLng(uLat, uLng), uname); //지도위에 마커 찍기 위함
+                                    //지도 위에 마커 표시하기 위해
+                                    getUloc.add(new LatLng(uLat, uLng));
+                                    getUname.add(uName);
 
-
-                                    nearU.add(uname);
-                                    nearU.add(String.valueOf(getDistance(mCurrentLocation,uLat,uLng))); //리스트에 띄우기 위함
+                                    //리스트로 전달 위해
+                                    nearU.add(uName);
+                                    nearU.add(String.valueOf(getDistance(location, uLat, uLng)));
                                 }
-                                setLocation(locationMap);
+
+                                setLocation(getUloc, getUname);
+                                bundle.putStringArrayList("nearU", nearU);
+
+                                Log.d("nearU==>", "nearU = "+nearU);
+                                Log.d("getUloc==>","getUloc size = "+getUloc.size());
+
 
                             }
                             else { //주변에 없음
-                                Toast.makeText(getContext(), "현재 주변에 사용자가 없습니다.", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "현재 주변에 사용자가 없습니다.", Toast.LENGTH_SHORT).show();
+                                Log.d("주변에 암도 없어서","안뜨는겁니당==>"+response.length());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -367,14 +375,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             }
         };
 
+
+
         queue.add(jsonArrayRequest);
 
-        bundle.putStringArrayList("nearU", nearU);
+
 //        locationMap.clear();
 
     }
     //현재 위치 서버에 업데이트
-    private void SetCurrentLocation(Location location) {
+    private void updateCurrentLocation(Location location) {
         //본인 현재 위치
         String currentLat = String.valueOf(location.getLatitude());
         String currentLng = String.valueOf(location.getLongitude());
@@ -398,7 +408,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "update response : " + response.toString());
+                        Log.d(TAG, "update current location : " + response.toString());
 
                     }
                 },
@@ -589,7 +599,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             public void onCameraMoveStarted(int i) {
 
 
-                if (mMoveMapByUser == true && check_result){
+                if (mMoveMapByUser && check_result){
 
                     Log.d(TAG, "onCameraMove : 위치에 따른 카메라 이동 비활성화");
                     mMoveMapByAPI = false;
@@ -653,7 +663,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
 
     //주변 사용자 위치 마커 설정
-    public void setLocation(HashMap<LatLng, String> locationMap){
+    public void setLocation(ArrayList<LatLng>uLoc, ArrayList<String>uName){
 
         if(cMarker.size()!=0){
             cMarker.clear();
@@ -661,16 +671,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker);
         Bitmap bitmap = bitmapdraw.getBitmap();
 
-        for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(entry.getKey())
-                    .title(entry.getValue())
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        for(int i = 0;i<uLoc.size();i++){
+            markerOptions.position(uLoc.get(i))
+                    .title(uName.get(i))
                     .draggable(true)
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-
             Marker m = mMap.addMarker(markerOptions);
             cMarker.add(m);
         }
+
+//        for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {
+//            MarkerOptions markerOptions = new MarkerOptions();
+//            markerOptions.position(entry.getKey())
+//                    .title(entry.getValue())
+//                    .draggable(true)
+//                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+//
+//            Marker m = mMap.addMarker(markerOptions);
+//            cMarker.add(m);
+//        }
 
 
     }
@@ -792,13 +813,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
 
-
-        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-            return true;
+        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED){
+            if(hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+                return true;
+            }
+            return false;
         }
-
-        return false;
+        else{
+            return false;
+        }
 
     }
     /*
@@ -899,24 +922,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-
-            case GPS_ENABLE_REQUEST_CODE:
-
-                //사용자가 GPS 활성 시켰는지 검사
+        if(requestCode == GPS_ENABLE_REQUEST_CODE){
+            //사용자가 GPS 활성 시켰는지 검사
+            if (checkLocationServicesStatus()) {
                 if (checkLocationServicesStatus()) {
-                    if (checkLocationServicesStatus()) {
 
-                        Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
+                    Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
 
-                        needRequest = true;
+                    needRequest = true;
 
-                        return;
-                    }
+                    return;
                 }
-
-                break;
+            }
         }
+
+
     }
 
     // 이 함수는 나중에 give_token 구현 필요라는 말이 있을 때 사용하면 됨
