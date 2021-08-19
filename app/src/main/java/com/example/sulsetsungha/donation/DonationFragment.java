@@ -1,6 +1,9 @@
 package com.example.sulsetsungha.donation;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import com.example.sulsetsungha.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,12 +81,15 @@ public class DonationFragment extends Fragment {
                             //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
                             //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
-                            String id, company, title, context, deadline;
+                            String id, company, title, context, deadline, imageurl;
                             long dday, target_amount, current_amount;
                             double percent;
+                            ImageView imageView;
 
                             //int percent;
                             Date currentCal, targetCal; //현재 날짜, 비교 날짜
+
+                            DownloadImageTask downloadImageTask = new DownloadImageTask((ImageView)view.findViewById(R.id.imageView13));
 
                             for (int i=0; i < response.length(); i++) {
                                 id = response.getJSONObject(i).getString("id").toString();
@@ -91,6 +99,7 @@ public class DonationFragment extends Fragment {
                                 deadline = response.getJSONObject(i).getString("deadline").toString();
                                 target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
                                 current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
+                                imageurl = response.getJSONObject(i).getString("photo").toString();
 
                                 //percent = Math.round((current_amount/target_amount)*100);
                                 percent = ((current_amount * 1.0)/target_amount)*100;
@@ -109,8 +118,9 @@ public class DonationFragment extends Fragment {
                                 long calDateDays = calDate / ( 24*60*60*1000);
 
                                 dday = Math.abs(calDateDays);
-
+                                //imageView = DownloadImageTask.execute(imageurl);
                                 sponsors.add(new Sponsor(id, company, title, context, Long.toString(dday), Double.toString(percent)));
+                                //new DownloadImageTask((ImageView)view.findViewById(R.id.)).execute(imageurl);
                             }
 
                             donationListView = (ListView)view.findViewById(R.id.listView_donation);
@@ -153,6 +163,7 @@ public class DonationFragment extends Fragment {
         private String context;
         private String dday;
         private String donation;
+        //private ImageView image;
         private int progressbar;
         //private ProgressBar progressbar;
 
@@ -164,6 +175,7 @@ public class DonationFragment extends Fragment {
             this.context = context;
             this.dday = dday;
             this.donation = donation;
+            //this.image = image;
             //this.progressbar = progressbar;
         }
 
@@ -187,10 +199,35 @@ public class DonationFragment extends Fragment {
             return donation;
         }
 
-        public int getProgressbar() {
-            return progressbar;
-        }
+//        //public ImageView getImage() {
+//            return image;
+//        }
     } //class Sponsor
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 
     //기부하기 좋아요 목록 가져오기
 //    private void getDonationLikeList() {
