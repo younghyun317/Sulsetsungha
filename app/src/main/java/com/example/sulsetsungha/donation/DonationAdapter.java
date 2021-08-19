@@ -1,6 +1,7 @@
 package com.example.sulsetsungha.donation;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -93,7 +95,7 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         View bodyView = (View)convertView.findViewById(R.id.body);
         Button btnDonationView = (Button)convertView.findViewById(R.id.btnDonation);
         ImageButton btnDonationLikeView = (ImageButton)convertView.findViewById(R.id.btnDonationLike);
-        EditText edtPoint = new EditText(getContext());
+        //EditText edtPoint = new EditText(getContext());
 
         viewHolder.txt_company = (TextView)convertView.findViewById(R.id.txtName);
         viewHolder.txt_title = (TextView)convertView.findViewById(R.id.txtSummary);
@@ -177,21 +179,34 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
             public void onClick(View v) {
                 Log.d(TAG, "prgbarDonation : " + viewHolder.prg_donation.getTag(position));
 
-                AlertDialog.Builder dlg = new AlertDialog.Builder(context);
-                dlg.setTitle("후원을 진행하시겠습니까?");
-                dlg.setMessage("포인트를 되돌릴 수 없습니다.");
-                dlg.setView(edtPoint);
-                dlg.setIcon(R.drawable.ic_android_black_24dp);
-                dlg.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                Dialog dlg;
+                dlg = new Dialog(getContext());
+                dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dlg.setContentView(R.layout.activity_pushalarm);
+
+                dlg.show(); // 다이얼로그 띄우기
+
+                /* 이 함수 안에 원하는 디자인과 기능을 구현하면 된다. */
+
+                // 위젯 연결 방식은 각자 취향대로~
+                // '아래 아니오 버튼'처럼 일반적인 방법대로 연결하면 재사용에 용이하고,
+                // '아래 네 버튼'처럼 바로 연결하면 일회성으로 사용하기 편함.
+                // *주의할 점: findViewById()를 쓸 때는 -> 앞에 반드시 다이얼로그 이름을 붙여야 한다.
+
+                // 아니오 버튼
+                Button noBtn = dlg.findViewById(R.id.btn_cancel);
+                noBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //buttonView.removeView
-                        // parent 없애는 로직이 필요할듯??
+                    public void onClick(View view) {
+                        // 원하는 기능 구현
+                        dlg.dismiss(); // 다이얼로그 닫기
                     }
                 });
-                dlg.setPositiveButton("후원", new DialogInterface.OnClickListener() {
+                // 네 버튼
+                dlg.findViewById(R.id.btn_donate).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View view) {
+                        EditText edtPoint = dlg.findViewById(R.id.edt_point);
                         value = Integer.parseInt(edtPoint.getText().toString()); //문자형 -> 정수형 변환
                         viewHolder.prg_donation.incrementProgressBy(value);
 
@@ -231,10 +246,10 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
                         };
 
                         queue.add(request);
-                    }
 
+                        dlg.dismiss();
+                    }
                 });
-                dlg.show();
 
             }
         });
@@ -249,5 +264,8 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         return headers;
     }
 
+    public void showDialog() {
+
+    }
 
 }

@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.R;
@@ -61,6 +62,8 @@ public class DonationFragment extends Fragment {
         final RequestQueue queue = Volley.newRequestQueue(getActivity());
         final String url = "http://3.38.51.117:8000/donation/";
 
+        //ImageRequest imageRequest = new ImageRequest(url, res)
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url,
                 null,
@@ -91,6 +94,7 @@ public class DonationFragment extends Fragment {
 
                                 //percent = Math.round((current_amount/target_amount)*100);
                                 percent = ((current_amount * 1.0)/target_amount)*100;
+                                percent = Math.round(percent);
                                 Log.d(TAG, "current_amount : " + String.valueOf(current_amount).toString());
                                 Log.d(TAG, "target_amount : " + String.valueOf(target_amount).toString());
                                 Log.d(TAG, "percent : " + String.valueOf(percent).toString());
