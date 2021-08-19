@@ -99,7 +99,7 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         viewHolder.txt_title = (TextView)convertView.findViewById(R.id.txtSummary);
         viewHolder.prg_donation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
         viewHolder.txt_dday = (TextView)convertView.findViewById(R.id.txtDday);
-        viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.txtDonation);
+        viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.t);
 
         final DonationFragment.Sponsor sponsor = (DonationFragment.Sponsor)list.get(position);
         viewHolder.txt_company.setText(sponsor.getCompany().toString());

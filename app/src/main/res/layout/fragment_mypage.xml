@@ -216,6 +216,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
+            android:background="#FAFAFA"
+            android:backgroundTint="#FAFAFA"
+            android:backgroundTintMode="add"
             android:orientation="vertical">
 
             <LinearLayout
@@ -227,6 +230,23 @@
                 android:layout_weight="3"
                 android:orientation="vertical">
 
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycleView_MyDonation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
                 <TextView
                     android:id="@+id/textView27"
                     android:layout_width="match_parent"
@@ -236,23 +256,6 @@
                     android:text="나의 기부내역"
                     android:textColor="#000000"
                     android:textStyle="bold" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal" >
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycleView_MyDonation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal" />
-                    </LinearLayout>
-                </HorizontalScrollView>
 
             </LinearLayout>
 

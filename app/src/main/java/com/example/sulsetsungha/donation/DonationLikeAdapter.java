@@ -92,7 +92,7 @@ class DonationLikeAdapter extends ArrayAdapter implements AdapterView.OnItemClic
         viewHolder.txt_title = (TextView)convertView.findViewById(R.id.txtSummary);
         viewHolder.prg_donation = (ProgressBar)convertView.findViewById(R.id.prgbarDonation);
         viewHolder.txt_dday = (TextView)convertView.findViewById(R.id.txtDday);
-        viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.txtDonation);
+        viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.t);
 
         final DonationLikeActivity.Sponsor sponsor = (DonationLikeActivity.Sponsor)list.get(position);
         viewHolder.txt_company.setText(sponsor.getCompany().toString());
