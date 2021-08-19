@@ -11,46 +11,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView18"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="6"
             android:text="커뮤니티"
+            android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnCmnAlert"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
             android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:backgroundTint="#00FFFFFF"
-            android:src="@drawable/button_alert"
+            android:background="@drawable/button_alert"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/editTextTextPersonName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_round"
+            android:background="@drawable/searchbox"
             android:drawableRight="@drawable/button_search"
             android:ems="10"
             android:hint="제목, 내용, 해시태그 검색"
@@ -71,14 +69,15 @@
         <ImageView
             android:id="@+id/imageView9"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/advertisement" />
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/advertisement" />
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="6"
         android:orientation="vertical">
 
         <ListView
@@ -89,14 +88,14 @@
 
         </ListView>
 
-        <ImageButton
+        <Button
             android:id="@+id/btnCmnWrite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
             android:layout_gravity="bottom|right"
-            android:backgroundTint="#00FFFFFF"
-            android:maxWidth="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/button_write" />
+            android:background="@drawable/button_write" />
     </FrameLayout>
 </LinearLayout>
