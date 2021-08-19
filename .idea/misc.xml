@@ -4,7 +4,6 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.17685185185185184" />
-<<<<<<< HEAD
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_donation.xml" value="0.25364583333333335" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home.xml" value="0.2" />
@@ -15,32 +14,6 @@
         <entry key="app/src/main/res/layout/activity_community_detail.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_community_write.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/activity_donation_like.xml" value="0.25407608695652173" />
-=======
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/menu_selector.xml" value="0.5703125" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/rectangle_4.xml" value="0.5703125" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_thumb.xml" value="0.5703125" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/drawable/switch_track_selector.xml" value="0.5703125" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_fcmactivity.xml" value="0.42864583333333334" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_login.xml" value="0.5541666666666667" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/activity_main.xml" value="0.5" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_community.xml" value="0.370018115942029" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_donation.xml" value="0.4466666666666667" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home.xml" value="0.16" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home2.xml" value="0.23505434782608695" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home3.xml" value="0.23505434782608695" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_location.xml" value="0.3333333333333333" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_map.xml" value="0.3333333333333333" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_maps.xml" value="0.2" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.3333333333333333" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/item_location.xml" value="0.4" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/toolbar.xml" value="0.176" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/menu_bottom.xml" value="0.5541666666666667" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/menu_selector.xml" value="0.5541666666666667" />
-        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/navigation_items.xml" value="0.5541666666666667" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_chatting.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_join.xml" value="0.3104166666666667" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.18" />
->>>>>>> 5ab9094a9cf35b7281db769c7d7c7b231677a773
         <entry key="app/src/main/res/layout/activity_join.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />

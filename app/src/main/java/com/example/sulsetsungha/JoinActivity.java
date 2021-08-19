@@ -30,7 +30,7 @@ public class JoinActivity extends AppCompatActivity {
 
     String TAG = JoinActivity.class.getSimpleName();
 
-    EditText edtJoinId, edtJoinPw, edtJoinPwChk;
+    EditText edtJoinId, edtJoinNick, edtJoinPw, edtJoinPwChk;
     ImageButton btnSignUp, btnLoginBack;
 
     @Override
@@ -39,6 +39,7 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
 
         edtJoinId = findViewById(R.id.edtJoinId);
+        edtJoinNick = findViewById(R.id.edtJoinNick);
         edtJoinPw = findViewById(R.id.edtJoinPw);
         edtJoinPwChk = findViewById(R.id.edtJoinPwChk);
         btnSignUp = findViewById(R.id.btnSignUp);
@@ -64,6 +65,7 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 join_json.put("username", edtJoinId.getText().toString());
+                join_json.put("nickname", edtJoinNick.getText().toString());
                 join_json.put("password", edtJoinPw.getText().toString());
                 join_json.put("password2", edtJoinPwChk.getText().toString());
 
@@ -75,37 +77,13 @@ public class JoinActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                //Boolean result = response.optBoolean("username");
-                                //Log.d("check", "result"+ result);
-
-//                                if (result) {
-//                                    if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
-////                                        editor.putString("join_id", edtJoinId.getText().toString());
-////                                        editor.putString("join_pw", edtJoinPw.getText().toString());
-////                                        editor.apply();
-//
-//                                        Intent i = new Intent(JoinActivity.this, LoginActivity.class);
-//                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                        startActivity(i);
-//
-//                                        Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId + "님!", Toast.LENGTH_LONG);
-//                                        toast.show();
-//                                    } else {
-//                                        Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
-//                                        toast.show();
-//                                        edtJoinPwChk.setText("");
-//                                    }
-//                                } else {
-//                                    Toast toast = Toast.makeText(getApplicationContext(), "ID가 중복입니다. 다른 ID를 입력하세요.", Toast.LENGTH_LONG);
-//                                    toast.show();
-//                                }
                                 if (edtJoinPw.getText().toString().equals(edtJoinPwChk.getText().toString())) {
 
                                     Intent i = new Intent(JoinActivity.this, LoginActivity.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(i);
 
-                                    Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinId.getText().toString() + "님!", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "회원가입이 완료 되었습니다.\n 환영합니다 " + edtJoinNick.getText().toString() + "님!", Toast.LENGTH_LONG);
                                     toast.show();
                                 } else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 한번 확인하세요.", Toast.LENGTH_LONG);
@@ -118,7 +96,7 @@ public class JoinActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "로그인에 실패했습니다.\n잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), "회원가입에 실패했습니다.\n잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG);
                                 toast.show();
 
                                 error.printStackTrace();
