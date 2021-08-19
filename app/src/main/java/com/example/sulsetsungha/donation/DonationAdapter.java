@@ -1,9 +1,11 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.donation;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,16 +108,24 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         viewHolder.txt_donation.setText(sponsor.getDonation().toString());
         viewHolder.prg_donation.setProgress((int) Math.round(Double.parseDouble(sponsor.getDonation())));
 
-        donation_like_json.put("notice_title", sponsor.getTitle().toString());
-        JSONObject parameter_donation_like = new JSONObject(donation_like_json);
-
         bodyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "click list body", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, DonationDetailActivity.class);
+                intent.putExtra("Company", sponsor.getCompany());
+                intent.putExtra("Title", sponsor.getTitle().toString());
+                intent.putExtra("Context", sponsor.getContext().toString());
+                intent.putExtra("Dday", sponsor.getDday().toString());
+                intent.putExtra("Percent", sponsor.getDonation().toString());
+                intent.putExtra("Donation", sponsor.getDonation());
+
+                context.startActivity(intent);
 
             }
         });
+
+        donation_like_json.put("notice_title", sponsor.getTitle().toString());
+        JSONObject parameter_donation_like = new JSONObject(donation_like_json);
 
         btnDonationLikeView.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
@@ -127,6 +137,21 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, "like_response : " + response.toString());
+                                String id;
+                                Drawable unlike_drawable = getContext().getDrawable(R.drawable.button_like);
+                                Drawable like_drawable = getContext().getDrawable(R.drawable.button_like_color);
+
+                                try {
+                                    id = response.getString("id").toString();
+                                    if (id == sponsor.getId().toString()) {
+                                        btnDonationLikeView.setImageDrawable(like_drawable);
+                                    } else {
+                                        btnDonationLikeView.setImageDrawable(unlike_drawable);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
 
                             }
                         },

@@ -2,21 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sulsetsungha">
 
-    <permission
-        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="READ_GSERVICES" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,19 +11,22 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CommunityDetailActivity"
+            android:name=".donation.DonationDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".community.CommunityDetailActivity"
             android:exported="true" />
         <activity
             android:name=".ChattingActivity"
             android:exported="true" />
         <activity
-            android:name=".CommunityWriteActivity"
+            android:name=".community.CommunityWriteActivity"
             android:exported="true" />
         <activity
             android:name=".MyDonationListActivity"
             android:exported="true" />
         <activity
-            android:name=".DonationLikeActivity"
+            android:name=".donation.DonationLikeActivity"
             android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,12 +41,12 @@
             android:exported="true" />
         <activity
             android:name=".JoinActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,9 +63,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyByM5X58E0EeRtTXDzbmcYr7M_OqCE6A74" />
-
-
         <meta-data
+<<<<<<< HEAD
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+=======
             android:name='com.google.firebase.messaging.default_notification_channel_id'
             android:value = "@string/default_notification_channel_id"/>
         <meta-data
@@ -86,6 +76,7 @@
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false"/>
+>>>>>>> 986842d98e45d1fb4e6f7d677a23e0f2e9f78835
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -96,14 +87,28 @@
         </service>
     </application>
 
-
     <permission
         android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <permission
+        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

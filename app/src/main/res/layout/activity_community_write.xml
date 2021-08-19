@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="#00FFFFFF"
     android:orientation="vertical"
-    tools:context=".CommunityWriteActivity">
+    tools:context=".community.CommunityWriteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

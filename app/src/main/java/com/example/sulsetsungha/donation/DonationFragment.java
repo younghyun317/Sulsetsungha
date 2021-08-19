@@ -1,32 +1,24 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.donation;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sulsetsungha.DonationAdapter;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -37,10 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class DonationFragment extends Fragment {
 
@@ -85,7 +73,7 @@ public class DonationFragment extends Fragment {
                             //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
                             //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
-                            String company, title, deadline;
+                            String id, company, title, context, deadline;
                             long dday, target_amount, current_amount;
                             double percent;
 
@@ -93,8 +81,10 @@ public class DonationFragment extends Fragment {
                             Date currentCal, targetCal; //현재 날짜, 비교 날짜
 
                             for (int i=0; i < response.length(); i++) {
+                                id = response.getJSONObject(i).getString("id").toString();
                                 company = response.getJSONObject(i).getString("company").toString();
                                 title = response.getJSONObject(i).getString("title").toString();
+                                context = response.getJSONObject(i).getString("context").toString();
                                 deadline = response.getJSONObject(i).getString("deadline").toString();
                                 target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
                                 current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
@@ -116,14 +106,9 @@ public class DonationFragment extends Fragment {
 
                                 dday = Math.abs(calDateDays);
 
-//                                Log.d(TAG, "calDateDays : " + calDateDays);
-//                                Log.d(TAG, "percent : " + percent);
-
-                                sponsors.add(new Sponsor(company, title, Long.toString(dday), Double.toString(percent)));
+                                sponsors.add(new Sponsor(id, company, title, context, Long.toString(dday), Double.toString(percent)));
                             }
-//                            sponsors.add(new Sponsor(response.getJSONArray(0).getJSONObject(0).toString(), response.getJSONArray(0).getJSONObject(1).toString(), today, "10"));
-//                            sponsors.add(new Sponsor("후원2", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "20"));
-//                            sponsors.add(new Sponsor("후원3", "생리대가 필요하지만 살 수 없는 여성 청소년을 도와주세요.", today, "30"));
+
                             donationListView = (ListView)view.findViewById(R.id.listView_donation);
                             donationAdapter = new DonationAdapter(getContext(), sponsors);
                             donationListView.setAdapter(donationAdapter);
@@ -156,21 +141,27 @@ public class DonationFragment extends Fragment {
     }
 
     class Sponsor {
+        private String id;
         private String company;
         private String title;
+        private String context;
         private String dday;
         private String donation;
         private int progressbar;
         //private ProgressBar progressbar;
 
-        public Sponsor(String company, String title, String dday, String donation) {
+        public Sponsor(String id, String company, String title, String context, String dday, String donation) {
             //this.request = request;
+            this.id = id;
             this.company = company;
             this.title = title;
+            this.context = context;
             this.dday = dday;
             this.donation = donation;
             //this.progressbar = progressbar;
         }
+
+        public String getId() { return id; }
 
         public String getCompany() {
             return company;
@@ -179,6 +170,8 @@ public class DonationFragment extends Fragment {
         public String getTitle() {
             return title;
         }
+
+        public String getContext() { return context; }
 
         public String getDday() {
             return dday;
@@ -192,5 +185,55 @@ public class DonationFragment extends Fragment {
             return progressbar;
         }
     } //class Sponsor
+
+    //기부하기 좋아요 목록 가져오기
+//    private void getDonationLikeList() {
+//        final RequestQueue queue = Volley.newRequestQueue(getActivity());
+//        final String url = "http://3.38.51.117:8000/get/like/donation/";
+//
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        String token = sharedPreferences.getString("access_token", null);
+//
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+//                url,
+//                null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        try {
+//                            Log.d(TAG, "like_list_response : " + response.toString());
+//                            String donation_id;
+//
+//                            for (int i=0; i < response.length(); i++) {
+//                                donation_id = response.getJSONObject(i).getString("id").toString();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                })
+//        {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                return  give_token(token);
+//            }
+//        };
+//
+//        queue.add(jsonArrayRequest);
+//    }
+//
+//    Map<String, String> give_token(String token) {
+//        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("Authorization", "Bearer " + token);
+//
+//        return headers;
+//    }
 
 }
