@@ -7,8 +7,8 @@ class MypageRecyclerViewItem {
     private String context;
     private String dday;
     private String donation;
-    private int progressbar;
-    //private ProgressBar progressbar;
+
+    private int amount;
 
     public String getId() { return id; }
 
@@ -42,9 +42,7 @@ class MypageRecyclerViewItem {
 
     public void setDonation (String donation) { this.donation = donation; }
 
-    public int getProgressbar() {
-        return progressbar;
-    }
+    public int getAmount() { return amount; }
 
-    public void setProgressbar (int progressbar) { this.progressbar = progressbar; }
+    public void setAmount(int amount) { this.amount = amount; }
 }

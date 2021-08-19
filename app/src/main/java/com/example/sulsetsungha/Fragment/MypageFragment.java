@@ -50,7 +50,7 @@ public class MypageFragment extends Fragment{
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     String today = dateFormat.format(Calendar.getInstance().getTime());
-    private RecyclerView mRecyclerView;
+    //private RecyclerView mRecyclerView;
     private ArrayList<MypageRecyclerViewItem> mList;
     private MypageAdapter mypageAdapter;
 
@@ -75,7 +75,7 @@ public class MypageFragment extends Fragment{
         recycleView_MyDonation = (RecyclerView) view.findViewById(R.id.recycleView_MyDonation);
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycleView_MyDonation.setLayoutManager(layoutManager);
 
         getUserInfomation(); //사용자 정보 가져오기
@@ -126,44 +126,40 @@ public class MypageFragment extends Fragment{
                             //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
                             String id, company, title, context, deadline;
-                            long dday, target_amount, current_amount;
-                            double percent;
+                            long dday;
+                            int amount;
 
                             //int percent;
                             Date currentCal, targetCal; //현재 날짜, 비교 날짜
 
-                            for (int i=0; i < response.length(); i++) {
-                                id = response.getJSONObject(i).getString("id").toString();
-                                company = response.getJSONObject(i).getString("company").toString();
-                                title = response.getJSONObject(i).getString("title").toString();
-                                context = response.getJSONObject(i).getString("context").toString();
-                                deadline = response.getJSONObject(i).getString("deadline").toString();
-                                target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
-                                current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
+                            if (response.length() > 0) {
+                                for (int i = 0; i < response.length(); i++) {
+                                    id = response.getJSONObject(i).getJSONObject("item").getString("id").toString();
+                                    company = response.getJSONObject(i).getJSONObject("item").getString("company").toString();
+                                    title = response.getJSONObject(i).getJSONObject("item").getString("title").toString();
+                                    context = response.getJSONObject(i).getJSONObject("item").getString("context").toString();
+                                    deadline = response.getJSONObject(i).getJSONObject("item").getString("deadline").toString();
+                                    amount = Integer.parseInt(response.getJSONObject(i).getString("amount"));
 
-                                //percent = Math.round((current_amount/target_amount)*100);
-                                percent = ((current_amount * 1.0)/target_amount)*100;
-                                Log.d(TAG, "current_amount : " + String.valueOf(current_amount).toString());
-                                Log.d(TAG, "target_amount : " + String.valueOf(target_amount).toString());
-                                Log.d(TAG, "percent : " + String.valueOf(percent).toString());
-                                currentCal = dateFormat.parse(today);
-                                targetCal = dateFormat.parse(deadline);
+                                    currentCal = dateFormat.parse(today);
+                                    targetCal = dateFormat.parse(deadline);
 
-                                // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
-                                // 연산결과 -950400000. long type 으로 return 된다.
-                                long calDate = targetCal.getTime() - currentCal.getTime();
-                                // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
-                                // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
-                                long calDateDays = calDate / ( 24*60*60*1000);
+                                    // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
+                                    // 연산결과 -950400000. long type 으로 return 된다.
+                                    long calDate = targetCal.getTime() - currentCal.getTime();
+                                    // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
+                                    // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
+                                    long calDateDays = calDate / (24 * 60 * 60 * 1000);
 
-                                dday = Math.abs(calDateDays);
+                                    dday = Math.abs(calDateDays);
 
-                                addItem(id, company, title, context, Long.toString(dday), Double.toString(percent));
+                                    addItem(id, company, title, context, Long.toString(dday), amount);
+                                }
                             }
 
                             mypageAdapter = new MypageAdapter(mList);
-                            mRecyclerView.setAdapter(mypageAdapter);
-                            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            recycleView_MyDonation.setAdapter(mypageAdapter);
+                            recycleView_MyDonation.setLayoutManager(new LinearLayoutManager(getActivity()));
 
                         } catch (JSONException | ParseException e) {
                             e.printStackTrace();
@@ -189,7 +185,7 @@ public class MypageFragment extends Fragment{
         return view;
     }
 
-    public void addItem(String id, String company, String title, String context, String dday, String donation){
+    public void addItem(String id, String company, String title, String context, String dday, int amount){
         MypageRecyclerViewItem item = new MypageRecyclerViewItem();
 
         item.setId(id);
@@ -197,7 +193,7 @@ public class MypageFragment extends Fragment{
         item.setTitle(title);
         item.setContext(context);
         item.setDday(dday);
-        item.setDonation(donation);
+        item.setAmount(amount);
 
         mList.add(item);
     }

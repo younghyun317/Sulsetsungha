@@ -20,18 +20,16 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.ViewHolder
 
         public TextView txt_company;
         public TextView txt_title;
-        public ProgressBar prg_donation;
         public TextView txt_dday;
-        public TextView txt_donation;
+        public TextView txt_amount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txt_company = (TextView) itemView.findViewById(R.id.txtName);
             txt_title = (TextView) itemView.findViewById(R.id.txtSummary);
-            prg_donation = (ProgressBar) itemView.findViewById(R.id.prgbarDonation);
             txt_dday = (TextView) itemView.findViewById(R.id.txtDday);
-            txt_donation = (TextView) itemView.findViewById(R.id.txtDonation);
+            txt_amount = (TextView) itemView.findViewById(R.id.txtAmount);
         }
 
     }
@@ -49,7 +47,7 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.ViewHolder
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.item_donation, parent, false);
+        View view = inflater.inflate(R.layout.item_mydonation, parent, false);
         MypageAdapter.ViewHolder vh = new MypageAdapter.ViewHolder(view);
         return vh;
     }
@@ -63,7 +61,7 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.ViewHolder
         holder.txt_title.setText(item.getTitle());
         //holder.prg_donation.setText(item.g());
         holder.txt_dday.setText(item.getDday());
-        holder.txt_donation.setText(item.getDonation());
+        holder.txt_amount.setText(String.valueOf(item.getAmount()));
     }
 
     @Override
