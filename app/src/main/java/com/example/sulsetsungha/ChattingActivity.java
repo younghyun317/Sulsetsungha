@@ -1,6 +1,7 @@
 package com.example.sulsetsungha;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,15 +14,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChattingActivity extends AppCompatActivity {
@@ -33,6 +41,10 @@ public class ChattingActivity extends AppCompatActivity {
     EditText chat;
     ImageButton send;
 
+    RecyclerView chat_message;
+    ArrayList<ChatItem> chatItems = new ArrayList<>();
+    ChatAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +53,11 @@ public class ChattingActivity extends AppCompatActivity {
         connectWebSocket();
 
         chat = findViewById(R.id.chat_message);
+
+        chat_message = findViewById(R.id.chat_recycle);
+        adapter = new ChatAdapter(chatItems);
+        chat_message.setAdapter(adapter);
+
 
         send = findViewById(R.id.send_chat);
         send.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +72,7 @@ public class ChattingActivity extends AppCompatActivity {
                 webSocketClient.send(String.valueOf(message_json));
             }
         });
+
     }
 
     void connectWebSocket() {
@@ -73,7 +91,8 @@ public class ChattingActivity extends AppCompatActivity {
             roomName = user_name + my_name;
         }
 
-        room_name.setText(roomName);
+        room_name.setText(user_name);
+        get_message(roomName, my_name);
 
         String token = sharedPreferences.getString("access_token", null);
 
@@ -107,8 +126,16 @@ public class ChattingActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(message);
 
-                            messages = findViewById(R.id.message_textView);
-                            messages.setText(messages.getText().toString() + "\n" + jsonObject.getString("username") + " : " + jsonObject.getString("message"));
+                            String name = jsonObject.getString("username");
+                            String content = jsonObject.getString("message");
+                            int view = 0;
+
+                            if (name.equals(my_name)) {
+                                view = 1;
+                            }
+                            chatItems.add(new ChatItem(content, name, view));
+                            adapter.notifyDataSetChanged();
+                            chat_message.smoothScrollToPosition(chatItems.size() - 1);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -129,5 +156,47 @@ public class ChattingActivity extends AppCompatActivity {
         };
 
         webSocketClient.connect();
+    }
+
+    void get_message(String roomName, String my_name) {
+        String url = "http://3.38.51.117:8000/chat/?room=" + roomName;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    JSONObject object = response.getJSONObject(i);
+
+                                    String name = object.getString("user");
+                                    String content = object.getString("content");
+                                    String date = object.getString("date");
+
+                                    int view = 0;
+
+                                    if (name.equals(my_name)) {
+                                        view = 1;
+                                    }
+                                    chatItems.add(new ChatItem(content, name, view));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        adapter.notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.d(TAG, "chat fail");
+                    }
+                });
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
     }
 }
