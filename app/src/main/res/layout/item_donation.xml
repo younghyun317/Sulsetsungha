@@ -9,7 +9,8 @@
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
+        android:background="#E4DBDB"
         android:orientation="vertical">
 
         <LinearLayout
@@ -48,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
                     app:srcCompat="@drawable/button_like"
                     tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
@@ -120,6 +122,19 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/btnDonation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_donation"
+                android:text="기부하기"
+                android:textColor="#FFFFFF" />
+
             <ProgressBar
                 android:id="@+id/prgbarDonation"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -128,16 +143,13 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:max="100" />
-
-            <Button
-                android:id="@+id/btnDonation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="기부하기" />
+                android:background="#6BE1DADA"
+                android:backgroundTint="#00000000"
+                android:backgroundTintMode="add"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressBackgroundTint="#00000000"
+                android:progressDrawable="@drawable/myprogressbar" />
 
         </LinearLayout>
 
