@@ -688,7 +688,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         int height = 100;
         int width = 100;
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker);
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker,null);
         Bitmap bitmap = bitmapdraw.getBitmap();
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -727,7 +727,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_mymarker);
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_mymarker, null);
         Bitmap bitmap = bitmapdraw.getBitmap();
 
         MarkerOptions markerOptions = new MarkerOptions();

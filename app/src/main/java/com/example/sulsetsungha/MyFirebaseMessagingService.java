@@ -106,8 +106,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //푸시알림 클릭시 실행될 액티비티
         Intent intent = new Intent(this, LoginActivity.class);
-//        intent.setAction(Intent.ACTION);
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         pendingIntent = PendingIntent.getActivity(this, 8888/*Request code*/, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -121,7 +119,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         notificationBuilder
                 .setSmallIcon(R.drawable.profile_red)
-                .setColor(getColor(R.color.design_default_color_primary))
+                .setColor(getColor(R.color.pink))
                 .setColorized(true)
                 .setContentTitle(title)
                 .setContentText(contents)
