@@ -49,10 +49,13 @@
                 android:id="@+id/btnKaKaoSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:adjustViewBounds="true"
                 android:backgroundTint="#00FFFFFF"
-                app:srcCompat="@drawable/button_kakao_sex" />
+                android:maxHeight="70dp"
+                android:scaleType="fitCenter"
+                android:scrollbarAlwaysDrawHorizontalTrack="false"
+                app:srcCompat="@drawable/button_kakaosex" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -73,6 +76,32 @@
                 android:background="@drawable/edittext_round"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="#000000"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/textView34"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="20dp"
+                android:text="닉네"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/edtJoinNick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/edittext_round"
+                android:ems="10"
+                android:hint="입력마세요. 구현안됨. 접근금지."
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
                 android:paddingRight="10dp"
@@ -145,9 +174,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_join2"
+                android:scaleType="fitCenter"
                 android:text="가입하기"
                 tools:ignore="TouchTargetSizeCheck" />
 
@@ -160,6 +191,8 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/button_login2"
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
