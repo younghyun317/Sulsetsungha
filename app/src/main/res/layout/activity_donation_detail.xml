@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:text="TextView" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnDetailLike"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

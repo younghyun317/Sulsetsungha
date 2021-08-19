@@ -118,7 +118,7 @@ public class DonationFragment extends Fragment {
                                 long calDateDays = calDate / ( 24*60*60*1000);
 
                                 dday = Math.abs(calDateDays);
-                                //imageView = DownloadImageTask.execute(imageurl);
+                                //imageView = (ImageView)new DownloadImageTask((ImageView)view.findViewById(R.id.imageView13)).execute(imageurl);
                                 sponsors.add(new Sponsor(id, company, title, context, Long.toString(dday), Double.toString(percent)));
                                 //new DownloadImageTask((ImageView)view.findViewById(R.id.)).execute(imageurl);
                             }
