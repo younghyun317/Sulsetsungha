@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,9 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommunityWriteActivity extends AppCompatActivity {
+    String TAG = CommunityWriteActivity.class.getSimpleName();
 
     EditText edtCmnContext;
-    ImageButton btnWriteCancel, btnPost;
+    ImageButton btnWriteCancel, btnWritePost, btnAddPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +36,9 @@ public class CommunityWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_community_write);
 
         edtCmnContext = findViewById(R.id.edtCmnContext);
-        btnPost = findViewById(R.id.btnPost);
+        btnWritePost = findViewById(R.id.btnWritePost);
         btnWriteCancel = findViewById(R.id.btnWriteCancel);
+        btnAddPhoto = findViewById(R.id.btnAddPhoto);
 
         btnWriteCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,9 +47,11 @@ public class CommunityWriteActivity extends AppCompatActivity {
             }
         });
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
+        btnWritePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "click");
+
                 PostContext();
             }
         });
@@ -58,6 +63,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
 
         HashMap<String, String> post_json = new HashMap<>();
         post_json.put("context", edtCmnContext.getText().toString());
+        post_json.put("photo", null);
         JSONObject parameter = new JSONObject(post_json);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

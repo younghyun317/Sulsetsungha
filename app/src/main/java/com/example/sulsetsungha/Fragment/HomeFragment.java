@@ -33,6 +33,7 @@ import com.example.sulsetsungha.LocationFragment;
 import com.example.sulsetsungha.LoginActivity;
 import com.example.sulsetsungha.MainActivity;
 import com.example.sulsetsungha.MapFragment;
+import com.example.sulsetsungha.PushActivity;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -300,6 +301,9 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
                             Log.d("lend_state==>","lend state : "+lend_state);
                             if(lend_state == "true") {
                                 swc_borrow.setChecked(true);
+//                                Intent intent = new Intent(getActivity(), PushActivity.class);
+//                                intent.putExtra("내용", "생리대 대여 알림");
+//                                startActivity(intent);
                             }else {
                                 swc_borrow.setChecked(false);
                             }

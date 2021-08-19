@@ -71,7 +71,8 @@
         <ListView
             android:id="@+id/listView_Community"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
 
         </ListView>
 
@@ -81,6 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:backgroundTint="#00FFFFFF"
+            android:maxWidth="20dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/button_write" />
     </FrameLayout>
 </LinearLayout>

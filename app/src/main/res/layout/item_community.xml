@@ -7,9 +7,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/body_comment"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="@drawable/community_list_background"
+        android:layout_height="100dp"
+        android:background="@drawable/post_backgroud"
         android:orientation="vertical">
 
         <LinearLayout
@@ -24,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:text="익명"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -35,20 +36,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:layout_weight="0.5"
-                android:gravity="right"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:text="time" />
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="2"
-                android:text="분 전" />
-
             <ImageButton
-                android:id="@+id/btnGo"
+                android:id="@+id/btnGoComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -57,6 +50,7 @@
                 android:background="#00FFFFFF"
                 app:srcCompat="@drawable/button_go"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -70,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:text="내용" />
         </LinearLayout>
@@ -86,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="220dp"
                 android:layout_weight="1"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/heart" />
 
             <TextView
@@ -100,6 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/comment" />
 
             <TextView

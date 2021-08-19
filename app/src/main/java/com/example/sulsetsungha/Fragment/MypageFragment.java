@@ -1,6 +1,5 @@
 package com.example.sulsetsungha.Fragment;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.ChattingActivity;
-import com.example.sulsetsungha.LoginActivity;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -35,8 +34,8 @@ public class MypageFragment extends Fragment{
 
     String TAG = MypageFragment.class.getSimpleName();
 
-    private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyBorrowCnt;
-    private Button btnDonationList, btnPointSave, btnShop, btnCmnMng;
+    private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyCanLendCnt, txtMyBorrowCnt;
+    private ImageButton btnSetting;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -54,18 +53,16 @@ public class MypageFragment extends Fragment{
         txtMyId = (TextView) view.findViewById(R.id.txtMyId);
         txtMyPoint = (TextView) view.findViewById(R.id.txtMyPoint);
         txtMyLendCnt = (TextView) view.findViewById(R.id.txtMyLendCnt);
+        txtMyCanLendCnt = (TextView) view.findViewById(R.id.txtMyCanLendCnt);
         txtMyBorrowCnt = (TextView) view.findViewById(R.id.txtMyBorrowCnt);
-        btnDonationList = (Button) view.findViewById(R.id.btnDonationList);
-        btnPointSave = (Button) view.findViewById(R.id.btnPointSave);
-        btnShop = (Button) view.findViewById(R.id.btnShop);
-        btnCmnMng = (Button) view.findViewById(R.id.btnCmnMng);
+
+        btnSetting = (ImageButton) view.findViewById(R.id.btnSetting);
 
         getUserInfomation(); //사용자 정보 가져오기
         getUserLend(); //사용자 빌려준 횟수 가져오기
         getUserBorrow(); //사용자 빌린 횟수 가져오
 
-        btnShop = view.findViewById(R.id.btnShop);
-        btnShop.setOnClickListener(new View.OnClickListener() {
+        btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChattingActivity.class);
@@ -91,8 +88,9 @@ public class MypageFragment extends Fragment{
                     public void onResponse(JSONArray response) {
                         try {
                             Log.d(TAG, "response : " + response.getJSONObject(0).getString("point").toString());
-                            txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+                            txtMyId.setText(response.getJSONObject(0).getString("nickname").toString());
                             txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+                            txtMyCanLendCnt.setText(response.getJSONObject(0).getString("can_borrow"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -129,14 +127,6 @@ public class MypageFragment extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "response : " + response.length());
-                        txtMyBorrowCnt.setText(String.valueOf(response.length()));
-//                        try {
-//                            Log.d(TAG, "response : " + response.length());
-//                            txtMyBorrowCnt.setText(response.length());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-
                     }
                 },
                 new Response.ErrorListener() {
