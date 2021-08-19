@@ -12,40 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btnWriteCancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@drawable/button_cancel"
+            android:layout_gravity="center"
+            android:background="@drawable/button_cancel"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/textView20"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_weight="7"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="글쓰기"
+            android:layout_marginLeft="20dp"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnWritePost"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="3"
-            android:backgroundTint="#00FFFFFF"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/button_post" />
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_post"
+            android:scaleType="centerCrop" />
 
     </LinearLayout>
 
@@ -61,16 +55,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="글쓰기" />
+            android:text="내용" />
 
         <EditText
             android:id="@+id/edtCmnContext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_round"
+            android:background="@drawable/write_box"
             android:ems="10"
             android:gravity="top"
             android:hint="내용을 입력하세요."
@@ -82,15 +76,22 @@
             android:paddingBottom="5dp"
             android:scrollbars="vertical" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnAddPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="#00FFFFFF"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/button_add_image" />
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_add_image"
+            android:scaleType="centerCrop"/>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="100dp"
+        android:background="@drawable/advertisement"/>
+
 </LinearLayout>

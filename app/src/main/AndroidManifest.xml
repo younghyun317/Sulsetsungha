@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PushActivity"
+            android:name=".PushAlarmActivity"
             android:exported="true" />
 
         <meta-data
