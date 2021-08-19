@@ -26,6 +26,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CommunityDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".ChattingActivity"
             android:exported="true" />
         <activity
@@ -70,6 +73,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyByM5X58E0EeRtTXDzbmcYr7M_OqCE6A74" />
+<<<<<<< HEAD
+=======
 
         <meta-data
             android:name='com.google.firebase.messaging.default_notification_channel_id'
@@ -83,8 +88,35 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+>>>>>>> 5ab9094a9cf35b7281db769c7d7c7b231677a773
 
+        <service android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FirebaseinstanceIDServices">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
+<<<<<<< HEAD
+    <permission
+        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+=======
+>>>>>>> 5ab9094a9cf35b7281db769c7d7c7b231677a773
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

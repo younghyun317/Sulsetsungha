@@ -1,6 +1,5 @@
 package com.example.sulsetsungha.Fragment;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.ChattingActivity;
-import com.example.sulsetsungha.LoginActivity;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -37,6 +36,7 @@ public class MypageFragment extends Fragment{
 
     private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyBorrowCnt;
     private Button btnDonationList, btnPointSave, btnShop, btnCmnMng;
+    private ImageButton btnSetting;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,20 +52,20 @@ public class MypageFragment extends Fragment{
         View view = (View)inflater.inflate(R.layout.fragment_mypage, container, false);
 
         txtMyId = (TextView) view.findViewById(R.id.txtMyId);
-        txtMyPoint = (TextView) view.findViewById(R.id.txtMyPoint);
+        txtMyPoint = (TextView) view.findViewById(R.id.txtMyCanLendCnt);
         txtMyLendCnt = (TextView) view.findViewById(R.id.txtMyLendCnt);
         txtMyBorrowCnt = (TextView) view.findViewById(R.id.txtMyBorrowCnt);
-        btnDonationList = (Button) view.findViewById(R.id.btnDonationList);
-        btnPointSave = (Button) view.findViewById(R.id.btnPointSave);
-        btnShop = (Button) view.findViewById(R.id.btnShop);
-        btnCmnMng = (Button) view.findViewById(R.id.btnCmnMng);
+//        btnDonationList = (Button) view.findViewById(R.id.btnDonationList);
+//        btnPointSave = (Button) view.findViewById(R.id.btnPointSave);
+//        btnCmnMng = (Button) view.findViewById(R.id.btnCmnMng);
+
+        btnSetting = (ImageButton) view.findViewById(R.id.btnSetting);
 
         getUserInfomation(); //사용자 정보 가져오기
         getUserLend(); //사용자 빌려준 횟수 가져오기
         getUserBorrow(); //사용자 빌린 횟수 가져오
 
-        btnShop = view.findViewById(R.id.btnShop);
-        btnShop.setOnClickListener(new View.OnClickListener() {
+        btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChattingActivity.class);
