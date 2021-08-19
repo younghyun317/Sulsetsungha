@@ -107,7 +107,7 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         viewHolder.txt_company.setText(sponsor.getCompany().toString());
         viewHolder.txt_title.setText(sponsor.getTitle().toString());
         viewHolder.txt_dday.setText(sponsor.getDday().toString());
-        viewHolder.txt_donation.setText(sponsor.getDonation().toString());
+        viewHolder.txt_donation.setText(sponsor.getDonation().toString() + " %");
         viewHolder.prg_donation.setProgress((int) Math.round(Double.parseDouble(sponsor.getDonation())));
 
         bodyView.setOnClickListener(new View.OnClickListener() {
