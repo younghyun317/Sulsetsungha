@@ -156,6 +156,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             @Override
             public void onClick(View v) {
                 //TODO: 요청하기 버튼 클릭 이벤트
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String token = sharedPreferences.getString("access_token", null);
+
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+                        "http://3.38.51.117:8000/send/borrow_notification/",
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                Log.d(TAG, "보내기 성공");
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                                Log.d(TAG, "보내기 실패");
+                            }
+                        }
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return give_token(token);
+                    }
+                };
+
+                Volley.newRequestQueue(getActivity()).add(request);
 
                 LatLng center = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -164,7 +191,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //                Intent intent = new Intent(getActivity(),PushActivity.class);
 //                intent.putExtra("내용", "생리대 대여 알림");
 //                startActivity(intent);
-
 
                 }
                 else if(btn_request.getText().toString().equals("요청취소")) {
