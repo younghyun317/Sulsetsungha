@@ -60,6 +60,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -283,6 +285,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         return (int)distance;
     }
+    class toAsc implements Comparator<Integer> {
+        @Override
+        public int compare(Integer a, Integer b) {
+            return a.compareTo(b) ;
+        }
+    };
 
     //서버에서 500m내 사용자 가져오기
     public void getNearUser() {
@@ -310,7 +318,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
                                 ArrayList<LatLng> getUloc = new ArrayList<>();
                                 ArrayList<String> getUname = new ArrayList<>();
+                                ArrayList<String> nearUname = new ArrayList<>();
+                                ArrayList<Integer> nearUdis = new ArrayList<>();
                                 ArrayList<String> nearU = new ArrayList<>();
+
                                 bundle = new Bundle();
 
                                 String uLoc = null;
@@ -334,11 +345,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                                     getUname.add(uName);
 
                                     //리스트로 전달 위해
-                                    nearU.add(uName);
-                                    nearU.add(String.valueOf(getDistance(location, uLat, uLng)));
+                                    nearUname.add(uName);
+                                    nearUdis.add(getDistance(location, uLat, uLng));
+
+                                }
+
+                                toAsc ascending = new toAsc();
+                                Collections.sort(nearUdis, ascending);
+
+                                for(int i =0;i<response.length();i++){
+                                    nearU.add(nearUname.get(i));
+                                    nearU.add(String.valueOf(nearUdis.get(i)));
+
                                 }
 
                                 setLocation(getUloc, getUname);
+
                                 bundle.putStringArrayList("nearU", nearU);
 
                                 Log.d("nearU==>", "nearU = "+nearU);
@@ -681,6 +703,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
             Marker m = mMap.addMarker(markerOptions);
             cMarker.add(m);
+
         }
 
 //        for(Map.Entry<LatLng,String> entry : locationMap.entrySet()) {

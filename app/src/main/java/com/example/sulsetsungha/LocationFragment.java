@@ -80,6 +80,7 @@ public class LocationFragment extends Fragment {
 
         //MapFragment에서 전달된 데이터 받기
         bundle = getArguments();
+        int min=500;
 
         if(getArguments()!=null) {
             ArrayList<String> nearU = getArguments().getStringArrayList("nearU");
