@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -56,6 +57,11 @@ public class MypageFragment extends Fragment{
         txtMyBorrowCnt = (TextView) view.findViewById(R.id.txtMyBorrowCnt);
 
         btnSetting = (ImageButton) view.findViewById(R.id.btnSetting);
+        recycleView_MyDonation = (RecyclerView) view.findViewById(R.id.recycleView_MyDonation);
+        LinearLayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recycleView_MyDonation.setLayoutManager(layoutManager);
 
         getUserInfomation(); //사용자 정보 가져오기
         getUserLend(); //사용자 빌려준 횟수 가져오기
@@ -98,57 +104,8 @@ public class MypageFragment extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "response: " + response);
-//                        try {
-//                            //후원 리스트
-//                            sponsors = new ArrayList<>();
-//                            //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
-//                            //Log.d("length", "length : " + response.getJSONArray(1).toString());
-//
-//                            String id, company, title, context, deadline;
-//                            long dday, target_amount, current_amount;
-//                            double percent;
-//
-//                            //int percent;
-//                            Date currentCal, targetCal; //현재 날짜, 비교 날짜
-//
-//                            for (int i=0; i < response.length(); i++) {
-//                                id = response.getJSONObject(i).getString("id").toString();
-//                                company = response.getJSONObject(i).getString("company").toString();
-//                                title = response.getJSONObject(i).getString("title").toString();
-//                                context = response.getJSONObject(i).getString("context").toString();
-//                                deadline = response.getJSONObject(i).getString("deadline").toString();
-//                                target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
-//                                current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
-//
-//                                //percent = Math.round((current_amount/target_amount)*100);
-//                                percent = ((current_amount * 1.0)/target_amount)*100;
-//                                Log.d(TAG, "current_amount : " + String.valueOf(current_amount).toString());
-//                                Log.d(TAG, "target_amount : " + String.valueOf(target_amount).toString());
-//                                Log.d(TAG, "percent : " + String.valueOf(percent).toString());
-//                                currentCal = dateFormat.parse(today);
-//                                targetCal = dateFormat.parse(deadline);
-//
-//                                // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
-//                                // 연산결과 -950400000. long type 으로 return 된다.
-//                                long calDate = targetCal.getTime() - currentCal.getTime();
-//                                // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
-//                                // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
-//                                long calDateDays = calDate / ( 24*60*60*1000);
-//
-//                                dday = Math.abs(calDateDays);
-//
-//                                sponsors.add(new Sponsor(id, company, title, context, Long.toString(dday), Double.toString(percent)));
-//                            }
-//
-//                            mypageListView = (RecyclerView)view.findViewById(R.id.recycleView_MyDonation);
-//                            //mypageAdapter = new MypageAdapter(getContext(), sponsors);
-//                            mypageListView.setAdapter(mypageAdapter);
-//
-//                            mypageAdapter.notifyDataSetChanged();//갱신하기
-//
-//                        } catch (JSONException | ParseException e) {
-//                            e.printStackTrace();
-//                        }
+
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -288,50 +245,4 @@ public class MypageFragment extends Fragment{
 
         return headers;
     }
-
-    class Sponsor {
-        private String id;
-        private String company;
-        private String title;
-        private String context;
-        private String dday;
-        private String donation;
-        private int progressbar;
-        //private ProgressBar progressbar;
-
-        public Sponsor(String id, String company, String title, String context, String dday, String donation) {
-            //this.request = request;
-            this.id = id;
-            this.company = company;
-            this.title = title;
-            this.context = context;
-            this.dday = dday;
-            this.donation = donation;
-            //this.progressbar = progressbar;
-        }
-
-        public String getId() { return id; }
-
-        public String getCompany() {
-            return company;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getContext() { return context; }
-
-        public String getDday() {
-            return dday;
-        }
-
-        public String getDonation() {
-            return donation;
-        }
-
-        public int getProgressbar() {
-            return progressbar;
-        }
-    } //class Sponsor
 }

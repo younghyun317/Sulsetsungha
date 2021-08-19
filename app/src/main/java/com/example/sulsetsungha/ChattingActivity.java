@@ -80,6 +80,7 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
+        btnBorrowCompleted = findViewById(R.id.btnBorrowCompleted);
         btnBorrowCompleted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
