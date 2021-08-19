@@ -23,6 +23,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.ChattingActivity;
 import com.example.sulsetsungha.R;
+import com.example.sulsetsungha.community.CommunityDetailActivity;
+import com.example.sulsetsungha.community.CommunityWriteActivity;
+import com.example.sulsetsungha.community.MyPostActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,15 +37,10 @@ public class MypageFragment extends Fragment{
 
     String TAG = MypageFragment.class.getSimpleName();
 
+    String ID;
+
     private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyCanLendCnt, txtMyBorrowCnt;
-    private ImageButton btnSetting;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
+    private ImageButton btnSetting, btnMyPost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +68,21 @@ public class MypageFragment extends Fragment{
             }
         });
 
+        btnMyPost = (ImageButton) view.findViewById(R.id.btnMyPost);
+        btnMyPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MyPostActivity.class);
+                intent.putExtra("ID", ID);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getContext().startActivity(intent);
+
+//                Intent i= new Intent(getActivity(), MyPostActivity.class);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(i);
+            }
+        });
+
         return view;
     }
 
@@ -91,6 +104,11 @@ public class MypageFragment extends Fragment{
                             txtMyId.setText(response.getJSONObject(0).getString("nickname").toString());
                             txtMyPoint.setText(response.getJSONObject(0).getString("point"));
                             txtMyCanLendCnt.setText(response.getJSONObject(0).getString("can_borrow"));
+
+                            ID = response.getJSONObject(0).getJSONObject("user").getString("username").toString();
+//                            Intent intent = new Intent(getContext(), MyPostActivity.class);
+//                            intent.putExtra("ID", response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+//                            //getContext().startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

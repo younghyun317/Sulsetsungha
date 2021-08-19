@@ -120,19 +120,19 @@ public class CommunityDetailActivity extends AppCompatActivity {
         String username = intent.getStringExtra("Username");
 
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://3.38.51.117:8000//like/post/";
+        final String url = "http://3.38.51.117:8000/like/post/";
 
         HashMap<String, String> like_json = new HashMap<>();
-        like_json.put("post", postid.toString());
+        like_json.put("id", postid.toString());
         JSONObject parameter = new JSONObject(like_json);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String token = sharedPreferences.getString("access_token", null);
 
-        Drawable unlike_drawable = this.getDrawable(R.drawable.button_post_like);
-        Drawable like_drawable = this.getDrawable(R.drawable.button_post_like_color);
+        Drawable unlike_drawable = getResources().getDrawable(R.drawable.button_post_like);
+        Drawable like_drawable = getResources().getDrawable(R.drawable.button_post_like_color);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH,
                 url,
                 parameter,
                 new Response.Listener<JSONObject>() {

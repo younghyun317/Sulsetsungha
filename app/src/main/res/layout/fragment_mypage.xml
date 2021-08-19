@@ -283,7 +283,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/btnMyPost"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
