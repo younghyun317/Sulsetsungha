@@ -3,6 +3,9 @@ package com.example.sulsetsungha.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -29,18 +32,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.GpsTracker;
 import com.example.sulsetsungha.LocationFragment;
 import com.example.sulsetsungha.LoginActivity;
 import com.example.sulsetsungha.MainActivity;
 import com.example.sulsetsungha.MapFragment;
 import com.example.sulsetsungha.PushActivity;
 import com.example.sulsetsungha.R;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeFragment extends Fragment /*implements MapFragment.OnTimePickerSetListener*/{
@@ -60,7 +68,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
     String address;
 
     HashMap<String, String> borrow_json;
-
+    GpsTracker gpsTracker;
 
 
     boolean cnt = true;
@@ -183,11 +191,15 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
         btn_Mgps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle = new Bundle();
-                bundle.putBoolean("gps", cnt);
-
-                MapFragment fr = new MapFragment();
-                fr.setArguments(bundle);
+//                bundle = new Bundle();
+//                bundle.putBoolean("gps", cnt);
+//
+//                MapFragment fr = new MapFragment();
+//                fr.setArguments(bundle);
+                gpsTracker = new GpsTracker(getContext());
+                LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+                txt_address.setText(getCurrentAddress(latlng));
+                Log.d("Home Fragment==>","address:"+txt_address);
 
 //                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 //                transaction.replace(R.id.layout_fr, fr)
@@ -269,6 +281,42 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //        txt_address.setText(contents);
 //
 //    }
+
+    //현재 위치 주소 알아내기
+    public String getCurrentAddress(LatLng latlng) {
+
+        //지오코더 GPS를 주소로 변환
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+        List<Address> addresses;
+
+        try {
+            addresses = geocoder.getFromLocation(
+                    latlng.latitude,
+                    latlng.longitude,
+                    1);
+        } catch (IOException ioException) {
+            //네트워크 문제
+            Toast.makeText(getContext(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+            return "지오코더 서비스 사용불가";
+        } catch (IllegalArgumentException illegalArgumentException) {
+            Toast.makeText(getContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+            return "잘못된 GPS 좌표";
+
+        }
+
+
+        if (addresses == null || addresses.size() == 0) {
+            Toast.makeText(getContext(), "주소 미발견", Toast.LENGTH_LONG).show();
+            return "주소 미발견";
+
+        } else {
+            Address address = addresses.get(0);
+            return address.getAddressLine(0).toString();
+        }
+
+    }
+
 
     //마지막 대여가능 상태 가져오기
     public void getLastLendState() {
