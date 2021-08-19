@@ -10,5 +10,10 @@
         </clip>
     </item>
 
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="25dip" />
+        </shape>
+    </item>
 
 </selector>
