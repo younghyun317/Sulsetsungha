@@ -186,6 +186,12 @@ public class LoginActivity extends AppCompatActivity {
                                 SetFirstCurrentLocation(latitude, longitude);
 //                                getLastLendState();
 
+                                FirebaseMessaging.getInstance().subscribeToTopic(edtId.getText().toString())
+                                        .addOnCompleteListener( task -> {
+                                            if (task.isComplete()) Log.d(TAG, "구독 성공");
+                                            else Log.d(TAG, "구독 실패");
+                                        });
+
                                 Intent i= new Intent(LoginActivity.this, MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(i);
