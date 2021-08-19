@@ -347,6 +347,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
                             }
                             else { //주변에 없음
+
 //                                Toast.makeText(getContext(), "현재 주변에 사용자가 없습니다.", Toast.LENGTH_SHORT).show();
                                 Log.d("주변에 암도 없어서","안뜨는겁니당==>"+response.length());
                             }

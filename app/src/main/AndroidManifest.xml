@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sulsetsungha">
 
+    <permission
+        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,8 +60,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PushActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".PushActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -54,36 +70,21 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyByM5X58E0EeRtTXDzbmcYr7M_OqCE6A74" />
-        <service android:name=".FirebaseMessagingService">
-        <intent-filter>
 
-            <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-        </intent-filter>
+        <meta-data
+            android:name='com.google.firebase.messaging.default_notification_channel_id'
+            android:value = "@string/default_notification_channel_id"/>
 
-    </service>
-
-    <service android:name=".FirebaseinstanceIDServices">
-
-        <intent-filter>
-
-            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-        </intent-filter>
-    </service>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 
-    <permission
-        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="READ_GSERVICES" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>
