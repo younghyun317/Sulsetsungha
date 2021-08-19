@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#E4DBDB"
+        android:background="#FAFAFA"
         android:orientation="vertical">
 
         <LinearLayout
@@ -41,7 +41,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_like"
-                android:backgroundTint="#00FFFFFF"/>
+                android:backgroundTint="#00FFFFFF" />
 
         </LinearLayout>
 
@@ -56,9 +56,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:text="후원 설명"
-                android:textColor="#FFFFFF" />
+                android:textColor="#1E1D1D" />
 
             <TextView
                 android:id="@+id/txtName"
@@ -69,7 +69,7 @@
                 android:layout_weight="2"
                 android:gravity="right"
                 android:text="회사 이름"
-                android:textColor="#FFFFFF" />
+                android:textColor="#1E1D1D" />
 
         </LinearLayout>
 
@@ -87,17 +87,17 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="4"
                 android:text="기부한 포인트"
-                android:textColor="#FFFFFF" />
+                android:textColor="#1E1D1D" />
 
             <TextView
                 android:id="@+id/t"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_weight="5"
+                android:layout_weight="6"
                 android:gravity="right"
                 android:text="p"
-                android:textColor="#FFFFFF" />
+                android:textColor="#1E1D1D" />
 
             <TextView
                 android:id="@+id/txtAmount"
@@ -108,7 +108,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="2"
                 android:gravity="left"
-                android:textColor="#FFFFFF" />
+                android:textColor="#1E1D1D" />
 
         </LinearLayout>
 
