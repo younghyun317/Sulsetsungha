@@ -53,7 +53,7 @@ class CommentAdapter extends ArrayAdapter implements AdapterView.OnItemClickList
         viewHolder.txt_cmt = (TextView)convertView.findViewById(R.id.txtCmt);
 
         final CommunityDetailActivity.Comment comment = (CommunityDetailActivity.Comment)list.get(position);
-        //viewHolder.txt_cmt_writer.setText(comment.getPost_id().toString());
+        viewHolder.txt_cmt_writer.setText("익명" + comment.getPost_id().toString());
         viewHolder.txt_comment_time.setText(comment.getTime().toString());
         viewHolder.txt_cmt.setText(comment.getComment().toString());
 

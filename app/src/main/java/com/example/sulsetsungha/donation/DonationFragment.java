@@ -113,6 +113,8 @@ public class DonationFragment extends Fragment {
                             donationAdapter = new DonationAdapter(getContext(), sponsors);
                             donationListView.setAdapter(donationAdapter);
 
+                            donationAdapter.notifyDataSetChanged();//갱신하기
+
                             donationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

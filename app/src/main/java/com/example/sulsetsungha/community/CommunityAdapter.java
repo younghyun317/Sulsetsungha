@@ -76,6 +76,7 @@ public class CommunityAdapter extends ArrayAdapter implements AdapterView.OnItem
                 intent.putExtra("Date", community.getTime().toString());
                 intent.putExtra("Like", community.getLikeCnt().toString());
                 intent.putExtra("Comment", community.getCommentCnt().toString());
+                intent.putExtra("Username", community.getUsername().toString());
 
 //                Toast toast = Toast.makeText(context, community.getPost_id(), Toast.LENGTH_LONG);
 //                toast.show();
