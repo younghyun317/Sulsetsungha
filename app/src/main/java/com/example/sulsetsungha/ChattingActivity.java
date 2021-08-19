@@ -73,6 +73,7 @@ public class ChattingActivity extends AppCompatActivity {
                 JSONObject message_json = new JSONObject(message);
 
                 webSocketClient.send(String.valueOf(message_json));
+                chat.setText("");
             }
         });
 
