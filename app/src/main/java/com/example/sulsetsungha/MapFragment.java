@@ -145,7 +145,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         btn_gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                currentPosition = new LatLng(location.getLatitude(), location.getLongitude()); //주소 가져오기 위함
                 mMoveMapByAPI = true;
                 setCurrentLocation(location);
             }
@@ -237,8 +237,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
 
-                updateCurrentLocation(location); //업데이트
-                getNearUser();
+                updateCurrentLocation(location); //현재 위치 서버 업데이트
+                getNearUser(); //주변 사용자 정보
                 /**
                  * 마지막에 꼭 삭제해야할 코드!! Log 확인 위한 코드임!!!
                  */
@@ -251,11 +251,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //                String currentLng = String.valueOf(location.getLongitude());
 //                String user_location = currentLat + ","+currentLng;
 
-                currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
-
-                //TODO: 현재 위치 서버에 올리기
-//                SetFirstCurrentLocation(); //최초 접속시
+                currentPosition = new LatLng(location.getLatitude(), location.getLongitude()); //현재 위치의 주소 가져오기 위함
 
 
                 //본인 현재 위치에 마커 생성하고 이동
@@ -438,8 +434,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        Toast toast = Toast.makeText(getContext(), "server update error", Toast.LENGTH_LONG);
-//                        toast.show();
 //
                         error.printStackTrace();
                         Log.d("[위치 업데이트]", "Location Update FAIL");
@@ -691,6 +685,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         if(cMarker.size()!=0){
             cMarker.clear();
         }
+        int height = 100;
+        int width = 100;
+
         BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker);
         Bitmap bitmap = bitmapdraw.getBitmap();
 

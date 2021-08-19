@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -14,7 +15,11 @@ import android.widget.Toast;
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.example.sulsetsungha.Fragment.MypageFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity /*implements MapFragment.OnTimePickerSetListener*/ {
 
@@ -24,7 +29,8 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
     //DonationAdapter donationAdapter;
     CommunityFragment communityFragment;
     Menu menu;
-    String lend_state = null;
+    private static final String TAG = "[FCM push]";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
 
         init();
         SettingListener();
+
 
         //맨 처음 시작할 탭 설정
         bottomNavigationView.setSelectedItemId(R.id.tab_home);

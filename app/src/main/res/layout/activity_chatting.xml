@@ -17,7 +17,6 @@
             android:id="@+id/btnBackHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/button_back" />
 
@@ -25,32 +24,49 @@
             android:id="@+id/room_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:text="설셋성하"
-            android:textSize="20sp"
+            android:layout_marginLeft="120dp"
+            android:textSize="10pt"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnReport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
+            android:layout_marginLeft="50dp"
             app:srcCompat="@drawable/button_report" />
 
         <ImageButton
             android:id="@+id/btnChatExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/button_exit" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/alert"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textSize="4.5pt"
+        android:textColor="@color/black"
+        android:text="\n        주의사항 \n \n
+        가까운 여성 화장실 등 장소에서 거래하는 것을 추천합니다 \n
+        범죄 예방을 위해 본인의 정확한 위치를 알리지 않는 것을 권장합니다. \n
+        급한 상황에 있는 요청자를 위해 사기 및 노쇼 행위를 삼가해주시기 바랍니다. \n
+        [대여 완료] 버튼을 눌러야 상대방에게 포인트가 적립됩니다. \n
+" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycle"
         android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
         android:layout_height="500dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
@@ -58,6 +74,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="bottom"
         android:orientation="horizontal">
 
         <EditText
@@ -79,11 +96,12 @@
 
         <ImageButton
             android:id="@+id/send_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:scaleType="fitXY"
+            android:layout_gravity="center"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/button_chat_send" />
     </LinearLayout>
