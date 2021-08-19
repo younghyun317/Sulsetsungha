@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
@@ -86,6 +87,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private Marker currentMarker = null;
     List<Marker> cMarker = new ArrayList<>();
 
+
     //onRequestPermissionResult에서 수신된 결과 중 ActivityCompat.requestPermissions 사용한 퍼미션 요청 구별
     private static final int PERMISSIONS_REQUEST_CODE=100;
     boolean needRequest=false;
@@ -99,6 +101,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
     Circle circle;
     CircleOptions circle500M;
+    Bitmap icon;
+    Bitmap icon2;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
@@ -156,6 +160,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             @Override
             public void onClick(View v) {
                 //TODO: 요청하기 버튼 클릭 이벤트
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String token = sharedPreferences.getString("access_token", null);
+
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
+                        "http://3.38.51.117:8000/send/borrow_notification/",
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                Log.d(TAG, "보내기 성공");
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                                Log.d(TAG, "보내기 실패");
+                            }
+                        }
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return give_token(token);
+                    }
+                };
+
+                Volley.newRequestQueue(getActivity()).add(request);
 
                 LatLng center = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -164,7 +195,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 //                Intent intent = new Intent(getActivity(),PushActivity.class);
 //                intent.putExtra("내용", "생리대 대여 알림");
 //                startActivity(intent);
-
 
                 }
                 else if(btn_request.getText().toString().equals("요청취소")) {
@@ -685,11 +715,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         if(cMarker.size()!=0){
             cMarker.clear();
         }
-        int height = 100;
-        int width = 100;
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker,null);
-        Bitmap bitmap = bitmapdraw.getBitmap();
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getContext().getDrawable(R.drawable.ic_marker);
+        icon = bitmapdraw.getBitmap();
+//        Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 60, 80, false);
 
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -697,7 +726,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             markerOptions.position(uLoc.get(i))
                     .title(uName.get(i))
                     .draggable(true)
-                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                    .icon(BitmapDescriptorFactory.fromBitmap(icon));
             Marker m = mMap.addMarker(markerOptions);
             cMarker.add(m);
 
@@ -727,13 +756,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_mymarker, null);
-        Bitmap bitmap = bitmapdraw.getBitmap();
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getContext().getDrawable(R.drawable.ic_mymarker);
+        icon2 = bitmapdraw.getBitmap();
+//        Bitmap b = Bitmap.createScaledBitmap(icon2, 25, 25, false);
+//        Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.ic_mymarker);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng)
                 .title("ME")
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                .icon(BitmapDescriptorFactory.fromBitmap(icon2))
                 .draggable(true);
 
         currentMarker = mMap.addMarker(markerOptions);

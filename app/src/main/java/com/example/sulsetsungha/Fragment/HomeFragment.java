@@ -59,7 +59,6 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 
     TextView txt_address;
     Switch swc_borrow;
-    Button btn_Mgps;
 
     private MapFragment mapFr;
     private LocationFragment locationFr;
@@ -104,6 +103,11 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //        else {
 //            txt_address.setText("no bundle");
 //        }
+
+        gpsTracker = new GpsTracker(getContext());
+        LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        txt_address.setText(getCurrentAddress(latlng));
+        Log.d("Home Fragment==>","address:"+txt_address);
 
         getLastLendState();
 
@@ -186,28 +190,6 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
                 }
             }
         });
-
-        btn_Mgps = v.findViewById(R.id.btn_Mgps);
-        btn_Mgps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                bundle = new Bundle();
-//                bundle.putBoolean("gps", cnt);
-//
-//                MapFragment fr = new MapFragment();
-//                fr.setArguments(bundle);
-                gpsTracker = new GpsTracker(getContext());
-                LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-                txt_address.setText(getCurrentAddress(latlng));
-                Log.d("Home Fragment==>","address:"+txt_address);
-
-//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.layout_fr, fr)
-//                        .commit();
-
-            }
-        });
-
 
 //        mLayout = layout.findViewById(R.id.layout_home);
 
