@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
     ListView commentListView;
     static CommentAdapter commentAdapter;
 
-    ImageButton btnBackCmn, btnCmtSend;
+    ImageButton btnBackCmn, btnCmtSend, btnPostLike;
     TextView txtWriteTime, txtDetailContext, txtLikeCnt, txtCmtCnt;
     EditText edtInputComment;
 
@@ -55,6 +56,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
 
         btnBackCmn = findViewById(R.id.btnBackCmn);
         btnCmtSend = findViewById(R.id.btnCmtSend);
+        btnPostLike = findViewById(R.id.btnPostLike);
         txtWriteTime = findViewById(R.id.txtWriteTime);
         txtDetailContext = findViewById(R.id.txtDetailContext);
         txtLikeCnt = findViewById(R.id.txtLikeCnt);
@@ -85,6 +87,14 @@ public class CommunityDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnPostLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_LONG);
+                toast.show();
+                setPostLike();
+            }
+        });
 
     }
 
@@ -96,10 +106,68 @@ public class CommunityDetailActivity extends AppCompatActivity {
         String like_cnt = intent.getStringExtra("Like");
         String cmt_cnt = intent.getStringExtra("Comment");
 
+
         txtDetailContext.setText(context);
         txtWriteTime.setText(date);
         txtLikeCnt.setText(like_cnt);
         txtCmtCnt.setText(cmt_cnt);
+    }
+
+    //글 좋아요 누르기
+    private void setPostLike() {
+        Intent intent = getIntent();
+        String postid = intent.getStringExtra("ID");
+        String username = intent.getStringExtra("Username");
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        final String url = "http://3.38.51.117:8000//like/post/";
+
+        HashMap<String, String> like_json = new HashMap<>();
+        like_json.put("post", postid.toString());
+        JSONObject parameter = new JSONObject(like_json);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = sharedPreferences.getString("access_token", null);
+
+        Drawable unlike_drawable = this.getDrawable(R.drawable.button_post_like);
+        Drawable like_drawable = this.getDrawable(R.drawable.button_post_like_color);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url,
+                parameter,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.d(TAG, "response : " + response.toString());
+                            if (response.getString("id").equals(postid) && response.getString("user").equals(username)) {
+                                btnPostLike.setImageDrawable(unlike_drawable);
+                                Toast toast = Toast.makeText(getApplicationContext(), "글 좋아요 취소", Toast.LENGTH_LONG);
+                                toast.show();
+                            } else {
+                                btnPostLike.setImageDrawable(like_drawable);
+                                Toast toast = Toast.makeText(getApplicationContext(), "글 조아요!", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonObjectRequest);
     }
 
     //댓글 불러오기
@@ -123,7 +191,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                             comments = new ArrayList<>();
                             String id, context, date, like;
 
-                            for (int i=0; i < response.length(); i++) {
+                            for (int i = 0; i < response.length(); i++) {
                                 id = response.getJSONObject(i).getString("id").toString();
                                 context = response.getJSONObject(i).getString("context").toString();
                                 date = formatTimeString(timeToMill(response.getJSONObject(i).get("date").toString()));
@@ -133,7 +201,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                                 comments.add(new Comment(id, context, date, like));
                                 Log.d(TAG, "comments : " + comments);
                             }
-                            commentListView = (ListView)findViewById(R.id.listView_Comment);
+                            commentListView = (ListView) findViewById(R.id.listView_Comment);
                             commentAdapter = new CommentAdapter(getApplicationContext(), comments);
                             commentListView.setAdapter(commentAdapter);
                             commentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,8 +261,7 @@ public class CommunityDetailActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                })
-        {
+                }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return give_token(token);
@@ -259,7 +326,9 @@ public class CommunityDetailActivity extends AppCompatActivity {
             this.like = like;
         }
 
-        public String getPost_id() { return post_id; }
+        public String getPost_id() {
+            return post_id;
+        }
 
         public String getComment() {
             return comment;

@@ -127,6 +127,7 @@ public class MypageFragment extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "response : " + response.length());
+                        txtMyBorrowCnt.setText(String.valueOf(response.length()));
                     }
                 },
                 new Response.ErrorListener() {

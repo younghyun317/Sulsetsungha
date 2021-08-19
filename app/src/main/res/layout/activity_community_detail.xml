@@ -93,6 +93,7 @@
                 android:id="@+id/imageView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/heart_color" />
 
@@ -116,6 +117,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0" />
+
+            <ImageButton
+                android:id="@+id/btnPostLike"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/button_post_like" />
         </LinearLayout>
 
     </LinearLayout>
