@@ -23,7 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sulsetsungha.CommentAdapter;
+import com.example.sulsetsungha.community.CommentAdapter;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
