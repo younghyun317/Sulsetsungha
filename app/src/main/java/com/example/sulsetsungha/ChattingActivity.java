@@ -98,7 +98,7 @@ public class ChattingActivity extends AppCompatActivity {
         final String url = "http://3.38.51.117:8000/borrow/";
 
         HashMap<String, String> borrow_json = new HashMap<>();
-        borrow_json.put("borrower_username", user_name.toString());
+        borrow_json.put("borrower_username", user_name);
         JSONObject parameter = new JSONObject(borrow_json);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

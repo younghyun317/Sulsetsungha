@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,12 +28,16 @@ import com.android.volley.toolbox.Volley;
 import com.example.sulsetsungha.ChattingActivity;
 import com.example.sulsetsungha.R;
 import com.example.sulsetsungha.community.MyPostActivity;
+import com.example.sulsetsungha.donation.DonationAdapter;
+import com.example.sulsetsungha.donation.DonationFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +46,13 @@ public class MypageFragment extends Fragment{
 
     String TAG = MypageFragment.class.getSimpleName();
     String ID;
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    String today = dateFormat.format(Calendar.getInstance().getTime());
+    private RecyclerView mRecyclerView;
+    private ArrayList<MypageRecyclerViewItem> mList;
+    private MypageAdapter mypageAdapter;
 
     private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyCanLendCnt, txtMyBorrowCnt;
     private ImageButton btnSetting, btnMyPost;
@@ -57,6 +71,7 @@ public class MypageFragment extends Fragment{
         txtMyBorrowCnt = (TextView) view.findViewById(R.id.txtMyBorrowCnt);
 
         btnSetting = (ImageButton) view.findViewById(R.id.btnSetting);
+
         recycleView_MyDonation = (RecyclerView) view.findViewById(R.id.recycleView_MyDonation);
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getContext());
@@ -104,7 +119,55 @@ public class MypageFragment extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "response: " + response);
+                        try {
+                            //후원 리스트
+                            mList = new ArrayList<>();
+                            //Log.d("response", "response : " + response.getJSONObject(0).getString("company").toString());
+                            //Log.d("length", "length : " + response.getJSONArray(1).toString());
 
+                            String id, company, title, context, deadline;
+                            long dday, target_amount, current_amount;
+                            double percent;
+
+                            //int percent;
+                            Date currentCal, targetCal; //현재 날짜, 비교 날짜
+
+                            for (int i=0; i < response.length(); i++) {
+                                id = response.getJSONObject(i).getString("id").toString();
+                                company = response.getJSONObject(i).getString("company").toString();
+                                title = response.getJSONObject(i).getString("title").toString();
+                                context = response.getJSONObject(i).getString("context").toString();
+                                deadline = response.getJSONObject(i).getString("deadline").toString();
+                                target_amount = Long.parseLong(response.getJSONObject(i).getString("target_amount"));
+                                current_amount = Long.parseLong(response.getJSONObject(i).getString("current_amount"));
+
+                                //percent = Math.round((current_amount/target_amount)*100);
+                                percent = ((current_amount * 1.0)/target_amount)*100;
+                                Log.d(TAG, "current_amount : " + String.valueOf(current_amount).toString());
+                                Log.d(TAG, "target_amount : " + String.valueOf(target_amount).toString());
+                                Log.d(TAG, "percent : " + String.valueOf(percent).toString());
+                                currentCal = dateFormat.parse(today);
+                                targetCal = dateFormat.parse(deadline);
+
+                                // Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
+                                // 연산결과 -950400000. long type 으로 return 된다.
+                                long calDate = targetCal.getTime() - currentCal.getTime();
+                                // Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
+                                // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
+                                long calDateDays = calDate / ( 24*60*60*1000);
+
+                                dday = Math.abs(calDateDays);
+
+                                addItem(id, company, title, context, Long.toString(dday), Double.toString(percent));
+                            }
+
+                            mypageAdapter = new MypageAdapter(mList);
+                            mRecyclerView.setAdapter(mypageAdapter);
+                            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 },
@@ -124,6 +187,19 @@ public class MypageFragment extends Fragment{
         queue.add(jsonArrayRequest);
 
         return view;
+    }
+
+    public void addItem(String id, String company, String title, String context, String dday, String donation){
+        MypageRecyclerViewItem item = new MypageRecyclerViewItem();
+
+        item.setId(id);
+        item.setCompany(company);
+        item.setTitle(title);
+        item.setContext(context);
+        item.setDday(dday);
+        item.setDonation(donation);
+
+        mList.add(item);
     }
 
     private void getUserInfomation() {
