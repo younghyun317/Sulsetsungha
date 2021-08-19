@@ -55,6 +55,7 @@ public class CommunityFragment extends Fragment {
             }
         });
 
+        //게시글 불러오기
         final RequestQueue queue = Volley.newRequestQueue(getActivity());
         final String url = "http://3.38.51.117:8000/community_post/";
 
@@ -68,7 +69,7 @@ public class CommunityFragment extends Fragment {
                             Log.d(TAG, "response : " + response.getJSONObject(0).getString("context").toString());
 
                             communities = new ArrayList<>();
-                            String id, context, date, like, comment;
+                            String id, context, date, like, comment, username;
 
                             for (int i=0; i < response.length(); i++) {
                                 id = response.getJSONObject(i).getString("id").toString();
@@ -77,13 +78,16 @@ public class CommunityFragment extends Fragment {
                                 //date = response.getJSONObject(i).getString("date").toString();
                                 like = response.getJSONObject(i).getString("like").toString();
                                 comment = response.getJSONObject(i).getString("like").toString();
+                                username = response.getJSONObject(i).getString("user").toString();
 
-                                communities.add(new Community(id, context, String.valueOf(date), like, comment));
+                                communities.add(new Community(id, context, String.valueOf(date), like, comment, username));
                                 Log.d(TAG, "communities : " + communities);
                             }
                             communityListView = (ListView)view.findViewById(R.id.listView_Community);
                             communityAdapter = new CommunityAdapter(getContext(), communities);
                             communityListView.setAdapter(communityAdapter);
+
+                            communityAdapter.notifyDataSetChanged();//갱신하기
 
                             if (communityListView.getCount() > 0) {
                                 communityListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -164,13 +168,15 @@ public class CommunityFragment extends Fragment {
         private String time;
         private String like_cnt;
         private String comment_cnt;
+        private String username;
 
-        public Community(String post_id, String context, String time, String like_cnt, String comment_cnt) {
+        public Community(String post_id, String context, String time, String like_cnt, String comment_cnt, String username) {
             this.post_id = post_id;
             this.context = context;
             this.time = time;
             this.like_cnt = like_cnt;
             this.comment_cnt = comment_cnt;
+            this.username = username;
         }
 
         public String getPost_id() { return post_id; }
@@ -190,5 +196,7 @@ public class CommunityFragment extends Fragment {
         public String getCommentCnt() {
             return comment_cnt;
         }
+
+        public String getUsername() { return  username; }
     } //class Community
 }
