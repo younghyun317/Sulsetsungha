@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.sulsetsungha.Fragment.HomeFragment;
 import com.example.sulsetsungha.Fragment.MypageFragment;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
         //선택 리스너 등록
         bottomNavigationView.setOnNavigationItemSelectedListener(new TabSelectedListener());
     }
+
+//    @Override
+//    public void onTimePickerSet(String contents) {
+//        Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_LONG).show();
+//    }
 
     class TabSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
         @Override
@@ -107,14 +113,14 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
     }//TabSelectedListener
 
 //    @Override
-    public void onTimePickerSet(LatLng location){
-//        Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_LONG).show();
+//    public void onTimePickerSet(LatLng location){
+//        Toast.makeText(getApplicationContext(), String.valueOf(location), Toast.LENGTH_LONG).show();
 //        HomeFragment fragment = new HomeFragment();
 //        Bundle bundle = new Bundle();
 //        bundle.putString("address", contents);
 //
 //        fragment.setArguments(bundle);
-    }
+//    }
 
 //    public void refesh() {
 //        donationAdapter.notifyDataSetChanged();

@@ -5,45 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="10"
     android:background="@drawable/chat_background"
     tools:context=".ChattingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btnBackHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@drawable/button_back" />
+            android:layout_width="23dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/button_back" />
 
         <TextView
             android:id="@+id/room_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
             android:text="설셋성하"
-            android:layout_marginLeft="120dp"
-            android:textSize="10pt"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="10pt" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnReport"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            android:layout_marginLeft="50dp"
-            app:srcCompat="@drawable/button_report" />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_report" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnChatExit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@drawable/button_exit" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_exit" />
 
     </LinearLayout>
 
@@ -51,40 +53,43 @@
         android:id="@+id/alert"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_width="400dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@drawable/rectangle_alert"
         android:textSize="4.5pt"
+        android:gravity="center_vertical"
         android:textColor="@color/black"
-        android:text="\n        주의사항 \n \n
-        가까운 여성 화장실 등 장소에서 거래하는 것을 추천합니다 \n
-        범죄 예방을 위해 본인의 정확한 위치를 알리지 않는 것을 권장합니다. \n
-        급한 상황에 있는 요청자를 위해 사기 및 노쇼 행위를 삼가해주시기 바랍니다. \n
-        [대여 완료] 버튼을 눌러야 상대방에게 포인트가 적립됩니다. \n
+        android:text="        주의사항 \n \n
+        - 가까운 여성 화장실 등 장소에서 거래하는 것을 추천합니다 \n
+        - 범죄 예방을 위해 본인의 정확한 위치를 알리지 않는 것을 권장합니다. \n
+        - 급한 상황에 있는 요청자를 위해 사기 및 노쇼 행위를 삼가해주시기 바랍니다. \n
+        - [대여 완료] 버튼을 눌러야 상대방에게 포인트가 적립됩니다. \n
 " />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycle"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:weightSum="5"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/chat_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="320dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="4"
-            android:background="@drawable/edittext_round"
+            android:background="@drawable/rectangle_4"
             android:ems="10"
             android:hint="채팅을 입력하세요."
             android:inputType="textMultiLine|textPersonName"
@@ -92,17 +97,15 @@
             android:paddingTop="5dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
+            android:layout_marginRight="10dp"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <ImageButton
+        <Button
             android:id="@+id/send_chat"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="fitXY"
             android:layout_gravity="center"
-            android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@drawable/button_chat_send" />
+            android:background="@drawable/button_chat_send" />
     </LinearLayout>
 </LinearLayout>

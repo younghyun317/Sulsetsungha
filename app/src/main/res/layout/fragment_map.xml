@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintVertical_bias="0.032" />
 
     <Button
         android:id="@+id/btn_request"
@@ -51,7 +51,23 @@
         android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/fr_map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.072" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="70dp"
+        android:layout_height="24dp"
+        android:text="500m 이내"
+        android:textSize="12sp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:background="@drawable/bg_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />

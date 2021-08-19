@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +40,7 @@ public class ChattingActivity extends AppCompatActivity {
     String roomName;
     WebSocketClient webSocketClient;
     EditText chat;
-    ImageButton send;
+    Button send;
 
     RecyclerView chat_message;
     ArrayList<ChatItem> chatItems = new ArrayList<>();
@@ -49,6 +50,8 @@ public class ChattingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
+
+
 
         connectWebSocket();
 

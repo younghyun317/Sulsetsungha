@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
@@ -86,6 +87,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
     private Marker currentMarker = null;
     List<Marker> cMarker = new ArrayList<>();
 
+
     //onRequestPermissionResult에서 수신된 결과 중 ActivityCompat.requestPermissions 사용한 퍼미션 요청 구별
     private static final int PERMISSIONS_REQUEST_CODE=100;
     boolean needRequest=false;
@@ -99,6 +101,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
     Circle circle;
     CircleOptions circle500M;
+    Bitmap icon;
+    Bitmap icon2;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
@@ -685,11 +689,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
         if(cMarker.size()!=0){
             cMarker.clear();
         }
-        int height = 100;
-        int width = 100;
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_marker,null);
-        Bitmap bitmap = bitmapdraw.getBitmap();
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getContext().getDrawable(R.drawable.ic_marker);
+        icon = bitmapdraw.getBitmap();
+//        Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 60, 80, false);
 
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -697,7 +700,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
             markerOptions.position(uLoc.get(i))
                     .title(uName.get(i))
                     .draggable(true)
-                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                    .icon(BitmapDescriptorFactory.fromBitmap(icon));
             Marker m = mMap.addMarker(markerOptions);
             cMarker.add(m);
 
@@ -727,13 +730,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Activi
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_mymarker, null);
-        Bitmap bitmap = bitmapdraw.getBitmap();
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getContext().getDrawable(R.drawable.ic_mymarker);
+        icon2 = bitmapdraw.getBitmap();
+//        Bitmap b = Bitmap.createScaledBitmap(icon2, 25, 25, false);
+//        Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.ic_mymarker);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng)
                 .title("ME")
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                .icon(BitmapDescriptorFactory.fromBitmap(icon2))
                 .draggable(true);
 
         currentMarker = mMap.addMarker(markerOptions);
