@@ -8,6 +8,20 @@
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_donation.xml" value="0.25364583333333335" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_maps.xml" value="0.2" />
+<<<<<<< HEAD
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.1" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/item_location.xml" value="0.4" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/layout/toolbar.xml" value="0.176" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/menu_bottom.xml" value="0.5541666666666667" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/menu_selector.xml" value="0.5541666666666667" />
+        <entry key="..\:/Sulsetsungha/app/src/main/res/menu/navigation_items.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_chatting.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_join.xml" value="0.3104166666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/activity_login.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.18" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/item_chat_left.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Sulsetsungha/app/src/main/res/layout/item_chat_right.xml" value="0.27708333333333335" />
+=======
         <entry key="..\:/Sulsetsungha/app/src/main/res/layout/fragment_mypage.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/drawable/edittext_round.xml" value="0.12129629629629629" />
         <entry key="app/src/main/res/drawable/myprogressbar.xml" value="0.21296296296296297" />
@@ -15,6 +29,7 @@
         <entry key="app/src/main/res/layout/activity_community_detail.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_community_write.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/activity_donation_like.xml" value="0.25407608695652173" />
+>>>>>>> 643c13cce96a9e19aa8be2b41eaed47c1a098559
         <entry key="app/src/main/res/layout/activity_join.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
