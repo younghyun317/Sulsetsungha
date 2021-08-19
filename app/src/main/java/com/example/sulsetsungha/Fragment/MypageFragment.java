@@ -34,8 +34,7 @@ public class MypageFragment extends Fragment{
 
     String TAG = MypageFragment.class.getSimpleName();
 
-    private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyBorrowCnt;
-    private Button btnDonationList, btnPointSave, btnShop, btnCmnMng;
+    private TextView txtMyId, txtMyPoint, txtMyLendCnt, txtMyCanLendCnt, txtMyBorrowCnt;
     private ImageButton btnSetting;
 
     @Override
@@ -52,12 +51,10 @@ public class MypageFragment extends Fragment{
         View view = (View)inflater.inflate(R.layout.fragment_mypage, container, false);
 
         txtMyId = (TextView) view.findViewById(R.id.txtMyId);
-        txtMyPoint = (TextView) view.findViewById(R.id.txtMyCanLendCnt);
+        txtMyPoint = (TextView) view.findViewById(R.id.txtMyPoint);
         txtMyLendCnt = (TextView) view.findViewById(R.id.txtMyLendCnt);
+        txtMyCanLendCnt = (TextView) view.findViewById(R.id.txtMyCanLendCnt);
         txtMyBorrowCnt = (TextView) view.findViewById(R.id.txtMyBorrowCnt);
-//        btnDonationList = (Button) view.findViewById(R.id.btnDonationList);
-//        btnPointSave = (Button) view.findViewById(R.id.btnPointSave);
-//        btnCmnMng = (Button) view.findViewById(R.id.btnCmnMng);
 
         btnSetting = (ImageButton) view.findViewById(R.id.btnSetting);
 
@@ -91,8 +88,9 @@ public class MypageFragment extends Fragment{
                     public void onResponse(JSONArray response) {
                         try {
                             Log.d(TAG, "response : " + response.getJSONObject(0).getString("point").toString());
-                            txtMyId.setText(response.getJSONObject(0).getJSONObject("user").getString("username").toString());
+                            txtMyId.setText(response.getJSONObject(0).getString("nickname").toString());
                             txtMyPoint.setText(response.getJSONObject(0).getString("point"));
+                            txtMyCanLendCnt.setText(response.getJSONObject(0).getString("can_borrow"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -129,14 +127,6 @@ public class MypageFragment extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "response : " + response.length());
-                        txtMyBorrowCnt.setText(String.valueOf(response.length()));
-//                        try {
-//                            Log.d(TAG, "response : " + response.length());
-//                            txtMyBorrowCnt.setText(response.length());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-
                     }
                 },
                 new Response.ErrorListener() {

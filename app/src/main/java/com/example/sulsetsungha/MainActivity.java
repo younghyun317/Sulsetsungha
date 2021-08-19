@@ -2,6 +2,7 @@ package com.example.sulsetsungha;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,8 +25,9 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
 
     LinearLayout helpher;
     BottomNavigationView bottomNavigationView;
-    //DonationFragment donationFragment;
+    DonationFragment donationFragment;
     //DonationAdapter donationAdapter;
+    CommunityFragment communityFragment;
     Menu menu;
     private static final String TAG = "[FCM push]";
 
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity /*implements MapFragment.OnT
 
         //맨 처음 시작할 탭 설정
         bottomNavigationView.setSelectedItemId(R.id.tab_home);
+
+        //새로고침
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.detach(communityFragment).attach(communityFragment).commit();
+//        ft.detach(donationFragment).attach(donationFragment).commit();
     }
 
     private void init() {
