@@ -89,7 +89,7 @@ public class DonationFragment extends Fragment {
                             //int percent;
                             Date currentCal, targetCal; //현재 날짜, 비교 날짜
 
-                            DownloadImageTask downloadImageTask = new DownloadImageTask((ImageView)view.findViewById(R.id.imageView13));
+                            //DownloadImageTask downloadImageTask = new DownloadImageTask((ImageView)view.findViewById(R.id.imageView13));
 
                             for (int i=0; i < response.length(); i++) {
                                 id = response.getJSONObject(i).getString("id").toString();
@@ -204,30 +204,7 @@ public class DonationFragment extends Fragment {
 //        }
     } //class Sponsor
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 
     //기부하기 좋아요 목록 가져오기
 //    private void getDonationLikeList() {

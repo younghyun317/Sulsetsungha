@@ -114,6 +114,7 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DonationDetailActivity.class);
+                intent.putExtra("Id", sponsor.getId());
                 intent.putExtra("Company", sponsor.getCompany());
                 intent.putExtra("Title", sponsor.getTitle().toString());
                 intent.putExtra("Context", sponsor.getContext().toString());
