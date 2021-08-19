@@ -85,13 +85,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         System.out.println("received message : "+message);
 
         //푸시알림 받을 때 백그라운드로 처리하고 싶은 내용
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d(TAG, "handler.postDelayed");
-//            }
-//        }, 2000);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "handler.postDelayed");
+            }
+        }, 2000);
 
         try{
             JSONObject jsonRootObject = new JSONObject(message);
@@ -116,9 +116,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
+
         //알림 builder 설정
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         notificationBuilder
+                .setSmallIcon(R.drawable.profile_red)
+                .setColor(getColor(R.color.design_default_color_primary))
+                .setColorized(true)
                 .setContentTitle(title)
                 .setContentText(contents)
                 .setAutoCancel(true)
