@@ -2,4 +2,6 @@
     <string name="app_name">Sulsetsungha</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_notification_channel_id" translatable="false">default channel</string>
+    <string name="msg_token_fmt">get Token</string>
 </resources>

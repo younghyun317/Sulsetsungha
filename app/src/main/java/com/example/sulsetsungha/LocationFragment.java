@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,8 @@ public class LocationFragment extends Fragment {
 
         if(getArguments()!=null) {
             ArrayList<String> nearU = getArguments().getStringArrayList("nearU");
+
+            Log.d("LocationFragment==>", "nearU = "+nearU);
             for(int i=0;i<nearU.size();i++){
                 if(i%2==1){
                     continue;

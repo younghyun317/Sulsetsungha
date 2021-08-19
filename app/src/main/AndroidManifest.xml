@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sulsetsungha">
 
+    <permission
+        android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -58,6 +73,22 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyByM5X58E0EeRtTXDzbmcYr7M_OqCE6A74" />
+<<<<<<< HEAD
+=======
+
+        <meta-data
+            android:name='com.google.firebase.messaging.default_notification_channel_id'
+            android:value = "@string/default_notification_channel_id"/>
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+>>>>>>> 5ab9094a9cf35b7281db769c7d7c7b231677a773
 
         <service android:name=".FirebaseMessagingService">
             <intent-filter>
@@ -71,6 +102,7 @@
         </service>
     </application>
 
+<<<<<<< HEAD
     <permission
         android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -82,6 +114,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+=======
+>>>>>>> 5ab9094a9cf35b7281db769c7d7c7b231677a773
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
