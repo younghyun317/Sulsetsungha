@@ -1,32 +1,24 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.donation;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sulsetsungha.DonationAdapter;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -37,10 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class DonationFragment extends Fragment {
 

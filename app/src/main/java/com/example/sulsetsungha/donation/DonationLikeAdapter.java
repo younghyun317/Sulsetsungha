@@ -1,11 +1,9 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.donation;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -37,11 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import com.bumptech.glide.Glide;
+class DonationLikeAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
 
-public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
-
-    String TAG = DonationAdapter.class.getSimpleName();
+    String TAG = DonationLikeAdapter.class.getSimpleName();
 
     private Context context;
     private List list;
@@ -62,15 +57,13 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         public TextView txt_donation;
     }
 
-    public DonationAdapter(Context context, ArrayList list){
+    public DonationLikeAdapter(Context context, ArrayList list){
         super(context, 0, list);
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.list = list;
     }
 
-    //리스트뷰에서 아이템을 하나씩 가져오는 함수
-    //position : 아이템의 index, convertView: index에 해당되는 view 객체, parent: view 객체가 포함된 부모
     public View getView(int position, View convertView, ViewGroup parent) {
         final RequestQueue queue = Volley.newRequestQueue(this.getContext());
         final String url_donation_user = "http://3.38.51.117:8000/donation_user/";
@@ -82,8 +75,8 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         String token = sharedPreferences.getString("access_token", null);
 
         //View v = layoutInflater.inflate(R.layout.item_donation, null);
-        final ViewHolder viewHolder;
-        viewHolder = new ViewHolder();
+        final DonationLikeAdapter.ViewHolder viewHolder;
+        viewHolder = new DonationLikeAdapter.ViewHolder();
 
         if (convertView == null){
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -101,31 +94,23 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
         viewHolder.txt_dday = (TextView)convertView.findViewById(R.id.txtDday);
         viewHolder.txt_donation = (TextView)convertView.findViewById(R.id.txtDonation);
 
-        final DonationFragment.Sponsor sponsor = (DonationFragment.Sponsor)list.get(position);
+        final DonationLikeActivity.Sponsor sponsor = (DonationLikeActivity.Sponsor)list.get(position);
         viewHolder.txt_company.setText(sponsor.getCompany().toString());
         viewHolder.txt_title.setText(sponsor.getTitle().toString());
         viewHolder.txt_dday.setText(sponsor.getDday().toString());
         viewHolder.txt_donation.setText(sponsor.getDonation().toString());
         viewHolder.prg_donation.setProgress((int) Math.round(Double.parseDouble(sponsor.getDonation())));
 
+        donation_like_json.put("notice_title", sponsor.getTitle().toString());
+        JSONObject parameter_donation_like = new JSONObject(donation_like_json);
+
         bodyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DonationDetailActivity.class);
-                intent.putExtra("Company", sponsor.getCompany());
-                intent.putExtra("Title", sponsor.getTitle().toString());
-                intent.putExtra("Context", sponsor.getContext().toString());
-                intent.putExtra("Dday", sponsor.getDday().toString());
-                intent.putExtra("Percent", sponsor.getDonation().toString());
-                intent.putExtra("Donation", sponsor.getDonation());
-
-                context.startActivity(intent);
+                Toast.makeText(context, "click list body", Toast.LENGTH_SHORT).show();
 
             }
         });
-
-        donation_like_json.put("notice_title", sponsor.getTitle().toString());
-        JSONObject parameter_donation_like = new JSONObject(donation_like_json);
 
         btnDonationLikeView.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
@@ -137,21 +122,6 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, "like_response : " + response.toString());
-                                String id;
-                                Drawable unlike_drawable = getContext().getDrawable(R.drawable.button_like);
-                                Drawable like_drawable = getContext().getDrawable(R.drawable.button_like_color);
-
-                                try {
-                                    id = response.getString("id").toString();
-                                    if (id == sponsor.getId().toString()) {
-                                        btnDonationLikeView.setImageDrawable(like_drawable);
-                                    } else {
-                                        btnDonationLikeView.setImageDrawable(unlike_drawable);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
 
                             }
                         },
@@ -248,6 +218,4 @@ public class DonationAdapter extends ArrayAdapter implements AdapterView.OnItemC
 
         return headers;
     }
-
-
 }

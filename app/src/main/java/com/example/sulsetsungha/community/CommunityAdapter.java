@@ -1,4 +1,4 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.community;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.sulsetsungha.R;
 
 import java.util.ArrayList;
 import java.util.List;

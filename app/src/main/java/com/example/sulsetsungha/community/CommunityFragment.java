@@ -1,10 +1,9 @@
-package com.example.sulsetsungha;
+package com.example.sulsetsungha.community;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

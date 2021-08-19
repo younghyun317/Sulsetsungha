@@ -11,22 +11,22 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".DonationDetailActivity"
+            android:name=".donation.DonationDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".CommunityDetailActivity"
+            android:name=".community.CommunityDetailActivity"
             android:exported="true" />
         <activity
             android:name=".ChattingActivity"
             android:exported="true" />
         <activity
-            android:name=".CommunityWriteActivity"
+            android:name=".community.CommunityWriteActivity"
             android:exported="true" />
         <activity
             android:name=".MyDonationListActivity"
             android:exported="true" />
         <activity
-            android:name=".DonationLikeActivity"
+            android:name=".donation.DonationLikeActivity"
             android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
