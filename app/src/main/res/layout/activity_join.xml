@@ -105,7 +105,6 @@
                     android:layout_marginRight="25dp"
                     android:background="@drawable/edittext_round"
                     android:ems="10"
-                    android:hint="입력마세요. 구현안됨. 접근금지."
                     android:paddingLeft="10dp"
                     android:paddingTop="5dp"
                     android:paddingRight="10dp"
