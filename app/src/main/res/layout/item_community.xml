@@ -10,7 +10,7 @@
         android:id="@+id/body_comment"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/community_list_background"
+        android:background="@drawable/post_backgroud"
         android:orientation="vertical">
 
         <LinearLayout
@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:text="내용" />
         </LinearLayout>
@@ -80,14 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="220dp"
                 android:layout_weight="1"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/heart" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/comment" />
 
             <TextView
                 android:id="@+id/txtCmnLikeCnt"
@@ -95,6 +90,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="like" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/comment" />
 
             <TextView
                 android:id="@+id/txtCmnCmtCnt"
