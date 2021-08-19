@@ -41,8 +41,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -87,6 +86,26 @@ public class LoginActivity extends AppCompatActivity {
             checkRunTimePermission();
         }
 
+        FirebaseApp.initializeApp(this);
+
+        //notice 관련 주제구독
+        FirebaseMessaging.getInstance().subscribeToTopic("notice").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(!task.isSuccessful()){ //fail
+                    Log.d(TAG, "주제구독 되지않음.");
+                }
+                else{ //success
+                    Log.d(TAG,"주제구독 됨.");
+                }
+            }
+        });
+
+
+
+//        FirebaseApp.initializeApp(this);
+
 
         edtId = findViewById(R.id.edtId);
         edtPw = findViewById(R.id.edtPw);
@@ -110,8 +129,8 @@ public class LoginActivity extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 //                    }
 //                });
-        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
-        startService(fcm);
+//        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
+//        startService(fcm);
 
 
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -186,6 +205,8 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
                 queue.add(jsonObjectRequest);
+
+
             }
 
         });
