@@ -14,15 +14,15 @@
 //
 //import java.util.ArrayList;
 //
-//public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.ViewHolder>{
+//public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.ViewHolder> {
+//
 //    public class ViewHolder extends RecyclerView.ViewHolder {
-//        private String id;
-//        private String company;
-//        private String title;
-//        private String context;
-//        private String dday;
-//        private String donation;
-//        private int progressbar;
+//
+//        public TextView txt_company;
+//        public TextView txt_title;
+//        public ProgressBar prg_donation;
+//        public TextView txt_dday;
+//        public TextView txt_donation;
 //
 //        public ViewHolder(@NonNull View itemView) {
 //            super(itemView);
@@ -49,15 +49,15 @@
 //        Context context = parent.getContext();
 //        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
-//        View view = inflater.inflate(R.layout.activity_recycler_item, parent, false);
-//        RecyclerViewAdapter.ViewHolder vh = new RecyclerViewAdapter.ViewHolder(view);
+//        View view = inflater.inflate(R.layout.item_donation, parent, false);
+//        MypageAdapter.ViewHolder vh = new MypageAdapter.ViewHolder(view);
 //        return vh;
 //    }
 //
 //    // position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시
 //    @Override
 //    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-//        RecyclerViewItem item = mList.get(position);
+//        MypageRecyclerViewItem item = mList.get(position);
 //
 //        holder.imgView_item.setImageResource(R.drawable.ic_launcher_background);   // 사진 없어서 기본 파일로 이미지 띄움
 //        holder.txt_main.setText(item.getMainText());
@@ -67,4 +67,6 @@
 //    @Override
 //    public int getItemCount() {
 //        return mList.size();
-//    }}
+//    }
+//
+//}
