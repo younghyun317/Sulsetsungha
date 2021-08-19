@@ -237,19 +237,22 @@
                     android:textColor="#000000"
                     android:textStyle="bold" />
 
-                <ScrollView
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_height="match_parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listView_MyDonation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-                </ScrollView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" >
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycleView_MyDonation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
             </LinearLayout>
 

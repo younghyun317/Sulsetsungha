@@ -14,12 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.java_websocket.client.WebSocketClient;
@@ -32,6 +35,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChattingActivity extends AppCompatActivity {
     String TAG = ChattingActivity.class.getSimpleName();
@@ -41,6 +45,7 @@ public class ChattingActivity extends AppCompatActivity {
     WebSocketClient webSocketClient;
     EditText chat;
     Button send;
+    ImageButton btnBorrowCompleted;
 
     RecyclerView chat_message;
     ArrayList<ChatItem> chatItems = new ArrayList<>();
@@ -50,8 +55,6 @@ public class ChattingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
-
-
 
         connectWebSocket();
 
@@ -77,6 +80,64 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
+        btnBorrowCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBorrowCompleted();
+            }
+        });
+
+    }
+
+    private void setBorrowCompleted() {
+        Intent intent = getIntent();
+        String user_name = intent.getStringExtra("username");
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        final String url = "http://3.38.51.117:8000/borrow/";
+
+        HashMap<String, String> borrow_json = new HashMap<>();
+        borrow_json.put("borrower_username", user_name.toString());
+        JSONObject parameter = new JSONObject(borrow_json);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = sharedPreferences.getString("access_token", null);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url,
+                parameter,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "대여가 완료되었습니다.", Toast.LENGTH_LONG);
+                        toast.show();
+
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return give_token(token);
+            }
+        };
+
+        queue.add(jsonObjectRequest);
+
+    }
+
+    Map<String, String> give_token(String token) {
+        HashMap<String, String> headers = new HashMap<>();
+        // Bearer + token 해야됨! 안그럼 인식 못함
+        headers.put("Authorization", "Bearer " + token);
+
+        return headers;
     }
 
     void connectWebSocket() {
