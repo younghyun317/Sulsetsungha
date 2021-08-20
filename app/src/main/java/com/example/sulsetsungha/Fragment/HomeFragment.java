@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 
         gpsTracker = new GpsTracker(getContext());
         LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-        txt_address.setText(getCurrentAddress(latlng));
+        //txt_address.setText(getCurrentAddress(latlng));
         Log.d("Home Fragment==>","address:"+txt_address);
 
         getLastLendState();
