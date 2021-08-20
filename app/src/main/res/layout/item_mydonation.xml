@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:background="#FAFAFA"
         android:orientation="vertical">
 
@@ -64,10 +64,10 @@
                 android:id="@+id/txtName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center"
                 android:layout_marginRight="20dp"
                 android:layout_weight="2"
-                android:gravity="right"
+                android:gravity="center"
                 android:text="회사 이름"
                 android:textColor="#1E1D1D" />
 
