@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".community.CommunityFragment">
 
     <LinearLayout
@@ -33,6 +33,7 @@
             android:layout_marginRight="15dp"
             android:background="@drawable/button_alert"
             tools:ignore="SpeakableTextPresentCheck" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -74,11 +75,22 @@
             android:background="@drawable/advertisement" />
     </LinearLayout>
 
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
         android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnCmnWrite"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_write"
+            android:scaleType="centerCrop" />
 
         <ListView
             android:id="@+id/listView_Community"
@@ -87,15 +99,6 @@
             android:layout_marginTop="10dp">
 
         </ListView>
-
-        <Button
-            android:id="@+id/btnCmnWrite"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="bottom|right"
-            android:scaleType="centerCrop"
-            android:background="@drawable/button_write" />
     </FrameLayout>
+
 </LinearLayout>

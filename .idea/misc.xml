@@ -46,6 +46,7 @@
         <entry key="app/src/main/res/layout/fragment_donation.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.2545289855072464" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.13858695652173914" />

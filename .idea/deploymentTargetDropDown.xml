@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
+<<<<<<< HEAD
+    <targetSelectedWithDropDown>
+=======
     <runningDeviceTargetSelectedWithDropDown>
       <Target>
         <type value="RUNNING_DEVICE_TARGET" />
@@ -23,15 +26,25 @@
           </Key>
         </deviceKey>
       </Target>
+>>>>>>> b61dc8a17cee7152a92c292ce970142de81367a4
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
+<<<<<<< HEAD
+            <value value="$USER_HOME$/.android/avd/Nexus_5X_API_29.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2021-08-20T01:19:00.720747Z" />
+=======
             <value value="C:\Users\stari\.android\avd\new_phone_1.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetsSelectedWithDialog>
+>>>>>>> b61dc8a17cee7152a92c292ce970142de81367a4
   </component>
 </project>

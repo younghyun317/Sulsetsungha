@@ -260,7 +260,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:text="커뮤니티 관리"
                         android:textColor="#000000"
                         android:textStyle="bold" />
@@ -277,30 +277,39 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/button_mywrite"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerInside" />
 
                     <ImageButton
                         android:id="@+id/imageButton2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/button_mylike"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerInside" />
 
                     <ImageButton
                         android:id="@+id/imageButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/button_mycomment"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerInside" />
                 </LinearLayout>
 
                 <LinearLayout

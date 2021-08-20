@@ -91,11 +91,19 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //        else {
 //            txt_address.setText("no bundle");
 //        }
+<<<<<<< HEAD
+
+        gpsTracker = new GpsTracker(getContext());
+        LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        //txt_address.setText(getCurrentAddress(latlng));
+        Log.d("Home Fragment==>","address:"+txt_address);
+=======
 //
 //        gpsTracker = new GpsTracker(getContext());
 //        LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
 //        txt_address.setText(getCurrentAddress(latlng));
 //        Log.d("Home Fragment==>","address:"+txt_address);
+>>>>>>> b61dc8a17cee7152a92c292ce970142de81367a4
 
         getLastLendState();
 

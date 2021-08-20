@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
     String TAG = CommunityWriteActivity.class.getSimpleName();
 
     EditText edtCmnContext;
-    ImageButton btnWriteCancel, btnWritePost, btnAddPhoto;
+    Button btnWriteCancel, btnWritePost, btnAddPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

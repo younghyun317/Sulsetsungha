@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sulsetsungha.MainActivity;
 import com.example.sulsetsungha.R;
 
 import org.json.JSONArray;
@@ -40,6 +44,7 @@ public class CommunityFragment extends Fragment {
     static CommunityAdapter communityAdapter;
 
     Button btnCmnWrite;
+    SwipeRefreshLayout srl_main;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +61,22 @@ public class CommunityFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+//        srl_main = (SwipeRefreshLayout) view.findViewById(R.id.srl_main);
+//        srl_main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.detach(CommunityFragment).attach(this).commit;
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        srl_main.setRefreshing(false);
+//                    }
+//                }, 500);
+//            }
+//        });
 
         //게시글 불러오기
         final RequestQueue queue = Volley.newRequestQueue(getActivity());
