@@ -51,6 +51,7 @@
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.13858695652173914" />
         <entry key="app/src/main/res/layout/item_donation.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_mydonation.xml" value="0.13994565217391305" />
         <entry key="app/src/main/res/layout/item_mydonationlist.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/menu/menu_bottom.xml" value="0.14166666666666666" />
