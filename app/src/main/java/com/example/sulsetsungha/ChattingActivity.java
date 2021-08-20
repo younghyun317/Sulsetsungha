@@ -201,7 +201,7 @@ public class ChattingActivity extends AppCompatActivity {
                             }
                             chatItems.add(new ChatItem(content, name, view));
                             adapter.notifyDataSetChanged();
-                            chat_message.smoothScrollToPosition(chatItems.size() - 1);
+                            chat_message.smoothScrollToPosition(chatItems.size());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

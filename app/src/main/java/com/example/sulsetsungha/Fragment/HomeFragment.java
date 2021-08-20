@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //    private static final int loc_Fragment = 2;
 
 
-    TextView txt_address;
     Switch swc_borrow;
 
     private MapFragment mapFr;
@@ -85,8 +84,6 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
         mapFr = new MapFragment();
         locationFr = new LocationFragment();
 
-
-        txt_address = v.findViewById(R.id.txt_address);
 //        Bundle extra = this.getArguments();
 //        if(extra != null) {
 //            txt_address.setText(extra.getString("address"));
@@ -94,11 +91,19 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
 //        else {
 //            txt_address.setText("no bundle");
 //        }
+<<<<<<< HEAD
 
         gpsTracker = new GpsTracker(getContext());
         LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
         //txt_address.setText(getCurrentAddress(latlng));
         Log.d("Home Fragment==>","address:"+txt_address);
+=======
+//
+//        gpsTracker = new GpsTracker(getContext());
+//        LatLng latlng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+//        txt_address.setText(getCurrentAddress(latlng));
+//        Log.d("Home Fragment==>","address:"+txt_address);
+>>>>>>> b61dc8a17cee7152a92c292ce970142de81367a4
 
         getLastLendState();
 
@@ -145,7 +150,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
                         }
                 };
                     queue.add(jsonObjectRequest);
-                    Toast.makeText(getContext(), "스위치 ON", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "스위치 ON", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     borrow_json.put("lend_state", "false");
@@ -177,7 +182,7 @@ public class HomeFragment extends Fragment /*implements MapFragment.OnTimePicker
                         }
                     };
                     queue.add(jsonObjectRequest);
-                    Toast.makeText(getContext(), "스위치 OFF", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "스위치 OFF", Toast.LENGTH_SHORT).show();
                 }
             }
         });

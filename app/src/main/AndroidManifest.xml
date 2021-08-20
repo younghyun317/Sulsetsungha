@@ -29,8 +29,7 @@
         <activity
             android:name=".ChattingActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".community.CommunityWriteActivity"
             android:exported="true" />
